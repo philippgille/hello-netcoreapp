@@ -56,3 +56,4 @@ TODO
 - Add Dockerfile for image using SCD README section
 - Add Dockerfile for Windows Server 2016 Nano
 - Add Dockerfile for Windows Server 2016 Nano README section
+- Add AppVeyor build file
