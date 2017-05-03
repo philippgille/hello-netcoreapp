@@ -431,3 +431,9 @@ __pycache__/
 # BizTalk build output
 
 # End of https://www.gitignore.io/api/csharp,visualstudio,visualstudiocode
+
+### Custom additions ###
+
+# Exclude publish base directory, which is ignored in a rule for Visual Studio "Click-Once"
+!/publish
+/publish/output/*
