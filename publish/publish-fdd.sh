@@ -20,7 +20,7 @@ rm -r -f "$PUBLISHDIR"
 mkdir "$PUBLISHDIR"
 
 # cd into source directory for dotnet commands
-cd ..\src
+cd ../src
 
 # Restore NuGet packages
 dotnet restore
@@ -29,7 +29,7 @@ dotnet restore
 dotnet publish -f netcoreapp1.1 -c release -o "$PUBLISHDIR"
 
 # cd back to original publish directory
-cd ..\publish
+cd ../publish
 
 # Create an archive with all FDD files for publishing.
 # tar includes the full path when doing `tar -czf $DESTINATION $SOURCE`
@@ -37,4 +37,4 @@ cd ..\publish
 # So work around that.
 #TODO: Find and use a way to just archive the files without any path or ".""
 DESTINATION="$PUBLISHDIR.tar.gz"
-tar -czf $DESTINATION -C $PUBLISHDIR $PUBLISHNAME
+tar -czf $DESTINATION -C $PWD/output $PUBLISHNAME
