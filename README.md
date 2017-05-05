@@ -21,6 +21,7 @@ Directory structure
     - .vscode: Contains files for debugging in Visual Studio Code. Used in case you open the /src directory of the repository as workspace in Visual Studio Code
 - /publish: Contains scripts for building and publishing the app
     - output: When running one of the publish scripts, this directory will contain the resulting files, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
+- Dockerfile: The Dockerfile for building a Docker image with the app
 
 Build
 -----
@@ -36,6 +37,12 @@ You can create an FDD or SCD with *either* the .NET Core SDK *or* Docker install
 - Run `publish-fdd-docker.ps1` if you're using Windows and you have Docker installed. It will create the archive `hello-netcoreapp_netcoreapp1.1.tar.gz`.
 - Run `publish-fdd-docker.sh` if you're using Linux and you have Docker installed. It will create the archive `hello-netcoreapp_netcoreapp1.1.tar.gz`.
 
+### Docker image
+
+1. First run any of the FDD publish scripts, so that there's `/publish/output/hello-netcoreapp_netcoreapp1.1`
+    - Note: You should run those scripts from the publish directory, so you might need to `cd` into it first
+2. In the root directory of the repository, run: `docker build -t my/hello-netcoreapp .`
+
 Run
 ---
 
@@ -45,13 +52,15 @@ You can run the console app either as *framework-dependent deployment* (FDD), *s
 
 After building the FDD, you can copy the `hello-netcoreapp_netcoreapp1.1.zip` / `hello-netcoreapp_netcoreapp1.1.tar.gz` to wherever you want to run the app, extract the archive and run `dotnet hello-netcoreapp.dll`.
 
+### Docker container
+
+Run: `docker run --rm my/hello-netcoreapp`
+
 TODO
 ----
 
 - Add SCD scripts
 - Add SCD README section
-- Add Dockerfile
-- Add Dockerfile README section
 - Add Dockerfile for image using SCD
 - Add Dockerfile for image using SCD README section
 - Add Dockerfile for Windows Server 2016 Nano
