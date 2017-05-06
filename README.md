@@ -11,7 +11,7 @@ Terminology:
 
 - FDD: The app relies on an installed version of *.NET Core*. But it's completely portable to all systems running .NET Core.
 - SCD: The app is completely self-contained. .NET Core runtime files are delivered with the executable, making this package bigger than an FDD. It's independent of a .NET Core installation, but not portable, so multiple SCDs must be created and each one only runs on a single operating systems. For a list of supported systems, see [https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog](https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog).
-- Docker image: The app can be run as Docker container, which is based on the official [Microsoft/dotnet Docker image](https://hub.docker.com/r/microsoft/dotnet/), using the image for FDDs that they recommended for use in production.
+- Docker image: The app can be run as Docker container (Linux and Windows), which is based on the official [Microsoft/dotnet Docker image](https://hub.docker.com/r/microsoft/dotnet/), using the image for FDDs that they recommended for use in production.
 
 Directory structure
 -------------------
@@ -21,7 +21,8 @@ Directory structure
     - .vscode: Contains files for debugging in Visual Studio Code. Used in case you open the /src directory of the repository as workspace in Visual Studio Code
 - /publish: Contains scripts for building and publishing the app
     - output: When running one of the publish scripts, this directory will contain the resulting files, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
-- Dockerfile: The Dockerfile for building a Docker image with the app
+- Dockerfile: The Dockerfile for building a Docker image for Linux containers with the app
+- Dockerfile.nano: The Dockerfile for building a Docker image for Windows containers with the app
 
 Build
 -----
@@ -41,7 +42,9 @@ You can create an FDD or SCD with *either* the .NET Core SDK *or* Docker install
 
 1. First run any of the FDD publish scripts, so that there's `/publish/output/hello-netcoreapp_netcoreapp1.1`
     - Note: You should run those scripts from the publish directory, so you might need to `cd` into it first
-2. In the root directory of the repository, run: `docker build -t my/hello-netcoreapp .`
+2. In the root directory of the repository, depending on which container host system you want to target:
+    - For Linux containers, run: `docker build -t my/hello-netcoreapp .`
+    - For Windows containers, run: `docker build -t my/hello-netcoreapp -f Dockerfile.nano .`
 
 Run
 ---
@@ -56,6 +59,8 @@ After building the FDD, you can copy the `hello-netcoreapp_netcoreapp1.1.zip` / 
 
 Run: `docker run --rm my/hello-netcoreapp`
 
+This works on Linux with the image for the Linux container, and on Windows with both, the image for the Linux container as well as the image for the Windows container. On Windows you can configure which kind of containers you want to run.
+
 TODO
 ----
 
@@ -63,6 +68,5 @@ TODO
 - Add SCD README section
 - Add Dockerfile for image using SCD
 - Add Dockerfile for image using SCD README section
-- Add Dockerfile for Windows Server 2016 Nano
-- Add Dockerfile for Windows Server 2016 Nano README section
 - Add AppVeyor build file
+- Add versioning
