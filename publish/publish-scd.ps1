@@ -1,6 +1,5 @@
 # Creates release artifacts for SCD (self-contained deployment).
-# Uses an installed version of .NET Core.
-# .NET Core SDK version should be 1.1.
+# Uses an installed version of the .NET Core SDK, which should be version 1.1
 # Script must be called from the directory where the script is located.
 
 $appname = "hello-netcoreapp"
@@ -39,7 +38,7 @@ foreach ($rId in $rIds) {
     # cd back to original publish directory
     Set-Location ..\publish
 
-    # Create an archive with all FDD files for publishing.
+    # Create an archive with all SCD files for publishing.
     # Requires the full .NET framework to be installed, so that the required assembly can be loaded, which is not part of PowerShell.
     $destination = "$publishDir.zip"
     If (Test-Path $destination) {Remove-Item $destination}

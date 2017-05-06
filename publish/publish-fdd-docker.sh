@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Creates release artifacts for FDD (framework-dependent deployment)
 # Uses the official .NET Core Docker container that contains the SDK
 

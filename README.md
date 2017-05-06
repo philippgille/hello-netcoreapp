@@ -89,6 +89,7 @@ TODO
 
 - Add SCD scripts for Linux
 - Add SCD scripts for building via Docker container
+- Add scripts for building via Windows Docker containers
 - Create automated build on Docker Hub
 - Add AppVeyor build file
 - Add versioning
