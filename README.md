@@ -53,6 +53,13 @@ You can create an FDD or SCD with *either* the .NET Core SDK *or* Docker install
 - If you're using Linux and you have Docker installed, run: `publish-scd-docker.sh`
     - It will create archives for each runtime identifier specified in the csproj file, for example `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
 
+Additionally to the default SCD, you can also create a "small footprint SCD", which targets netstandard1.6 instead of netcoreapp1.1, making the published files smaller. This requires a change in the csproj file though and makes it incompatible with FDD. Also, the size gain is not very big:
+
+- With netcoreapp1.1: 45-55 MB published directory, 20 MB archive
+- With netstandard1.6: 30-40 MB published directory, 13-15 MB archive
+
+This is for a simple "Hello World" app. For a bigger app with third-party dependencies the size difference is even smaller.
+
 ### Docker image
 
 1. First run any of the FDD publish scripts, so that there's `/publish/output/hello-netcoreapp_netcoreapp1.1`

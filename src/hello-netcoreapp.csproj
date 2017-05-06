@@ -1,10 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <!-- Use "netcoreapp1.1" for default FDD and SCD, and "netstandard1.6" plus some special PackageReferences for a small footprint SCD.
+         When using "netstandard1.6", FDD doesn't work.
+         For more info see: https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/deploy-with-cli -->
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <!-- Some Runtime identifiers from https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog -->
-    <RuntimeIdentifiers>win10-x64;ubuntu.14.04-x64;ubuntu.16.04-x64;osx.10.11-x64;osx.10.12-x64</RuntimeIdentifiers>
+    <!-- Some SCD Runtime identifiers from https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog -->
+    <RuntimeIdentifiers>win10-x64;ubuntu.16.04-x64;osx.10.12-x64</RuntimeIdentifiers>
   </PropertyGroup>
-
+  <!-- Small footprint SCD
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.Runtime.CoreCLR" Version="1.1.1" />
+    <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy" Version="1.1.0" />
+  </ItemGroup>
+  -->
+  <!-- Example dependency
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+  </ItemGroup>
+  -->
 </Project>
