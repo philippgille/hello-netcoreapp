@@ -48,6 +48,10 @@ You can create an FDD or SCD with *either* the .NET Core SDK *or* Docker install
     - It will create archives for each runtime identifier specified in the csproj file, for example `hello-netcoreapp_ubuntu.16.04-x64.zip`
 - If you're using Linux and you have the .NET Core SDK installed, run: `publish-scd.sh`
     - It will create archives for each runtime identifier specified in the csproj file, for example `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
+- If you're using Windows and you have Docker installed and configured to use Linux containers, run: `publish-scd-docker.ps1`
+    - It will create archives for each runtime identifier specified in the csproj file, for example `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
+- If you're using Linux and you have Docker installed, run: `publish-scd-docker.sh`
+    - It will create archives for each runtime identifier specified in the csproj file, for example `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
 
 ### Docker image
 
@@ -70,8 +74,8 @@ After building the FDD, you can copy the archive (`hello-netcoreapp_netcoreapp1.
 
 After building the SCD, you can copy the archive (`hello-netcoreapp_ubuntu.16.04-x64.zip`) to wherever you want to run the app (only the operating system has to match), extract the archive and run, depending on the OS:
 
-- On Windows: `output\hello-netcoreapp_win10-x64\hello-netcoreapp.exe`
-- On Ubuntu: `output/hello-netcoreapp_ubuntu.16.04-x64/hello-netcoreapp`
+- On Windows 10 x64: `output\hello-netcoreapp_win10-x64\hello-netcoreapp.exe`
+- On Ubuntu 16.04 x64: `output/hello-netcoreapp_ubuntu.16.04-x64/hello-netcoreapp`
 - etc.
 
 #### Simplify execution
@@ -104,10 +108,9 @@ This works on Linux with the image for the Linux container, and on Windows with 
 TODO
 ----
 
-- Add SCD scripts for building via Docker container
-- Add scripts for building via Windows Docker containers
 - Create automated build on Docker Hub
 - Add AppVeyor build file
+- Add scripts for building via Windows Docker containers (might not be possible because of the use of .NET framework classes, which might not be available in *nanoserver*)
 - Add versioning
 - Make SCD with smaller footprint, see [here](https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/deploy-with-cli#small-footprint-self-contained-deployment) (but only if targeting netstandard doesn't have drawbacks versus targeting netcoreapp)
 - Add Dockerfile for image using SCD
