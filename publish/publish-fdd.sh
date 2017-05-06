@@ -17,7 +17,7 @@ PUBLISHNAME="${APPNAME}_netcoreapp1.1"
 PUBLISHDIR="$PWD/output/$PUBLISHNAME"
 
 rm -r -f "$PUBLISHDIR"
-mkdir "$PUBLISHDIR"
+mkdir -p "$PUBLISHDIR"
 
 # cd into source directory for dotnet commands
 cd ../src
@@ -35,6 +35,6 @@ cd ../publish
 # tar includes the full path when doing `tar -czf $DESTINATION $SOURCE`
 # and a "." when doing `tar -czf $DESTINATION -C $SOURCE .`.
 # So work around that.
-#TODO: Find and use a way to just archive the files without any path or ".""
+#TODO: Find and use a way to just archive the files without any path or "."
 DESTINATION="$PUBLISHDIR.tar.gz"
 tar -czf $DESTINATION -C $PWD/output $PUBLISHNAME
