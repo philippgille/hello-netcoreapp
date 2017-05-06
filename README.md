@@ -46,6 +46,8 @@ You can create an FDD or SCD with *either* the .NET Core SDK *or* Docker install
 
 - If you're using Windows and you have the .NET Core SDK installed, run: `publish-scd.ps1`
     - It will create archives for each runtime identifier specified in the csproj file, for example `hello-netcoreapp_ubuntu.16.04-x64.zip`
+- If you're using Linux and you have the .NET Core SDK installed, run: `publish-scd.sh`
+    - It will create archives for each runtime identifier specified in the csproj file, for example `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
 
 ### Docker image
 
@@ -74,11 +76,26 @@ After building the SCD, you can copy the archive (`hello-netcoreapp_ubuntu.16.04
 
 #### Simplify execution
 
-The app is portable, so you can move the directory wherever you want on your system, for example `C:\Users\Philipp\MyPortableApps\hello-netcoreapp` on Windows, or `/home/users/philipp/myPortableApps/hello-netcoreapp` on Linux. Then you should add the executable file to your PATH, or create a link to the executable in `/usr/bin` (on Linux), or create an alias in your `.bash_rc` (on Linux), so you don't have to enter the full path of the executable when you want to run the app.
+The app is portable, so you can move the directory wherever you want on your system, for example `$env:USERPROFILE\MyPortableApps\hello-netcoreapp` on Windows, or `$HOME/myPortableApps/hello-netcoreapp` on Linux. Then you should do one of the following, so you don't have to enter the full path of the executable when you want to run the app:
 
-Then you can run the following command on any system (even Windows) and from any directory: `hello-netcoreapp`
+- On Windows: Create an alias for the app for PowerShell:
+    1. Edit the file returned by `$PROFILE.CurrentUserAllHosts`
+    1. Add: `Set-Alias hello-netcoreapp $env:USERPROFILE\MyPortableApps\hello-netcoreapp\hello-netcoreapp.exe`
+    1. Source your Profile so that the alias becomes available immediately: `. $PROFILE.CurrentUserAllHosts`
+- On Linux:
+    - Either create an alias for the app for Bash:
+        1. Edit `~/.bashrc`
+        1. Add: `alias hello-netcoreapp='$HOME/myPortableApps/hello-netcoreapp/hello-netcoreapp'`
+        1. Source your bashrc so that the alias becomes available immediately: `source ~/.bashrc`
+    - Or create a link in a directory that's already in the PATH: `ln -s $HOME/myPortableApps/hello-netcoreapp/hello-netcoreapp /usr/local/bin/hello-netcoreapp`
+
+Now you can run the following command on any system (even Windows) and from any directory: `hello-netcoreapp`
+
+Note: You shouldn't add the directory to the PATH, because the directory contains many files and you don't want tab auto-completion for files like `hello-netcoreapp.deps.json`.
 
 ### Docker container
+
+After building the image, it's available in the local image cache.
 
 Run: `docker run --rm my/hello-netcoreapp`
 
@@ -87,7 +104,6 @@ This works on Linux with the image for the Linux container, and on Windows with 
 TODO
 ----
 
-- Add SCD scripts for Linux
 - Add SCD scripts for building via Docker container
 - Add scripts for building via Windows Docker containers
 - Create automated build on Docker Hub
