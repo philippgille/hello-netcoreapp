@@ -28,7 +28,7 @@ foreach ($rId in $rIds) {
     Set-Location ..\src
 
     # Restore NuGet packages
-    dotnet restore
+    dotnet restore -r $rId
 
     # "dotnet publish" without "-o" option publishes to different directories on Windows vs. .NET Core SDK Docker container.
     # That doesn't matter in this PowerShell script per say, because the publish.sh bash script gets used for that,

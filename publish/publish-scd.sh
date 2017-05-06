@@ -34,7 +34,7 @@ do
     cd ../src
 
     # Restore NuGet packages
-    dotnet restore
+    dotnet restore -r $rId
 
     # "dotnet publish" without "-o" option publishes to different directories on Windows vs. .NET Core SDK Docker container.
     dotnet publish -r $RID -c release -o "$PUBLISHDIR"
