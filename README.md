@@ -29,6 +29,8 @@ Build
 
 You can create a *framework-dependent deployment* (FDD), *self-contained deployment* (SCD) or *Docker image*.
 
+For more info about FDD and SCD see: [https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/](https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/)
+
 You can create an FDD or SCD with *either* the .NET Core SDK *or* Docker installed. For building the Docker image you need to have Docker installed.
 
 ### FDD
