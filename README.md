@@ -33,10 +33,19 @@ You can create an FDD or SCD with *either* the .NET Core SDK *or* Docker install
 
 ### FDD
 
-- Run `publish-fdd.ps1` if you're using Windows and you have the .NET Core SDK installed. It will create the archive `hello-netcoreapp_netcoreapp1.1.zip`.
-- Run `publish-fdd.sh` if you're using Linux and you have the .NET Core SDK installed. It will create the archive `hello-netcoreapp_netcoreapp1.1.tar.gz`.
-- Run `publish-fdd-docker.ps1` if you're using Windows and you have Docker installed. It will create the archive `hello-netcoreapp_netcoreapp1.1.tar.gz`.
-- Run `publish-fdd-docker.sh` if you're using Linux and you have Docker installed. It will create the archive `hello-netcoreapp_netcoreapp1.1.tar.gz`.
+- Run `publish-fdd.ps1` if you're using Windows and you have the .NET Core SDK installed.
+    - It will create the archive `hello-netcoreapp_netcoreapp1.1.zip`.
+- Run `publish-fdd.sh` if you're using Linux and you have the .NET Core SDK installed.
+    - It will create the archive `hello-netcoreapp_netcoreapp1.1.tar.gz`.
+- Run `publish-fdd-docker.ps1` if you're using Windows and you have Docker installed.
+    - It will create the archive `hello-netcoreapp_netcoreapp1.1.tar.gz`.
+- Run `publish-fdd-docker.sh` if you're using Linux and you have Docker installed.
+    - It will create the archive `hello-netcoreapp_netcoreapp1.1.tar.gz`.
+
+### SCD
+
+- Run `publish-scd.ps1` if you're using Windows and you have the .NET Core SDK installed.
+    - It will create archives for each runtime identifier specified in the csproj file, for example `hello-netcoreapp_ubuntu.16.04-x64.zip`
 
 ### Docker image
 
@@ -53,7 +62,22 @@ You can run the console app either as *framework-dependent deployment* (FDD), *s
 
 ### FDD
 
-After building the FDD, you can copy the `hello-netcoreapp_netcoreapp1.1.zip` / `hello-netcoreapp_netcoreapp1.1.tar.gz` to wherever you want to run the app, extract the archive and run `dotnet hello-netcoreapp.dll`.
+After building the FDD, you can copy the archive (`hello-netcoreapp_netcoreapp1.1.zip` or `hello-netcoreapp_netcoreapp1.1.tar.gz`) to wherever you want to run the app, extract the archive and run `dotnet hello-netcoreapp.dll`.
+
+### SCD
+
+After building the SCD, you can copy the archive (`hello-netcoreapp_ubuntu.16.04-x64.zip`) to wherever you want to run the app (only the operating system has to match), extract the archive and run, depending on the OS:
+
+- On Windows: `output\hello-netcoreapp_win10-x64\hello-netcoreapp.exe`
+- On Ubuntu: `output/hello-netcoreapp_ubuntu.16.04-x64/hello-netcoreapp`
+- etc.
+
+#### Simplify execution
+
+The app is portable, so you can move the directory wherever you want on your system, for example `C:\Users\Philipp\MyPortableApps\hello-netcoreapp` on Windows, or `/home/users/philipp/myPortableApps/hello-netcoreapp` on Linux. Then you should add the executable file to your PATH, or create a link to the executable in `/usr/bin` (on Linux), or create an alias in your `.bash_rc` (on Linux), so you don't have to enter the full path of the executable when you want to run the app.
+
+Then you can run the following command on any system (even Windows):  
+`hello-netcoreapp`
 
 ### Docker container
 
@@ -64,9 +88,11 @@ This works on Linux with the image for the Linux container, and on Windows with 
 TODO
 ----
 
-- Add SCD scripts
-- Add SCD README section
-- Add Dockerfile for image using SCD
-- Add Dockerfile for image using SCD README section
+- Add SCD scripts for Linux
+- Add SCD scripts for building via Docker container
+- Create automated build on Docker Hub
 - Add AppVeyor build file
 - Add versioning
+- Make SCD with smaller footprint, see [here](https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/deploy-with-cli#small-footprint-self-contained-deployment) (but only if targeting netstandard doesn't have drawbacks versus targeting netcoreapp)
+- Add Dockerfile for image using SCD
+- Move Dockerfiles to `/docker` directory, change scripts, Dockerfiles and README accordingly
