@@ -59,7 +59,10 @@ You can create an FDD or SCD with *either* the .NET Core SDK *or* Docker install
     - Note: You should run those scripts from the publish directory, so you might need to `cd` into it first
 2. In the root directory of the repository, depending on which container host system you want to target:
     - For Linux containers, run: `docker build -t my/hello-netcoreapp .`
+        - You can do this on both Linux and Windows
     - For Windows containers, run: `docker build -t my/hello-netcoreapp -f Dockerfile.nano .`
+        - Note 1: This is not needed for running a Linux container on Windows, which works just fine with Hyper-V. This is specifically for *Windows containers*.
+        - Note 2: You can't build Windows containers in Linux.
 
 Run
 ---
@@ -108,10 +111,13 @@ This works on Linux with the image for the Linux container, and on Windows with 
 TODO
 ----
 
-- Create automated build on Docker Hub
 - Add AppVeyor build file
+- Create automated build on Docker Hub
+    - Probably only possible with .NET Core SDK image, because otherwise there's no published app for the FDD image?
 - Add scripts for building via Windows Docker containers (might not be possible because of the use of .NET framework classes, which might not be available in *nanoserver*)
-- Add versioning
 - Make SCD with smaller footprint, see [here](https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/deploy-with-cli#small-footprint-self-contained-deployment) (but only if targeting netstandard doesn't have drawbacks versus targeting netcoreapp)
 - Add Dockerfile for image using SCD
-- Move Dockerfiles to `/docker` directory, change scripts, Dockerfiles and README accordingly
+- Add versioning
+- Maybe move Dockerfiles (and change them accordingly)
+    - Note: You can't `COPY ../something`, because it leads to the error *Forbidden path outside the build context*.
+    - Maybe move to `/src`, and also change all publish scripts to output to `/src/published` instead of `/publish/output` (because the Dockerfile requires the published app).
