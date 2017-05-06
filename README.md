@@ -33,18 +33,18 @@ You can create an FDD or SCD with *either* the .NET Core SDK *or* Docker install
 
 ### FDD
 
-- Run `publish-fdd.ps1` if you're using Windows and you have the .NET Core SDK installed.
+- If you're using Windows and you have the .NET Core SDK installed, run: `publish-fdd.ps1`
     - It will create the archive `hello-netcoreapp_netcoreapp1.1.zip`.
-- Run `publish-fdd.sh` if you're using Linux and you have the .NET Core SDK installed.
+- If you're using Linux and you have the .NET Core SDK installed, run: `publish-fdd.sh`
     - It will create the archive `hello-netcoreapp_netcoreapp1.1.tar.gz`.
-- Run `publish-fdd-docker.ps1` if you're using Windows and you have Docker installed.
+- If you're using Windows and you have Docker installed and configured to use Linux containers, run: `publish-fdd-docker.ps1`
     - It will create the archive `hello-netcoreapp_netcoreapp1.1.tar.gz`.
-- Run `publish-fdd-docker.sh` if you're using Linux and you have Docker installed.
+- If you're using Linux and you have Docker installed, run: `publish-fdd-docker.sh`
     - It will create the archive `hello-netcoreapp_netcoreapp1.1.tar.gz`.
 
 ### SCD
 
-- Run `publish-scd.ps1` if you're using Windows and you have the .NET Core SDK installed.
+- If you're using Windows and you have the .NET Core SDK installed, run: `publish-scd.ps1`
     - It will create archives for each runtime identifier specified in the csproj file, for example `hello-netcoreapp_ubuntu.16.04-x64.zip`
 
 ### Docker image
@@ -76,8 +76,7 @@ After building the SCD, you can copy the archive (`hello-netcoreapp_ubuntu.16.04
 
 The app is portable, so you can move the directory wherever you want on your system, for example `C:\Users\Philipp\MyPortableApps\hello-netcoreapp` on Windows, or `/home/users/philipp/myPortableApps/hello-netcoreapp` on Linux. Then you should add the executable file to your PATH, or create a link to the executable in `/usr/bin` (on Linux), or create an alias in your `.bash_rc` (on Linux), so you don't have to enter the full path of the executable when you want to run the app.
 
-Then you can run the following command on any system (even Windows):  
-`hello-netcoreapp`
+Then you can run the following command on any system (even Windows) and from any directory: `hello-netcoreapp`
 
 ### Docker container
 
