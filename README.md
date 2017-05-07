@@ -9,9 +9,11 @@ The basic app was created using `dotnet new console` with the .NET Core SDK 1.1 
 
 Terminology:
 
-- FDD: The app relies on an installed version of *.NET Core*. But it's completely portable to all systems running .NET Core.
-- SCD: The app is completely self-contained. .NET Core runtime files are delivered with the executable, making this package bigger than an FDD. It's independent of a .NET Core installation, but not portable, so multiple SCDs must be created and each one only runs on a single operating systems. For a list of supported systems, see [https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog](https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog).
-- Docker image: The app can be run as Docker container (Linux and Windows), which is based on the official [Microsoft/dotnet Docker image](https://hub.docker.com/r/microsoft/dotnet/), using the image for FDDs that they recommended for use in production.
+- FDD: The app relies on an installed version of the *.NET Core* runtime. But it's completely portable to all operating systems where the runtime is installed.
+- SCD: The app is completely self-contained. .NET Core runtime files are delivered with the executable, making this package slightly bigger than an FDD. It's independent of an installed .NET Core runtime, but not portable, so multiple SCDs must be created and each one only runs on a single operating system. For a list of supported OSs, see [https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog](https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog).
+- Docker image: The app can be run as Docker container (Linux and Windows), which is based on the official [Microsoft/dotnet Docker image](https://hub.docker.com/r/microsoft/dotnet/), using the image for FDDs that Microsoft recommends for use in production.
+
+For more info about FDD and SCD see: [https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/](https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/)
 
 Directory structure
 -------------------
@@ -28,8 +30,6 @@ Build
 -----
 
 You can create a *framework-dependent deployment* (FDD), *self-contained deployment* (SCD) or *Docker image*.
-
-For more info about FDD and SCD see: [https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/](https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/)
 
 You can create an FDD or SCD with *either* the .NET Core SDK *or* Docker installed. For building the Docker image you need to have Docker installed.
 
@@ -55,17 +55,16 @@ You can create an FDD or SCD with *either* the .NET Core SDK *or* Docker install
 - If you're using Linux and you have Docker installed, run: `publish-scd-docker.sh`
     - It will create archives for each runtime identifier specified in the csproj file, for example `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
 
-Additionally to the default SCD, you can also create a "small footprint SCD", which targets netstandard1.6 instead of netcoreapp1.1, making the published files smaller. This requires a change in the csproj file though and makes it incompatible with FDD. Also, the size gain is not very big:
+Additionally to the default SCD, you can also create a "small footprint SCD", which targets `netstandard1.6` instead of `netcoreapp1.1`, making the published files smaller. This requires a change in the csproj file though and makes it incompatible with FDD. Also, the size gain is not very big:
 
-- With netcoreapp1.1: 45-55 MB published directory, 20 MB archive
-- With netstandard1.6: 30-40 MB published directory, 13-15 MB archive
+- With `netcoreapp1.1`: 45-55 MB published directory, 20 MB archive
+- With `netstandard1.6`: 30-40 MB published directory, 13-15 MB archive
 
 This is for a simple "Hello World" app. For a bigger app with third-party dependencies the size difference is even smaller.
 
 ### Docker image
 
-1. First run any of the FDD publish scripts, so that there's `/publish/output/hello-netcoreapp_netcoreapp1.1`
-    - Note: You should run those scripts from the publish directory, so you might need to `cd` into it first
+1. First run any of the FDD publish scripts, so that there's `publish/output/hello-netcoreapp_netcoreapp1.1`
 2. In the root directory of the repository, depending on which container host system you want to target:
     - For Linux containers, run: `docker build -t my/hello-netcoreapp .`
         - You can do this on both Linux and Windows
@@ -80,34 +79,17 @@ You can run the console app either as *framework-dependent deployment* (FDD), *s
 
 ### FDD
 
-After building the FDD, you can copy the archive (`hello-netcoreapp_netcoreapp1.1.zip` or `hello-netcoreapp_netcoreapp1.1.tar.gz`) to wherever you want to run the app, extract the archive and run `dotnet hello-netcoreapp.dll`.
+As mentioned before, you need to have the .NET Core runtime installed for running the FDD.
+
+After building the FDD, you can copy the archive (`hello-netcoreapp_netcoreapp1.1.zip` or `hello-netcoreapp_netcoreapp1.1.tar.gz`) to wherever you want to run the app, extract the archive and run:
+
+- `dotnet path/to/hello-netcoreapp.dll`
 
 ### SCD
 
-After building the SCD, you can copy the archive (`hello-netcoreapp_ubuntu.16.04-x64.zip`) to wherever you want to run the app (only the operating system has to match), extract the archive and run, depending on the OS:
+After building the SCD, you can copy the archive (for example `hello-netcoreapp_ubuntu.16.04-x64.zip` or `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`) to wherever you want to run the app (only the OS has to match), extract the archive and run:
 
-- On Windows 10 x64: `output\hello-netcoreapp_win10-x64\hello-netcoreapp.exe`
-- On Ubuntu 16.04 x64: `output/hello-netcoreapp_ubuntu.16.04-x64/hello-netcoreapp`
-- etc.
-
-#### Simplify execution
-
-The app is portable, so you can move the directory wherever you want on your system, for example `$env:USERPROFILE\MyPortableApps\hello-netcoreapp` on Windows, or `$HOME/myPortableApps/hello-netcoreapp` on Linux. Then you should do one of the following, so you don't have to enter the full path of the executable when you want to run the app:
-
-- On Windows: Create an alias for the app for PowerShell:
-    1. Edit the file returned by `$PROFILE.CurrentUserAllHosts`
-    1. Add: `Set-Alias hello-netcoreapp $env:USERPROFILE\MyPortableApps\hello-netcoreapp\hello-netcoreapp.exe`
-    1. Source your Profile so that the alias becomes available immediately: `. $PROFILE.CurrentUserAllHosts`
-- On Linux:
-    - Either create an alias for the app for Bash:
-        1. Edit `~/.bashrc`
-        1. Add: `alias hello-netcoreapp='$HOME/myPortableApps/hello-netcoreapp/hello-netcoreapp'`
-        1. Source your bashrc so that the alias becomes available immediately: `source ~/.bashrc`
-    - Or create a link in a directory that's already in the PATH: `ln -s $HOME/myPortableApps/hello-netcoreapp/hello-netcoreapp /usr/local/bin/hello-netcoreapp`
-
-Now you can run the following command on any system (even Windows) and from any directory: `hello-netcoreapp`
-
-Note: You shouldn't add the directory to the PATH, because the directory contains many files and you don't want tab auto-completion for files like `hello-netcoreapp.deps.json`.
+- `path/to/hello-netcoreapp`
 
 ### Docker container
 
@@ -115,7 +97,37 @@ After building the image, it's available in the local image cache.
 
 Run: `docker run --rm my/hello-netcoreapp`
 
-This works on Linux with the image for the Linux container, and on Windows with both, the image for the Linux container as well as the image for the Windows container. On Windows you can configure which kind of containers you want to run.
+Note: This works on Linux with the image for the Linux container, and on Windows with both, the image for the Linux container as well as the image for the Windows container. On Windows you can configure which kind of containers you want to run.
+
+Simplify running the app
+------------------------
+
+The app is portable, meaning the FDD or SCD can reside anywhere on your system (for example in `$env:USERPROFILE\MyPortableApps\hello-netcoreapp` on Windows or `$HOME/myPortableApps/hello-netcoreapp` on Linux), and Docker containers can be run anywhere anyway.
+
+Now you should do the following, so you don't have to enter the full path of the executable (for FDD / SCD) or full docker command when you want to run the app:
+
+- On Windows: Create a function (like an alias, but supports passing arguments) for the app for PowerShell:
+    1. Edit the file returned by `$PROFILE.CurrentUserAllHosts` and add:
+        - For FDD: `function hello-netcoreapp { dotnet $env:USERPROFILE\MyPortableApps\hello-netcoreapp\hello-netcoreapp.dll $args }`
+        - For SCD: `function hello-netcoreapp { $env:USERPROFILE\MyPortableApps\hello-netcoreapp\hello-netcoreapp.exe $args }`
+        - For Docker: `function hello-netcoreapp { docker run --rm my/hello-netcoreapp $args }`
+    1. Source your Profile so that the alias becomes available immediately: `. $PROFILE.CurrentUserAllHosts`
+- On Linux: Create a function (like an alias, but supports passing arguments) for the app for Bash:
+        1. Edit `~/.bashrc` and add:
+        - For FDD: `function hello-netcoreapp() { dotnet $HOME/myPortableApps/hello-netcoreapp/hello-netcoreapp.dll $@; }`
+        - For SCD: `function hello-netcoreapp() { $HOME/myPortableApps/hello-netcoreapp/hello-netcoreapp $@; }`
+        - For Docker: `function hello-netcoreapp() { docker run --rm my/hello-netcoreapp $@; }`
+        1. Source your bashrc so that the alias becomes available immediately: `source ~/.bashrc`
+- Linux alternative for SCD: Create a symbolic link in a directory that's already in the PATH:
+    - `ln -s $HOME/myPortableApps/hello-netcoreapp/hello-netcoreapp /usr/local/bin/hello-netcoreapp`
+
+Now you can run the following command on any OS and from any directory (and also pass arguments):
+
+- `hello-netcoreapp`
+
+Note: You shouldn't add the directory to the PATH, because the directory contains many files and you don't want tab auto-completion for files like `hello-netcoreapp.deps.json`.
+
+---
 
 TODO
 ----
