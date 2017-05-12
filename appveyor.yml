@@ -1,0 +1,7 @@
+version: 1.0.0.{build}
+clone_depth: 1
+build_script:
+- ps: scripts\build.ps1
+test: off
+artifacts:
+- path: artifacts\*.zip

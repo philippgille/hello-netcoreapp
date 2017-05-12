@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp)
+
 hello-netcoreapp
 ================
 
@@ -9,9 +11,9 @@ The basic app was created using `dotnet new console` with the .NET Core SDK 1.1 
 
 Terminology:
 
-- FDD: The app relies on an installed version of the *.NET Core* runtime. But it's completely portable to all operating systems where the runtime is installed.
-- SCD: The app is completely self-contained. .NET Core runtime files are delivered with the executable, making this package slightly bigger than an FDD. It's independent of an installed .NET Core runtime, but not portable, so multiple SCDs must be created and each one only runs on a single operating system. For a list of supported OSs, see [https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog](https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog).
-- Docker image: The app can be run as Docker container (Linux and Windows), which is based on the official [Microsoft/dotnet Docker image](https://hub.docker.com/r/microsoft/dotnet/), using the image for FDDs that Microsoft recommends for use in production.
+- *FDD*: The app relies on an installed version of the *.NET Core* runtime. But it's completely portable to all operating systems where the runtime is installed.
+- *SCD*: The app is completely *self-contained*. .NET Core runtime files are delivered with the executable, making this package slightly bigger than an FDD. It's independent of an installed .NET Core runtime, but not portable, so multiple SCDs must be created and each one only runs on a single operating system. For a list of supported OSs, see [https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog](https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog).
+- *Docker image*: The app can be run as Docker container (Linux and Windows), which is based on the official [Microsoft/dotnet Docker image](https://hub.docker.com/r/microsoft/dotnet/), using the image for FDDs that Microsoft recommends for use in production.
 
 For more info about FDD and SCD see: [https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/](https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/)
 
@@ -26,6 +28,7 @@ Directory structure
     - `.vscode/`: Contains files for debugging the app in Visual Studio Code
         - Used in case you open the src directory of the repository as workspace in Visual Studio Code
 - `scripts/`: Contains scripts for building the app and creating release artifacts
+- `appveyor.yml`: Configuration file for AppVeyor (Continuous Integration and Deployment cloud service)
 - `Dockerfile`: The Dockerfile for building a Docker image for Linux containers with the app
 - `Dockerfile.nano`: The Dockerfile for building a Docker image for Windows containers with the app
 
@@ -144,6 +147,6 @@ TODO
 
 ### Other
 
-- Add Travis-CI build file
-- Add AppVeyor build file
+- Fix line break issues when running build script on Windows in Git Bash
+- Add Travis CI build file
 - Add versioning
