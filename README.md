@@ -113,11 +113,11 @@ Now you should do the following, so you don't have to enter the full path of the
         - For Docker: `function hello-netcoreapp { docker run --rm my/hello-netcoreapp $args }`
     1. Source your Profile so that the alias becomes available immediately: `. $PROFILE.CurrentUserAllHosts`
 - On Linux: Create a function (like an alias, but supports passing arguments) for the app for Bash:
-        1. Edit `~/.bashrc` and add:
+    1. Edit `~/.bashrc` and add:
         - For FDD: `function hello-netcoreapp() { dotnet $HOME/myPortableApps/hello-netcoreapp/hello-netcoreapp.dll $@; }`
         - For SCD: `function hello-netcoreapp() { $HOME/myPortableApps/hello-netcoreapp/hello-netcoreapp $@; }`
         - For Docker: `function hello-netcoreapp() { docker run --rm my/hello-netcoreapp $@; }`
-        1. Source your bashrc so that the alias becomes available immediately: `source ~/.bashrc`
+    1. Source your bashrc so that the alias becomes available immediately: `source ~/.bashrc`
 - Linux alternative for SCD: Create a symbolic link in a directory that's already in the PATH:
     - `ln -s $HOME/myPortableApps/hello-netcoreapp/hello-netcoreapp /usr/local/bin/hello-netcoreapp`
 
