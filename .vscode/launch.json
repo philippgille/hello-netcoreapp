@@ -23,6 +23,14 @@
             "type": "coreclr",
             "request": "attach",
             "processId": "${command:pickProcess}"
+        },
+        {
+            "type": "PowerShell",
+            "request": "launch",
+            "name": "PowerShell Launch (current file)",
+            "script": "${file}",
+            "args": [],
+            "cwd": "${file}"
         }
     ]
 }
