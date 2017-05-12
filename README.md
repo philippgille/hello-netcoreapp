@@ -1,7 +1,7 @@
 hello-netcoreapp
 ================
 
-hello-netcoreapp is a basic *.NET Core* application with additional scripts and files for building and publishing the app as *framework-dependent deployment* (FDD), *self-contained deployment* (SCD) or *Docker image*.
+hello-netcoreapp is a basic *.NET Core* application with additional scripts and files for building the app and creating release artifacts for a *framework-dependent deployment* (FDD), *self-contained deployment* (SCD) and *Docker image*.
 
 You can fork this repository and use the files as a starting point for your .NET Core app.
 
@@ -18,42 +18,39 @@ For more info about FDD and SCD see: [https://docs.microsoft.com/en-us/dotnet/ar
 Directory structure
 -------------------
 
-- /.vscode: Contains files for debugging in Visual Studio Code. Used in case you open the root directory of the repository as workspace in Visual Studio Code
-- /src: Contains the application source code, basically just a main class (`Program.cs`) and project file (`hello-netcoreapp.csproj`)
-    - .vscode: Contains files for debugging in Visual Studio Code. Used in case you open the /src directory of the repository as workspace in Visual Studio Code
-- /publish: Contains scripts for building and publishing the app
-    - output: When running one of the publish scripts, this directory will contain the resulting files, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
-- Dockerfile: The Dockerfile for building a Docker image for Linux containers with the app
-- Dockerfile.nano: The Dockerfile for building a Docker image for Windows containers with the app
+- `.vscode/`: Contains files for debugging the app and the PowerShell scripts in Visual Studio Code
+    - Used in case you open the root directory of the repository as workspace in Visual Studio Code
+- `artifacts/`: Not contained in the git repository, but gets created when one of the build scripts is run
+    - After a build script is run it contains the resulting release artifacts, such as `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
+- `src/`: Contains the application source code, basically just a main class (`Program.cs`) and project file (`hello-netcoreapp.csproj`)
+    - `.vscode/`: Contains files for debugging the app in Visual Studio Code
+        - Used in case you open the src directory of the repository as workspace in Visual Studio Code
+- `scripts/`: Contains scripts for building the app and creating release artifacts
+- `Dockerfile`: The Dockerfile for building a Docker image for Linux containers with the app
+- `Dockerfile.nano`: The Dockerfile for building a Docker image for Windows containers with the app
 
 Build
 -----
 
-You can create a *framework-dependent deployment* (FDD), *self-contained deployment* (SCD) or *Docker image*.
+You can create a *framework-dependent deployment* (FDD), *self-contained deployment* (SCD) and *Docker image*.
 
-You can create an FDD or SCD with *either* the .NET Core SDK *or* Docker installed. For building the Docker image you need to have Docker installed.
+- For building an FDD and SCD you need to have *either* the .NET Core SDK *or* Docker installed
+- For building the Docker image you need to have Docker installed
 
-### FDD
+### FDD + SCD
 
-- If you're using Windows and you have the .NET Core SDK installed, run: `publish-fdd.ps1`
-    - It will create the archive `hello-netcoreapp_netcoreapp1.1.zip`.
-- If you're using Linux and you have the .NET Core SDK installed, run: `publish-fdd.sh`
-    - It will create the archive `hello-netcoreapp_netcoreapp1.1.tar.gz`.
-- If you're using Windows and you have Docker installed and configured to use Linux containers, run: `publish-fdd-docker.ps1`
-    - It will create the archive `hello-netcoreapp_netcoreapp1.1.tar.gz`.
-- If you're using Linux and you have Docker installed, run: `publish-fdd-docker.sh`
-    - It will create the archive `hello-netcoreapp_netcoreapp1.1.tar.gz`.
-
-### SCD
-
-- If you're using Windows and you have the .NET Core SDK installed, run: `publish-scd.ps1`
-    - It will create archives for each runtime identifier specified in the csproj file, for example `hello-netcoreapp_ubuntu.16.04-x64.zip`
-- If you're using Linux and you have the .NET Core SDK installed, run: `publish-scd.sh`
-    - It will create archives for each runtime identifier specified in the csproj file, for example `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
-- If you're using Windows and you have Docker installed and configured to use Linux containers, run: `publish-scd-docker.ps1`
-    - It will create archives for each runtime identifier specified in the csproj file, for example `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
-- If you're using Linux and you have Docker installed, run: `publish-scd-docker.sh`
-    - It will create archives for each runtime identifier specified in the csproj file, for example `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
+- If you're using Windows and you have the .NET Core SDK installed, run: `build.ps1`
+    - It will create the archive for the FDD: `hello-netcoreapp_netcoreapp1.1.zip`
+    - It will create archives for every runtime identifier specified in the csproj file, for example: `hello-netcoreapp_ubuntu.16.04-x64.zip`
+- If you're using Windows and you have Docker installed and configured to use Linux containers, run: `build-with-docker.ps1`
+    - It will create the archive for the FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`.
+    - It will create archives for every runtime identifier specified in the csproj file, for example: `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
+- If you're using Linux and you have the .NET Core SDK installed, run: `build.sh`
+    - It will create the archive for the FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`
+    - It will create archives for every runtime identifier specified in the csproj file, for example: `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
+- If you're using Linux and you have Docker installed, run: `build-with-docker.sh`
+    - It will create the archive for the FDD `hello-netcoreapp_netcoreapp1.1.tar.gz`
+    - It will create archives for every runtime identifier specified in the csproj file, for example: `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
 
 Additionally to the default SCD, you can also create a "small footprint SCD", which targets `netstandard1.6` instead of `netcoreapp1.1`, making the published files smaller. This requires a change in the csproj file though and makes it incompatible with FDD. Also, the size gain is not very big:
 
@@ -64,7 +61,7 @@ This is for a simple "Hello World" app. For a bigger app with third-party depend
 
 ### Docker image
 
-1. First run any of the FDD publish scripts, so that there's `publish/output/hello-netcoreapp_netcoreapp1.1`
+1. First run any of the build scripts, so that there's `artifacts/hello-netcoreapp_netcoreapp1.1`
 2. In the root directory of the repository, depending on which container host system you want to target:
     - For Linux containers, run: `docker build -t my/hello-netcoreapp .`
         - You can do this on both Linux and Windows
@@ -97,7 +94,7 @@ After building the image, it's available in the local image cache.
 
 Run: `docker run --rm my/hello-netcoreapp`
 
-Note: This works on Linux with the image for the Linux container, and on Windows with both, the image for the Linux container as well as the image for the Windows container. On Windows you can configure which kind of containers you want to run.
+Note: This works on Linux with the image for the Linux container, and on Windows with both the image for the Linux container as well as the image for the Windows container. On Windows you can configure which kind of containers you want to run.
 
 Simplify running the app
 ------------------------
@@ -132,13 +129,21 @@ Note: You shouldn't add the directory to the PATH, because the directory contain
 TODO
 ----
 
-- Add AppVeyor build file
+### Docker
+
 - Create automated build on Docker Hub
     - Probably only possible with .NET Core SDK image, because otherwise there's no published app for the FDD image?
-- Add scripts for building via Windows Docker containers (might not be possible because of the use of .NET framework classes, which might not be available in *nanoserver*)
-- Make SCD with smaller footprint, see [here](https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/deploy-with-cli#small-footprint-self-contained-deployment) (but only if targeting netstandard doesn't have drawbacks versus targeting netcoreapp)
+- Add scripts for building via Windows Docker containers
+    - Might not be possible because of the use of .NET framework classes, which might not be available in *nanoserver*
 - Add Dockerfile for image using SCD
-- Add versioning
 - Maybe move Dockerfiles (and change them accordingly)
-    - Note: You can't `COPY ../something`, because it leads to the error *Forbidden path outside the build context*.
-    - Maybe move to `/src`, and also change all publish scripts to output to `/src/published` instead of `/publish/output` (because the Dockerfile requires the published app).
+    - Note: You can't `COPY ../something`, because it leads to the error "*Forbidden path outside the build context*".
+    - Maybe move to `src/`, and also change all publish scripts to output to `src/artifacts/` instead of `artifacts/` (because the Dockerfile requires the published app)
+    - Or probably better: When running `docker build`, the build context gets passed, which could be `artifacts/`, then from within the Dockerfile that's `.`
+        - Nope - "*unable to prepare context: The Dockerfile must be within the build context*"
+
+### Other
+
+- Add Travis-CI build file
+- Add AppVeyor build file
+- Add versioning
