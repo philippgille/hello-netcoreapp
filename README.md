@@ -77,7 +77,9 @@ Run: `docker run --rm my/hello-netcoreapp`
 First you need to install the package:
 
 - The simplest way to install it is via the MyGet feed, which also allows you to easily update the app later:
-    - `choco install hello-netcoreapp.portable --source https://www.myget.org/F/hello-netcoreapp/`
+    - `choco install hello-netcoreapp.portable --source https://www.myget.org/F/hello-netcoreapp`
+- AppVeyor also automatically publishes all `*.nupkg` artifacts to a project's NuGet feed, so this works as well:
+    - `choco install hello-netcoreapp.portable --source https://ci.appveyor.com/nuget/hello-netcoreapp`
 - Alternatively install the downloaded or locally built package:
     - `choco install path\to\hello-netcoreapp.portable.1.0.0.nupkg`
 - Alternatively you can also install via the package specification file in this repository:
