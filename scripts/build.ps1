@@ -83,7 +83,7 @@ foreach ($rId in $rIds) {
 
 # Build Chocolatey package if a win10-x64 SCD was built
 
-If (Get-Command "choco" -ErrorAction SilentlyContinue -and Test-Path "$artifactsDir\${appName}_win10-x64\${appName}.exe") {
+If ((Get-Command "choco" -ErrorAction SilentlyContinue) -and (Test-Path "$artifactsDir\${appName}_win10-x64\${appName}.exe")) {
     mkdir "$PSScriptRoot\..\chocolatey\tools" -Force
     Remove-Item -Force "$artifactsDir\${appName}.*.nupkg"
     Remove-Item -Force -Recurse "$PSScriptRoot\..\chocolatey\tools\*"
