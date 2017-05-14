@@ -84,9 +84,9 @@ foreach ($rId in $rIds) {
 # Build Chocolatey package if a win10-x64 SCD was built
 
 If (Test-Path "$artifactsDir\${appName}_win10-x64\${appName}.exe") {
+    mkdir "$PSScriptRoot\..\chocolatey\tools" -Force
     Remove-Item -Force "$artifactsDir\${appName}.*.nupkg"
     Remove-Item -Force -Recurse "$PSScriptRoot\..\chocolatey\tools\*"
-    mkdir "$PSScriptRoot\..\chocolatey\tools" -Force
     Copy-Item "$artifactsDir\${appName}_win10-x64" "$PSScriptRoot\..\chocolatey\tools" -Recurse
     choco pack "$PSScriptRoot\..\chocolatey\hello-netcoreapp.nuspec" -out $artifactsDir
 }
