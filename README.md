@@ -6,7 +6,7 @@ develop | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj
 hello-netcoreapp
 ================
 
-hello-netcoreapp is a basic *.NET Core* application that prints "Hello World!". This repository contains additional scripts and files for building the app and creating release artifacts for a *framework-dependent deployment* (FDD), *self-contained deployment* (SCD), *Docker image* and *Chocolatey package*.
+hello-netcoreapp is a basic *.NET Core* console application that prints "Hello World!". This repository contains additional scripts and files for building the app and creating release artifacts for a *framework-dependent deployment* (FDD), *self-contained deployment* (SCD), *Docker image* and *Chocolatey package*.
 
 You can fork this repository and use the files as a starting point for your .NET Core app.
 
@@ -211,6 +211,7 @@ TODO
 
 - Add Travis CI build file
 - Add versioning
+- Add building Chocolatey package in `build.sh` as well (which would make it working in the `build-with-docker.*` scripts as well)
 - Fix installing Chocolatey package via OneGet doesn't lead to the app being available on the PATH
     - See [this Chocolatey OneGet GitHub issue comment](https://github.com/chocolatey/chocolatey-oneget/issues/2#issuecomment-301299133)
 - Add building Chocolatey packages for other OSs than win10-x64 *if necessary*
