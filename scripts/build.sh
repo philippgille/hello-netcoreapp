@@ -15,11 +15,13 @@ set -eux
 #
 # Params: PUBLISHTYPE, FRAMEWORKORRUNTIME
 #
-# Example 1: build "FDD", "netcoreapp1.1"
-# Example 2: build "SCD", "win10-64"
+# Example 1: build "FDD", "netcoreapp1.1" $ARTIFACTSDIR $SOURCEDIR
+# Example 2: build "SCD", "win10-64" $ARTIFACTSDIR $SOURCEDIR
 function build() {
     PUBLISHTYPE=$1
     FRAMEWORKORRUNTIME=$2
+    ARTIFACTSDIR=$3
+    SOURCEDIR=$4
 
     # Set variables depending on publish type
     if [[ "$PUBLISHTYPE" == "FDD" ]]; then
@@ -36,17 +38,17 @@ function build() {
     fi
 
     PUBLISHNAME="${APPNAME}_$FRAMEWORKORRUNTIME"
-    PUBLISHDIR="$SCRIPTDIR/../artifacts/$PUBLISHNAME"
+    PUBLISHDIR="$ARTIFACTSDIR/$PUBLISHNAME"
 
     # Clean and create directories
     rm -r -f "$PUBLISHDIR"
     mkdir -p "$PUBLISHDIR"
 
     # Restore NuGet packages
-    dotnet restore $SCRIPTDIR/../src $RESTORESWITCH $RESTORERID
+    dotnet restore $SOURCEDIR $RESTORESWITCH $RESTORERID
 
     # "dotnet publish" without "-o" option publishes to different directories on Windows vs. .NET Core SDK Docker container.
-    dotnet publish $SCRIPTDIR/../src $PUBLISHSWITCH $FRAMEWORKORRUNTIME -c release -o "$PUBLISHDIR"
+    dotnet publish $SOURCEDIR $PUBLISHSWITCH $FRAMEWORKORRUNTIME -c release -o "$PUBLISHDIR"
 
     # Create an archive with all FDD / SCD files for publishing.
     # tar includes the full path when doing `tar -czf $DESTINATION $SOURCE`
@@ -54,7 +56,7 @@ function build() {
     # So work around that.
     #TODO: Find and use a way to just archive the files without any path or "."
     DESTINATION="$PUBLISHDIR.tar.gz"
-    tar -czf $DESTINATION -C $SCRIPTDIR/../artifacts $PUBLISHNAME
+    tar -czf $DESTINATION -C $ARTIFACTSDIR $PUBLISHNAME
 }
 
 # Reads the runtime identifiers from the csproj file
@@ -72,16 +74,18 @@ function readRuntimeIdentifiersFromCsproj() {
 }
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+$ARTIFACTSDIR="$SCRIPTDIR/../artifacts"
+$SOURCEDIR="$SCRIPTDIR/../src"
 
 # Build FDD
 
-build "FDD" "netcoreapp1.1"
+build "FDD" "netcoreapp1.1" $ARTIFACTSDIR $SOURCEDIR
 
 # Build SCD
 
 # Publish the SCD for each runtime identifier
-RIDS=readRuntimeIdentifiersFromCsproj "$SCRIPTDIR/../src/hello-netcoreapp.csproj"
+RIDS=readRuntimeIdentifiersFromCsproj "$SOURCEDIR/$APPNAME.csproj"
 for RID in ${RIDS[@]}
 do
-    build "SCD" $RID
+    build "SCD" $RID $ARTIFACTSDIR $SOURCEDIR
 done

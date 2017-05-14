@@ -1,7 +1,7 @@
 # Builds the project and creates release artifacts for SCD (self-contained deployment) and FDD (framework-dependent deployment).
 # Uses an installed version of the .NET Core SDK, which should be version 1.1.
 
-$appname = "hello-netcoreapp"
+$appName = "hello-netcoreapp"
 
 # Don't change anything below this line ########################################
 
@@ -9,11 +9,11 @@ $ErrorActionPreference = "Stop"
 
 # Builds the project and creates release artifacts
 #
-# Example 1: New-Build "FDD" "netcoreapp1.1"
-# Example 2: New-Build "SCD" "win10-64"
+# Example 1: New-Build "FDD" "netcoreapp1.1" $artifactsDir $sourceDir
+# Example 2: New-Build "SCD" "win10-64" $artifactsDir $sourceDir
 function New-Build
 {
-    Param ($publishType, $frameworkOrRuntime)
+    Param ($publishType, $frameworkOrRuntime, $artifactsDir, $sourceDir)
 
     # Set variables depending on publish type
     if ($publishType -eq "FDD") {
@@ -29,25 +29,25 @@ function New-Build
         Exit 1
     }
 
-    $publishName = "${appname}_$frameworkOrRuntime"
-    $publishDir = "$PSScriptRoot\..\artifacts\$publishName"
+    $publishName = "${appName}_$frameworkOrRuntime"
+    $publishDir = "$artifactsDir\$publishName"
 
     # Clean and create directories
     If (Test-Path "$publishDir") {Remove-Item -Recurse -Force "$publishDir"}
     mkdir "$publishDir"
 
     # Restore NuGet packages
-    dotnet restore $PSScriptRoot\..\src $script:restoreSwitch $script:restoreRid
+    dotnet restore $sourceDir $script:restoreSwitch $script:restoreRid
 
     # "dotnet publish" without "-o" option publishes to different directories on Windows vs. .NET Core SDK Docker container.
     # That doesn't matter in this PowerShell script per say, because the publish.sh bash script gets used for that,
     # but if that script needs to adapt to that, let's keep the behavior similar and publish to the same directories.
-    dotnet publish $PSScriptRoot\..\src $script:publishSwitch $frameworkOrRuntime -c release -o "$publishDir"
+    dotnet publish $sourceDir $script:publishSwitch $frameworkOrRuntime -c release -o "$publishDir"
 
     # Create an archive with all FDD / SCD files for publishing.
     # Requires the full .NET framework to be installed, so that the required assembly can be loaded, which is not part of PowerShell.
     $destination = "$publishDir.zip"
-    If (Test-Path $destination) {Remove-Item $destination}
+    If (Test-Path $destination) {Remove-Item -Force $destination}
     Add-Type -Assembly "System.IO.Compression.FileSystem"
     [io.compression.zipfile]::CreateFromDirectory("$publishDir", $destination)
 }
@@ -66,14 +66,17 @@ function Read-RuntimeIdentifiersFromCsproj
     return $rIds
 }
 
+$artifactsDir = "$PSScriptRoot\..\artifacts"
+$sourceDir = "$PSScriptRoot\..\src"
+
 # Build FDD
 
-New-Build "FDD" "netcoreapp1.1"
+New-Build "FDD" "netcoreapp1.1" $artifactsDir $sourceDir
 
 # Build SCD
 
 # Publish the SCD for each runtime identifier
-$rIds = Read-RuntimeIdentifiersFromCsproj "$PSScriptRoot\..\src\hello-netcoreapp.csproj"
+$rIds = Read-RuntimeIdentifiersFromCsproj "$sourceDir\$appName.csproj"
 foreach ($rId in $rIds) {
-    New-Build "SCD" $rId
+    New-Build "SCD" $rId $artifactsDir $sourceDir
 }
