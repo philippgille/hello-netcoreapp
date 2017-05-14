@@ -1,4 +1,6 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp)
+scripts/build.ps1 | scripts/build.sh
+:---------: | :---------:
+[![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp) | TODO
 
 hello-netcoreapp
 ================
@@ -145,8 +147,15 @@ TODO
     - Or probably better: When running `docker build`, the build context gets passed, which could be `artifacts/`, then from within the Dockerfile that's `.`
         - Nope - "*unable to prepare context: The Dockerfile must be within the build context*"
 
+### CI / CD
+
+- Add building Chocolatey package
+- Add deploying to "GitHub releases"
+- Add deploying to MyGet as Chocolatey alternative
+    - (Chocolatey only accepts meaningful packages and the review process can take up to two weeks)
+- Add Travis CI build file
+- Add versioning
+
 ### Other
 
 - Fix line break issues when running build script on Windows in Git Bash
-- Add Travis CI build file
-- Add versioning
