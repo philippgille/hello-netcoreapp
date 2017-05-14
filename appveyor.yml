@@ -11,12 +11,12 @@ artifacts:
 deploy:
 - provider: GitHub
   auth_token:
-    secure: Pr/IscMk66i5SHGCCLZTMkou4PNoH3+E6yj2HwsFdyR7wBNozDwpZws5BRZUgpPVMR12oPNerx5692x6WVnraXH9PJROK4oOpSUOGYr+e9o=
+    secure: BBe0seTIReGdIpFfcaG9lVFLght6VFoOtYpGu9LD+FHqHZ2K4mQ7RlrsT9UySwj0
   on:
     branch: master
 - provider: NuGet
   server: https://www.myget.org/F/hello-netcoreapp/
   api_key:
-    secure: pFtnAlh5glfIoI7Mn9U7ayhClcGFVpp8yauJ/Y3b2F/U4egDUAl51kpQFT12gGr9kTfKzWV9PZ7s8mCT7YliuEvkSvcmu5p/ckNZWD265oQ=
+    secure: NlRYEnLAyldhvBdKdOjEgcYkRVsKgQi0wtwOGmos8f8fz99SdfP5qRMXsfeDEDW6
   on:
     branch: master
