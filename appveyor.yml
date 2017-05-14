@@ -6,6 +6,7 @@ test: off
 artifacts:
 - path: artifacts\*.zip
 - path: artifacts\*.nupkg
+deploy:
 - provider: NuGet
   server: https://www.myget.org/F/hello-netcoreapp/
   api_key:
