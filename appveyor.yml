@@ -9,6 +9,11 @@ artifacts:
 - path: artifacts\*.zip
 - path: artifacts\*.nupkg
 deploy:
+- provider: GitHub
+  auth_token:
+    secure: Pr/IscMk66i5SHGCCLZTMkou4PNoH3+E6yj2HwsFdyR7wBNozDwpZws5BRZUgpPVMR12oPNerx5692x6WVnraXH9PJROK4oOpSUOGYr+e9o=
+  on:
+    branch: master
 - provider: NuGet
   server: https://www.myget.org/F/hello-netcoreapp/
   api_key:
