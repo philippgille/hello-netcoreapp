@@ -44,7 +44,7 @@ Run
 
 You can run the console app either as *FDD*, *SCD*, *Docker container* or *Chocolatey package*.
 
-All artifacts are available for download from "GitHub releases". The Chocolatey package is also available on this app's MyGet feed: [https://www.myget.org/feed/Packages/hello-netcoreapp](https://www.myget.org/feed/Packages/hello-netcoreapp).
+All artifacts are available for download from [this repository's GitHub Releases](https://github.com/philippgille/hello-netcoreapp/releases). The Chocolatey package is also available on [this app's MyGet feed](https://www.myget.org/feed/Packages/hello-netcoreapp).
 
 Alternatively you can build the artifacts on your own (see the *Build* section in this README).
 
@@ -144,9 +144,12 @@ This repository contains `appveyor.yml`, which is a configuration file for the C
 
 It's configured to do the following:
 
-- Run the build script `build.ps1`, which produces `*.zip` archives for FDD and SCD, as well as a Chocolatey package
-- Deploy all artifacts to "GitHub releases"
-- Deploy the Chocolatey package to the app's MyGet feed: [https://www.myget.org/feed/Packages/hello-netcoreapp](https://www.myget.org/feed/Packages/hello-netcoreapp)
+1. Run the build script `build.ps1`, which produces `*.zip` archives for FDD and SCD, as well as a Chocolatey package
+2. If *Git tag* was pushed and the branch is `master`:
+    - Deploy all artifacts to [this repository's GitHub Releases](https://github.com/philippgille/hello-netcoreapp/releases)
+        - > Note: GitHub recommends to prepend a "v" before the actual version number in the release name.
+    
+    - Deploy the Chocolatey package to [this app's MyGet feed](https://www.myget.org/feed/Packages/hello-netcoreapp)
 
 ### Locally
 

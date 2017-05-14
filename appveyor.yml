@@ -10,13 +10,19 @@ artifacts:
 - path: artifacts\*.nupkg
 deploy:
 - provider: GitHub
+  release: hello-netcoreapp v$(appveyor_build_version)
+  description: Automated release from AppVeyor
+  draft: false
+  force_update: false
   auth_token:
     secure: BBe0seTIReGdIpFfcaG9lVFLght6VFoOtYpGu9LD+FHqHZ2K4mQ7RlrsT9UySwj0
   on:
     branch: master
+    appveyor_repo_tag: true
 - provider: NuGet
   server: https://www.myget.org/F/hello-netcoreapp/
   api_key:
     secure: NlRYEnLAyldhvBdKdOjEgcYkRVsKgQi0wtwOGmos8f8fz99SdfP5qRMXsfeDEDW6
   on:
     branch: master
+    appveyor_repo_tag: true
