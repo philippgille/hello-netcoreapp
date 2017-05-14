@@ -1,6 +1,7 @@
-scripts/build.ps1 | scripts/build.sh
-:---------: | :---------:
-[![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp) | TODO
+Branch | scripts/build.ps1 | scripts/build.sh
+-------| :---------------: | :--------------:
+master | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/master?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/master) | TODO
+develop | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/develop?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/develop) | TODO
 
 hello-netcoreapp
 ================
