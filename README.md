@@ -81,7 +81,7 @@ First you need to install the package:
 - AppVeyor also automatically publishes all `*.nupkg` artifacts to a project's NuGet feed, so this works as well:
     - `choco install hello-netcoreapp.portable --source https://ci.appveyor.com/nuget/hello-netcoreapp`
 - Alternatively install the downloaded or locally built package:
-    - `choco install path\to\hello-netcoreapp.portable.1.0.0.nupkg`
+    - `choco install path\to\hello-netcoreapp.portable.0.1.0.nupkg`
 - Alternatively you can also install via the package specification file in this repository:
     1. Either run `build.ps1` or manually place `artifacts\hello-netcoreapp_win10-x64` in `chocolatey\tools`
     2. `choco install chocolatey\hello-netcoreapp.nuspec`
@@ -162,7 +162,7 @@ Depending on your OS and installed software, run the following scripts:
 
 System | Installed | Run | Artifacts
 -------|-----------|-----|----------
-Windows | .NET Core SDK | `build.ps1` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.zip`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.zip`</li><li>Chocolatey package (if installed): `hello-netcoreapp.portable.1.0.0.nupkg`</li></ul>
+Windows | .NET Core SDK | `build.ps1` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.zip`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.zip`</li><li>Chocolatey package (if installed): `hello-netcoreapp.portable.0.1.0.nupkg`</li></ul>
 Windows | Docker | `build-with-docker.ps1` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li></ul>
 Linux | .NET Core SDK | `build.sh` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li></ul>
 Linux | Docker | `build-with-docker.sh` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li></ul>
