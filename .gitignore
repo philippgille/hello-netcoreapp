@@ -433,3 +433,11 @@ __pycache__/
 # End of https://www.gitignore.io/api/csharp,visualstudio,visualstudiocode
 
 ### Custom additions ###
+
+# Chocolatey
+/chocolatey/tools/**
+!/chocolatey/tools/chocolateybeforemodify.ps1
+!/chocolatey/tools/chocolateyinstall.ps1
+!/chocolatey/tools/chocolateyuninstall.ps1
+!/chocolatey/tools/LICENSE.txt
+!/chocolatey/tools/VERIFICATION.txt

@@ -5,7 +5,7 @@ scripts/build.ps1 | scripts/build.sh
 hello-netcoreapp
 ================
 
-hello-netcoreapp is a basic *.NET Core* application with additional scripts and files for building the app and creating release artifacts for a *framework-dependent deployment* (FDD), *self-contained deployment* (SCD) and *Docker image*.
+hello-netcoreapp is a basic *.NET Core* application that prints "Hello World!". This repository contains additional scripts and files for building the app and creating release artifacts for a *framework-dependent deployment* (FDD), *self-contained deployment* (SCD), *Docker image* and *Chocolatey package*.
 
 You can fork this repository and use the files as a starting point for your .NET Core app.
 
@@ -16,6 +16,7 @@ Terminology:
 - *FDD*: The app relies on an installed version of the *.NET Core* runtime. But it's completely portable to all operating systems where the runtime is installed.
 - *SCD*: The app is completely *self-contained*. .NET Core runtime files are delivered with the executable, making this package slightly bigger than an FDD. It's independent of an installed .NET Core runtime, but not portable, so multiple SCDs must be created and each one only runs on a single operating system. For a list of supported OSs, see [https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog](https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog).
 - *Docker image*: The app can be run as Docker container (Linux and Windows), which is based on the official [Microsoft/dotnet Docker image](https://hub.docker.com/r/microsoft/dotnet/), using the image for FDDs that Microsoft recommends for use in production.
+- *Chocolatey package*: Chocolatey is a package manager for Windows, allowing you to install apps with one CLI command. Its package format is very similar to NuGet's. See [https://chocolatey.org/](https://chocolatey.org/) for details.
 
 For more info about FDD and SCD see: [https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/](https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/)
 
@@ -29,80 +30,67 @@ Directory structure
 - `src/`: Contains the application source code, basically just a main class (`Program.cs`) and project file (`hello-netcoreapp.csproj`)
     - `.vscode/`: Contains files for debugging the app in Visual Studio Code
         - Used in case you open the src directory of the repository as workspace in Visual Studio Code
+- `chocolatey/`: Contains files related to the Chocolatey package
+    - The `hello-netcoreapp.nuspec` describes the package, the `README.md` is shown on Chocolatey or MyGet after publishing
 - `scripts/`: Contains scripts for building the app and creating release artifacts
+    - The `*.ps1` scripts are for use in Windows (PowerShell), the `*.sh` scripts are for use in Linux.
 - `appveyor.yml`: Configuration file for AppVeyor (Continuous Integration and Deployment cloud service)
 - `Dockerfile`: The Dockerfile for building a Docker image for Linux containers with the app
 - `Dockerfile.nano`: The Dockerfile for building a Docker image for Windows containers with the app
 
-Build
------
-
-You can create a *framework-dependent deployment* (FDD), *self-contained deployment* (SCD) and *Docker image*.
-
-- For building an FDD and SCD you need to have *either* the .NET Core SDK *or* Docker installed
-- For building the Docker image you need to have Docker installed
-
-### FDD + SCD
-
-- If you're using Windows and you have the .NET Core SDK installed, run: `build.ps1`
-    - It will create the archive for the FDD: `hello-netcoreapp_netcoreapp1.1.zip`
-    - It will create archives for every runtime identifier specified in the csproj file, for example: `hello-netcoreapp_ubuntu.16.04-x64.zip`
-- If you're using Windows and you have Docker installed and configured to use Linux containers, run: `build-with-docker.ps1`
-    - It will create the archive for the FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`.
-    - It will create archives for every runtime identifier specified in the csproj file, for example: `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
-- If you're using Linux and you have the .NET Core SDK installed, run: `build.sh`
-    - It will create the archive for the FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`
-    - It will create archives for every runtime identifier specified in the csproj file, for example: `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
-- If you're using Linux and you have Docker installed, run: `build-with-docker.sh`
-    - It will create the archive for the FDD `hello-netcoreapp_netcoreapp1.1.tar.gz`
-    - It will create archives for every runtime identifier specified in the csproj file, for example: `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
-
-Additionally to the default SCD, you can also create a "small footprint SCD", which targets `netstandard1.6` instead of `netcoreapp1.1`, making the published files smaller. This requires a change in the csproj file though and makes it incompatible with FDD. Also, the size gain is not very big:
-
-- With `netcoreapp1.1`: 45-55 MB published directory, 20 MB archive
-- With `netstandard1.6`: 30-40 MB published directory, 13-15 MB archive
-
-This is for a simple "Hello World" app. For a bigger app with third-party dependencies the size difference is even smaller.
-
-### Docker image
-
-1. First run any of the build scripts, so that there's `artifacts/hello-netcoreapp_netcoreapp1.1`
-2. In the root directory of the repository, depending on which container host system you want to target:
-    - For Linux containers, run: `docker build -t my/hello-netcoreapp .`
-        - You can do this on both Linux and Windows
-    - For Windows containers, run: `docker build -t my/hello-netcoreapp -f Dockerfile.nano .`
-        - Note 1: This is not needed for running a Linux container on Windows, which works just fine with Hyper-V. This is specifically for *Windows containers*.
-        - Note 2: You can't build Windows containers in Linux.
-
 Run
 ---
 
-You can run the console app either as *framework-dependent deployment* (FDD), *self-contained deployment* (SCD) or *Docker container*.
+You can run the console app either as *FDD*, *SCD*, *Docker container* or *Chocolatey package*.
+
+All artifacts are available for download from "GitHub releases". The Chocolatey package is also available on this app's MyGet feed: [https://www.myget.org/feed/Packages/hello-netcoreapp](https://www.myget.org/feed/Packages/hello-netcoreapp).
+
+Alternatively you can build the artifacts on your own (see the *Build* section in this README).
 
 ### FDD
 
 As mentioned before, you need to have the .NET Core runtime installed for running the FDD.
 
-After building the FDD, you can copy the archive (`hello-netcoreapp_netcoreapp1.1.zip` or `hello-netcoreapp_netcoreapp1.1.tar.gz`) to wherever you want to run the app, extract the archive and run:
+You can copy the archive (`hello-netcoreapp_netcoreapp1.1.zip` or `hello-netcoreapp_netcoreapp1.1.tar.gz`) to wherever you want to run the app, extract the archive and run:
 
 - `dotnet path/to/hello-netcoreapp.dll`
 
 ### SCD
 
-After building the SCD, you can copy the archive (for example `hello-netcoreapp_ubuntu.16.04-x64.zip` or `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`) to wherever you want to run the app (only the OS has to match), extract the archive and run:
+You can copy the archive (for example `hello-netcoreapp_ubuntu.16.04-x64.zip` or `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`) to wherever you want to run the app (only the OS has to match), extract the archive and run:
 
 - `path/to/hello-netcoreapp`
 
 ### Docker container
 
-After building the image, it's available in the local image cache.
+Running the app as Docker container currently requires you to build the image locally (see the *Build* section in this README). After building the image, it's available in the local image cache.
 
 Run: `docker run --rm my/hello-netcoreapp`
 
-Note: This works on Linux with the image for the Linux container, and on Windows with both the image for the Linux container as well as the image for the Windows container. On Windows you can configure which kind of containers you want to run.
+> Note: This works on Linux with the image for the Linux container, and on Windows with both the image for the Linux container as well as the image for the Windows container. On Windows you can configure which kind of containers you want to run.
+
+### Chocolatey package
+
+> Note: You can only install and run Chocolatey packages on Windows!
+
+First you need to install the package:
+
+- The simplest way to install it is via the MyGet feed, which also allows you to easily update the app later:
+    - `choco install hello-netcoreapp.portable --source https://www.myget.org/F/hello-netcoreapp/`
+- Alternatively install the downloaded or locally built package:
+    - `choco install path\to\hello-netcoreapp.portable.1.0.0.nupkg`
+- Alternatively you can also install via the package specification file in this repository:
+    1. Either run `build.ps1` or manually place `artifacts\hello-netcoreapp_win10-x64` in `chocolatey\tools`
+    2. `choco install chocolatey\hello-netcoreapp.nuspec`
+
+Then run: `hello-netcoreapp`
+
+> Note: The package is installed in `%ChocolateyInstall%/lib` (e.g. `C:\ProgramData\Chocolatey\lib`)
 
 Simplify running the app
 ------------------------
+
+> Note: This is not necessary if you installed the app with Chocolatey.
 
 The app is portable, meaning the FDD or SCD can reside anywhere on your system (for example in `$env:USERPROFILE\MyPortableApps\hello-netcoreapp` on Windows or `$HOME/myPortableApps/hello-netcoreapp` on Linux), and Docker containers can be run anywhere anyway.
 
@@ -127,7 +115,76 @@ Now you can run the following command on any OS and from any directory (and also
 
 - `hello-netcoreapp`
 
-Note: You shouldn't add the directory to the PATH, because the directory contains many files and you don't want tab auto-completion for files like `hello-netcoreapp.deps.json`.
+> Note: You shouldn't add the directory to the PATH, because the directory contains many files and you don't want tab auto-completion for files like `hello-netcoreapp.deps.json`.
+
+Uninstall
+---------
+
+- FDD:
+    1. Delete the directory that contains the `hello-netcoreapp.dll`
+    2. Remove the function from your PowerShell profile / `~/.bashrc` in case you set it
+- SCD:
+    1. Delete the directory that contains the `hello-netcoreapp.exe` (Windows) / `hello-netcoreapp` (Linux)
+    2. Remove the function from your PowerShell profile / `~/.bashrc` in case you set it
+- Docker image:
+    1. Delete the container: `docker container rm <id>`
+    2. Delete the image: `docker image rm my/hello-netcoreapp`
+- Chocolatey package:
+    - `choco uninstall hello-netcoreapp.portable`
+
+Build
+-----
+
+### Via cloud service
+
+This repository contains `appveyor.yml`, which is a configuration file for the CI / CI cloud service [AppVeyor](https://www.appveyor.com/).
+
+It's configured to do the following:
+
+- Run the build script `build.ps1`, which produces `*.zip` archives for FDD and SCD, as well as a Chocolatey package
+- Deploy all artifacts to "GitHub releases"
+- Deploy the Chocolatey package to the app's MyGet feed: [https://www.myget.org/feed/Packages/hello-netcoreapp](https://www.myget.org/feed/Packages/hello-netcoreapp)
+
+### Locally
+
+You can create the *FDD*, *SCD*, *Docker image* and *Chocolatey package* locally as well.
+
+- For building an FDD and SCD you need to have *either* the .NET Core SDK *or* Docker installed
+- For building the Docker image you need to have Docker installed
+- For building the Chocolatey package you need to have Chocolatey installed.
+
+#### FDD + SCD + Chocolatey package
+
+Depending on your OS and installed software, run the following scripts:
+
+System | Installed | Run | Artifacts
+-------|-----------|-----|----------
+Windows | .NET Core SDK | `build.ps1` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.zip`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.zip`</li><li>Chocolatey package (if installed): `hello-netcoreapp.portable.1.0.0.nupkg`</li></ul>
+Windows | Docker | `build-with-docker.ps1` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li></ul>
+Linux | .NET Core SDK | `build.sh` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li></ul>
+Linux | Docker | `build-with-docker.sh` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li></ul>
+
+The SCDs that are built depend on the runtime identifiers in the `.csproj`. To add or remove SCDs, just edit that file accordingly.
+
+##### Small footprint SCD
+
+Additionally to the default SCD, you can also create a "small footprint SCD", which targets `netstandard1.6` instead of `netcoreapp1.1`, making the published files smaller. This requires a change in the csproj file though and makes it incompatible with FDD. Also, the size gain is not very big:
+
+- With `netcoreapp1.1`: 45-55 MB published directory, 20 MB archive
+- With `netstandard1.6`: 30-40 MB published directory, 13-15 MB archive
+
+This is for a simple "Hello World" app. For a bigger app with third-party dependencies the size difference is even smaller.
+
+#### Docker image
+
+1. First run any of the build scripts, so that there's `artifacts/hello-netcoreapp_netcoreapp1.1`
+2. In the root directory of the repository, depending on which container host system you want to target:
+    - For Linux containers, run: `docker build -t my/hello-netcoreapp .`
+        - You can do this on both Linux and Windows
+    - For Windows containers, run: `docker build -t my/hello-netcoreapp -f Dockerfile.nano .`
+        - > Note 1: This is not needed for running a Linux container on Windows, which works just fine with Hyper-V. This is specifically for *Windows containers*.
+
+        - > Note 2: You can't build Windows containers in Linux.
 
 ---
 
@@ -142,19 +199,22 @@ TODO
     - Might not be possible because of the use of .NET framework classes, which might not be available in *nanoserver*
 - Add Dockerfile for image using SCD
 - Maybe move Dockerfiles (and change them accordingly)
-    - Note: You can't `COPY ../something`, because it leads to the error "*Forbidden path outside the build context*".
+    - You can't `COPY ../something`, because it leads to the error "*Forbidden path outside the build context*".
     - Maybe move to `src/`, and also change all publish scripts to output to `src/artifacts/` instead of `artifacts/` (because the Dockerfile requires the published app)
     - Or probably better: When running `docker build`, the build context gets passed, which could be `artifacts/`, then from within the Dockerfile that's `.`
         - Nope - "*unable to prepare context: The Dockerfile must be within the build context*"
 
 ### CI / CD
 
-- Add building Chocolatey package
-- Add deploying to "GitHub releases"
-- Add deploying to MyGet as Chocolatey alternative
-    - (Chocolatey only accepts meaningful packages and the review process can take up to two weeks)
 - Add Travis CI build file
 - Add versioning
+- Fix installing Chocolatey package via OneGet doesn't lead to the app being available on the PATH
+    - See [this Chocolatey OneGet GitHub issue comment](https://github.com/chocolatey/chocolatey-oneget/issues/2#issuecomment-301299133)
+- Add building Chocolatey packages for other OSs than win10-x64 *if necessary*
+- Add building NuGet package with executable app via `dotnet pack` *if possible*
+    - Seems to build an FDD, so not executable without .NET Core runtime
+- Add scripts for deploying to "GitHub releases" and MyGet locally (instead of just on AppVeyor)
+- Add signing
 
 ### Other
 

@@ -5,3 +5,10 @@ build_script:
 test: off
 artifacts:
 - path: artifacts\*.zip
+- path: artifacts\*.nupkg
+- provider: NuGet
+  server: https://www.myget.org/F/hello-netcoreapp/
+  api_key:
+    secure: pFtnAlh5glfIoI7Mn9U7ayhClcGFVpp8yauJ/Y3b2F/U4egDUAl51kpQFT12gGr9kTfKzWV9PZ7s8mCT7YliuEvkSvcmu5p/ckNZWD265oQ=
+  on:
+    branch: master
