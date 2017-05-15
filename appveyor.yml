@@ -13,16 +13,19 @@ deploy:
   release: hello-netcoreapp $(APPVEYOR_REPO_TAG_NAME)
   description: Automated release from AppVeyor
   draft: false
-  force_update: false
+  # True here, so that we can move the v0.1.0 tag and update the existing release.
+  # This repo can and should be used as a template, and v0.1.0 should be the starting point.
+  # But when you fork this repository, you should set it to false, to be forced to create new tags
+  # so that you have a release history on GitHub, for example so that customers
+  # can report a bug in a release and you can figure out which tag that was.
+  force_update: true
   auth_token:
     secure: BBe0seTIReGdIpFfcaG9lVFLght6VFoOtYpGu9LD+FHqHZ2K4mQ7RlrsT9UySwj0
   on:
-    branch: master
     appveyor_repo_tag: true
 - provider: NuGet
   server: https://www.myget.org/F/hello-netcoreapp/
   api_key:
     secure: NlRYEnLAyldhvBdKdOjEgcYkRVsKgQi0wtwOGmos8f8fz99SdfP5qRMXsfeDEDW6
   on:
-    branch: master
     appveyor_repo_tag: true

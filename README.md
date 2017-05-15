@@ -145,9 +145,9 @@ This repository contains `appveyor.yml`, which is a configuration file for the C
 It's configured to do the following:
 
 1. Run the build script `build.ps1`, which produces `*.zip` archives for FDD and SCD, as well as a Chocolatey package
-2. If *Git tag* was pushed and the branch is `master`:
+2. If a *Git tag* was pushed:
     - Deploy all artifacts to [this repository's GitHub Releases](https://github.com/philippgille/hello-netcoreapp/releases)
-        - > Note: GitHub recommends to prepend a "v" before the actual version number in the release name.
+        - > Note: For adhering to the [Semantic Versioning](http://semver.org/) rules a "v" must be prepended before the actual version number
     
     - Deploy the Chocolatey package to [this app's MyGet feed](https://www.myget.org/feed/Packages/hello-netcoreapp)
 
