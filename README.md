@@ -44,7 +44,7 @@ Run
 
 You can run the console app either as *FDD*, *SCD*, *Docker container* or *Chocolatey package*.
 
-All artifacts are available for download from [this repository's GitHub Releases](https://github.com/philippgille/hello-netcoreapp/releases). The Chocolatey package is also available on [this app's MyGet feed](https://www.myget.org/feed/Packages/hello-netcoreapp).
+All artifacts are available for download from [this repository's GitHub Releases](https://github.com/philippgille/hello-netcoreapp/releases). The Chocolatey package is also available on [this app's MyGet feed](https://www.myget.org/gallery/hello-netcoreapp).
 
 Alternatively you can build the artifacts on your own (see the *Build* section in this README).
 
@@ -149,7 +149,7 @@ It's configured to do the following:
     - Deploy all artifacts to [this repository's GitHub Releases](https://github.com/philippgille/hello-netcoreapp/releases)
         - > Note: For adhering to the [Semantic Versioning](http://semver.org/) rules a "v" must be prepended before the actual version number
     
-    - Deploy the Chocolatey package to [this app's MyGet feed](https://www.myget.org/feed/Packages/hello-netcoreapp)
+    - Deploy the Chocolatey package to [this app's MyGet feed](https://www.myget.org/gallery/hello-netcoreapp)
 
 ### Locally
 
