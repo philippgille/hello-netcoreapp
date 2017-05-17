@@ -1,6 +1,9 @@
 version: 0.1.0.{build}
 clone_depth: 1
 install:
+# As of 2017-05-16, the Chocolatey version on AppVeyor is 0.10.3,
+# which contains a bug regarding "choco pack" with an "--out" argument.
+# So update to latest version. See https://github.com/appveyor/ci/issues/1557.
 - ps: choco upgrade chocolatey -y
 build_script:
 - ps: scripts\build.ps1
@@ -10,6 +13,14 @@ artifacts:
 - path: artifacts\*.nupkg
 deploy:
 - provider: GitHub
+  # As of 2017-05-17, if you don't set a tag, AppVeyor will create a tag for you,
+  # which can lead to a loop of tags and builds + deploys if your deployment condition is
+  # "appveyor_repo_tag: true".
+  # For example, when pushing the tag "v0.1.0", it will lead to:
+  # > Creating "hello-netcoreapp v0.1.0" release for repository
+  # > "philippgille/hello-netcoreapp" tag "hello-netcoreapp-v0.1.0" commit "123..."...
+  # And the new tag will lead to another build + deploy + new tag.
+  tag: $(APPVEYOR_REPO_TAG_NAME)
   release: hello-netcoreapp $(APPVEYOR_REPO_TAG_NAME)
   description: Automated release from AppVeyor
   draft: false
