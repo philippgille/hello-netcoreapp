@@ -21,7 +21,7 @@
     <owners>Philipp Gillé</owners>
     <!-- projectUrl is required for the community feed -->
     <projectUrl>https://github.com/philippgille/hello-netcoreapp</projectUrl>
-    <!-- If there is a license Url available, it is is required for the community feed -->
+    <!-- If there is a license Url available, it is required for the community feed -->
     <licenseUrl>https://raw.githubusercontent.com/philippgille/hello-netcoreapp/master/LICENSE</licenseUrl>
     <!--<iconUrl>http://cdn.rawgit.com/__REPLACE_YOUR_REPO__/master/icons/hwapp.png</iconUrl>-->
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -37,7 +37,7 @@
     <!-- Software Source Location - is the software FOSS somewhere? Link to it with this -->
     <projectSourceUrl>https://github.com/philippgille/hello-netcoreapp</projectSourceUrl>
     <!-- At what url are the software docs located? -->
-    <docsUrl>https://raw.githubusercontent.com/philippgille/hello-netcoreapp/master/chocolatey/README.md</docsUrl>
+    <docsUrl>https://github.com/philippgille/hello-netcoreapp/blob/master/chocolatey/README.md</docsUrl>
     <!--<mailingListUrl></mailingListUrl>-->
     <bugTrackerUrl>https://github.com/philippgille/hello-netcoreapp/issues</bugTrackerUrl>
     <!-- Where is this Chocolatey package located (think GitHub)? packageSourceUrl is highly recommended for the community feed -->
