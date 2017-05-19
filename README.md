@@ -240,9 +240,13 @@ TODO
 - Add building Chocolatey packages for other OSs than win10-x64 *if necessary*
 - Add building NuGet package containing the executable app via `dotnet pack` *if possible*
     - Seems to build an FDD, so not executable without .NET Core runtime
-- Add scripts for deploying to "GitHub releases" and MyGet locally (instead of just on AppVeyor)
+- Add scripts for deploying to "GitHub Releases" and MyGet locally (instead of just on AppVeyor)
 - Add signing
+- Add creating Debian package
+- Add creating Vagrantfile or use [Packer](https://www.packer.io/) to create images for multiple Cloud hosters
+- Add creating Flatpak, AppImage, Snap
 
 ### Other
 
 - Fix line break issues when running build script on Windows in Git Bash
+- Put TODOs in GitHub issues instead of this README
