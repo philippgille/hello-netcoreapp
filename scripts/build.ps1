@@ -52,7 +52,7 @@ function New-Build
     [io.compression.zipfile]::CreateFromDirectory("$publishDir", $destination)
 }
 
-# Reads the runtime identifiers from the csproj file
+# Reads the runtime identifiers from the csproj file and returns them
 # 
 # Note: This doesn't consider if the line is commented out. The first matching line gets used. Beware of that when modifying the csproj file.
 function Read-RuntimeIdentifiersFromCsproj

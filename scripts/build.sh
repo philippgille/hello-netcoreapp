@@ -59,10 +59,10 @@ function build() {
     tar -czf $DESTINATION -C $ARTIFACTSDIR $PUBLISHNAME
 }
 
-# Reads the runtime identifiers from the csproj file
+# Reads the runtime identifiers from the csproj file and stores them as array in the global variable $RIDS
 # 
 # Note: This doesn't consider if the line is commented out. The first matching line gets used. Beware of that when modifying the csproj file.
-function readRuntimeIdentifiersFromCsproj() {
+function read_runtime_identifiers_from_csproj() {
     PATHTOCSPROJ=$1
 
     # Example line: <RuntimeIdentifiers>win10-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
@@ -70,12 +70,12 @@ function readRuntimeIdentifiersFromCsproj() {
     RIDLINE=$(echo $RIDLINE | sed 's/\ *//' | sed 's/<RuntimeIdentifiers>//' | sed 's/<\/RuntimeIdentifiers>//')
     RIDLINE=${RIDLINE//;/ }
     RIDS=($RIDLINE)
-    return $RIDS
+    # Bash functions can't return arbitrary values - only exit codes. Use the global variable $RIDS instead.
 }
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-$ARTIFACTSDIR="$SCRIPTDIR/../artifacts"
-$SOURCEDIR="$SCRIPTDIR/../src"
+ARTIFACTSDIR="$SCRIPTDIR/../artifacts"
+SOURCEDIR="$SCRIPTDIR/../src"
 
 # Build FDD
 
@@ -84,8 +84,9 @@ build "FDD" "netcoreapp1.1" $ARTIFACTSDIR $SOURCEDIR
 # Build SCD
 
 # Publish the SCD for each runtime identifier
-RIDS=readRuntimeIdentifiersFromCsproj "$SOURCEDIR/$APPNAME.csproj"
-for RID in ${RIDS[@]}
+# The function stores the RID array in the global variable $RIDS
+read_runtime_identifiers_from_csproj "$SOURCEDIR/$APPNAME.csproj"
+for RID in "${RIDS[@]}"
 do
     build "SCD" $RID $ARTIFACTSDIR $SOURCEDIR
 done
