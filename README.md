@@ -1,4 +1,4 @@
-Branch | scripts/build.ps1 | scripts/build.sh
+Branch | Windows</br>(scripts/build.ps1) | Linux</br>(scripts/build.sh)
 -------| :---------------: | :--------------:
 master | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/master?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/master) | TODO
 develop | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/develop?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/develop) | TODO
@@ -6,9 +6,9 @@ develop | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj
 hello-netcoreapp
 ================
 
-hello-netcoreapp is a basic *.NET Core* console application that prints "Hello World!". This repository contains additional scripts and files for building the app and creating release artifacts for a *framework-dependent deployment* (FDD), *self-contained deployment* (SCD), *Docker image* and *Chocolatey package*.
+hello-netcoreapp is a basic *.NET Core* console application that prints "Hello World!". This repository contains additional scripts and files for building the app and creating release artifacts for a *framework-dependent deployment* (FDD), *self-contained deployment* (SCD), *Docker image*, *Chocolatey package* and *AppImage*.
 
-This repository is meant to be a starting point for any new .NET Core console applications. You can fork it and base your project upon it. If you improve anything in your fork, please create a PR ☺ .
+This repository is meant to be a starting point for any new .NET Core console application. You can fork it and base your project upon it. If you improve anything in your fork, please create a PR ☺ .
 
 The basic app was created using `dotnet new console` with the .NET Core SDK 1.1 (or rather SDK 1.0.1 and Shared Framework Host 1.1.1).
 
@@ -36,6 +36,9 @@ Terminology
 - > *Chocolatey package*:
 
     Chocolatey is a package manager for Windows, allowing you to install apps with one CLI command. Its package format is very similar to NuGet's. See [https://chocolatey.org/](https://chocolatey.org/) for details.
+- > *AppImage*:
+
+    AppImage is a new packaging format that allows you to execute an app on most Linux distributions without having to install any runtimes, dependencies or the app itself. It's portable, can optionally be integrated into the OS (MIME type registration, inclusion in start menu, ...) and optionally run in a sandbox like [Firejail](https://github.com/netblue30/firejail). See [http://appimage.org/](http://appimage.org/) for details.
 
 For more info about FDD and SCD see: [https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/](https://docs.microsoft.com/en-us/dotnet/articles/core/deploying/)
 
@@ -44,6 +47,7 @@ Directory structure
 
 - `.vscode/`: Contains files for debugging the app and the PowerShell scripts in Visual Studio Code
     - Used in case you open the root directory of the repository as workspace in Visual Studio Code
+- `appimage/`: Contains files related to the AppImage
 - `artifacts/`: Not contained in the git repository, but gets created when one of the build scripts is run
     - After a build script is run it contains the resulting release artifacts, such as `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
 - `src/`: Contains the application source code, basically just a main class (`Program.cs`) and project file (`hello-netcoreapp.csproj`)
@@ -75,13 +79,14 @@ It's configured to do the following:
 
 ### Locally
 
-You can create the *FDD*, *SCD*, *Docker image* and *Chocolatey package* locally as well.
+You can create the *FDD*, *SCD*, *Docker image*, *Chocolatey package* and *AppImage* locally as well.
 
 - For building an FDD and SCD you need to have *either* the .NET Core SDK *or* Docker installed
 - For building the Docker image you need to have Docker installed
-- For building the Chocolatey package you need to have Chocolatey installed.
+- For building the Chocolatey package you need to use Windows and have Chocolatey installed
+- For building the AppImage you need to use Linux and have `fuse` installed
 
-#### FDD + SCD + Chocolatey package
+#### FDD + SCD + Chocolatey package + AppImage
 
 Depending on your OS and installed software, run the following scripts:
 
@@ -89,7 +94,7 @@ System | Installed | Run | Artifacts
 -------|-----------|-----|----------
 Windows | .NET Core SDK | `build.ps1` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.zip`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.zip`</li><li>Chocolatey package (if installed): `hello-netcoreapp.portable.0.1.0.nupkg`</li></ul>
 Windows | Docker | `build-with-docker.ps1` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li></ul>
-Linux | .NET Core SDK | `build.sh` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li></ul>
+Linux | .NET Core SDK | `build.sh` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_ubuntu.16.04-x64.AppImage`</li></ul>
 Linux | Docker | `build-with-docker.sh` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li></ul>
 
 The SCDs that are built depend on the runtime identifiers in the `.csproj`. To add or remove SCDs, just edit that file accordingly.
@@ -117,7 +122,7 @@ This is for a simple "Hello World" app. For a bigger app with third-party depend
 Run
 ---
 
-You can run the console app either as *FDD*, *SCD*, *Docker container* or *Chocolatey package*.
+You can run the console app either as *FDD*, *SCD*, *Docker container*, *Chocolatey package* or *AppImage*.
 
 All artifacts are available for download from [this repository's GitHub Releases](https://github.com/philippgille/hello-netcoreapp/releases). The Chocolatey package is also available on [this app's MyGet feed](https://www.myget.org/gallery/hello-netcoreapp).
 
@@ -165,6 +170,16 @@ Then run: `hello-netcoreapp`
 
 > Note: The package is installed in `%ChocolateyInstall%/lib` (e.g. `C:\ProgramData\Chocolatey\lib`)
 
+### AppImage
+
+> Note: You can only use AppImages on Linux
+
+After downloading the AppImage, you have to make it executable: `chmod u+x hello-netcoreapp_ubuntu.16.04-x64.AppImage`
+
+Then run: `hello-netcoreapp_ubuntu.16.04-x64.AppImage`
+
+For integrating the AppImage into your OS (MIME type registration, start menu), you can run the optional AppImage daemon. Read more about it here: [https://github.com/AppImage/AppImageKit/blob/appimagetool/master/README.md#appimaged-usage](https://github.com/AppImage/AppImageKit/blob/appimagetool/master/README.md#appimaged-usage)
+
 Simplify running the app
 ------------------------
 
@@ -193,7 +208,7 @@ Now you can run the following command on any OS and from any directory (and also
 
 - `hello-netcoreapp`
 
-> Note: You shouldn't add the directory to the PATH, because the directory contains many files and you don't want tab auto-completion for files like `hello-netcoreapp.deps.json`.
+> Note: You shouldn't add the whole app directory to the PATH, because the directory contains many files and in some cases this leads to tab auto-completion for files like `hello-netcoreapp.deps.json`.
 
 Uninstall
 ---------
@@ -209,6 +224,8 @@ Uninstall
     2. Delete the image: `docker image rm my/hello-netcoreapp`
 - Chocolatey package:
     - `choco uninstall hello-netcoreapp.portable`
+- AppImage:
+    - Just delete the `*.AppImage` file
 
 ---
 
@@ -231,6 +248,7 @@ TODO
 ### CI / CD
 
 - Add Travis CI build file
+- Add AppImage (built on Travis CI) to GitHub Releases, which gets created by AppVeyor
 - Add versioning
 - Add building Chocolatey package in `build.sh` as well (which would make it working in the `build-with-docker.*` scripts as well)
     - Alternatively, use a Docker image that contains the .NET Core SDK as well as Chocolatey (and thus Mono)
@@ -242,11 +260,18 @@ TODO
     - Seems to build an FDD, so not executable without .NET Core runtime
 - Add scripts for deploying to "GitHub Releases" and MyGet locally (instead of just on AppVeyor)
 - Add signing
+- Add creating Snap
+    - Manual for GitHub Releases: [https://tutorials.ubuntu.com/tutorial/create-first-snap#0](https://tutorials.ubuntu.com/tutorial/create-first-snap#0)
+    - Automatic build to Snapcraft store: [https://build.snapcraft.io/](https://build.snapcraft.io/)
+    - Example:
+        - Article: [http://hypernephelist.com/2015/10/07/run-net-core-app-on-ubuntu-snappy.html](http://hypernephelist.com/2015/10/07/run-net-core-app-on-ubuntu-snappy.html)
+        - Code: [https://github.com/tomconte/dnxsnap](https://github.com/tomconte/dnxsnap)
 - Add creating Debian package
 - Add creating Vagrantfile or use [Packer](https://www.packer.io/) to create images for multiple Cloud hosters
-- Add creating Flatpak, AppImage, Snap
 
 ### Other
 
-- Fix line break issues when running build script on Windows in Git Bash
+- Make AppImage build independent from fuse
+    - [https://github.com/AppImage/AppImageKit/issues/405#issuecomment-306064016](https://github.com/AppImage/AppImageKit/issues/405#issuecomment-306064016)
 - Put TODOs in GitHub issues instead of this README
+- Fix line break issues when running build script on Windows in Git Bash

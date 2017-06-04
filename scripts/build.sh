@@ -73,6 +73,13 @@ function read_runtime_identifiers_from_csproj() {
     # Bash functions can't return arbitrary values - only exit codes. Use the global variable $RIDS instead.
 }
 
+# Determines if the script is being executed in a Docker container, result accessible via $RUNNING_IN_DOCKER (1=yes, 0=no)
+# https://stackoverflow.com/a/23575107
+function running_in_docker() {
+    RUNNING_IN_DOCKER=1
+    (awk -F/ '$2 == "docker"' /proc/self/cgroup | read non_empty_input) || RUNNING_IN_DOCKER=0
+}
+
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ARTIFACTSDIR="$SCRIPTDIR/../artifacts"
 SOURCEDIR="$SCRIPTDIR/../src"
@@ -90,3 +97,25 @@ for RID in "${RIDS[@]}"
 do
     build "SCD" $RID $ARTIFACTSDIR $SOURCEDIR
 done
+
+# Build AppImage if a ubuntu.16.04-x64 SCD was built and not running in a Docker container
+# TODO: Fix issues with Docker container ()
+
+# Call function to store result in $RUNNING_IN_DOCKER
+running_in_docker
+if [[ -f $ARTIFACTSDIR/${APPNAME}_ubuntu.16.04-x64/$APPNAME && $RUNNING_IN_DOCKER -eq 0 ]]; then
+    # Clean and create directories
+    rm -r -f $SCRIPTDIR/../appimage/AppDir/usr/bin/*
+    mkdir -p $SCRIPTDIR/../appimage/AppDir/usr/bin/
+    # Copy SCD files
+    cp -r $ARTIFACTSDIR/${APPNAME}_ubuntu.16.04-x64 $SCRIPTDIR/../appimage/AppDir/usr/bin/
+    # Make sure AppRun is executable
+    chmod u+x $SCRIPTDIR/../appimage/AppDir/AppRun
+    # Download AppImage creation tool, make it executable and extract it, so we don't need to have fuse installed
+    curl -Lo /tmp/appimagetool-x86_64.AppImage https://github.com/probonopd/AppImageKit/releases/download/8/appimagetool-x86_64.AppImage
+    chmod u+x /tmp/appimagetool-x86_64.AppImage
+    # Create AppImage
+    /tmp/appimagetool-x86_64.AppImage $SCRIPTDIR/../appimage/AppDir/ $ARTIFACTSDIR/${APPNAME}_ubuntu.16.04-x64.AppImage
+    # Delete downloaded AppImage creation tool
+    rm /tmp/appimagetool-x86_64.AppImage
+fi

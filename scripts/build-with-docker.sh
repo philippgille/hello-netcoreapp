@@ -8,8 +8,9 @@ set -euxo pipefail
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 docker run --rm \
-    -v $SCRIPTDIR/../src:/root/src \
-    -v $SCRIPTDIR:/root/scripts \
+    -v $SCRIPTDIR/../appimage:/root/appimage \
     -v $SCRIPTDIR/../artifacts:/root/artifacts \
+    -v $SCRIPTDIR:/root/scripts \
+    -v $SCRIPTDIR/../src:/root/src \
     microsoft/dotnet:1.1-sdk \
     root/scripts/build.sh
