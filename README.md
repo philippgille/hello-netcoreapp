@@ -273,5 +273,4 @@ TODO
 
 - Make AppImage build independent from fuse
     - [https://github.com/AppImage/AppImageKit/issues/405#issuecomment-306064016](https://github.com/AppImage/AppImageKit/issues/405#issuecomment-306064016)
-- Put TODOs in GitHub issues instead of this README
 - Fix line break issues when running build script on Windows in Git Bash
