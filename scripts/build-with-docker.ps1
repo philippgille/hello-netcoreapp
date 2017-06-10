@@ -7,4 +7,4 @@ docker run --rm `
     -v ${PSScriptRoot}:/root/scripts `
     -v $PSScriptRoot\..\src:/root/src `
     microsoft/dotnet:1.1-sdk `
-    root/scripts/build.sh
+    bash -c "apt update && apt install -y libglib2.0-0 && root/scripts/build.sh"
