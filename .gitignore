@@ -441,3 +441,6 @@ __pycache__/
 !/chocolatey/tools/chocolateyuninstall.ps1
 !/chocolatey/tools/LICENSE.txt
 !/chocolatey/tools/VERIFICATION.txt
+
+# AppImage
+/appimage/AppDir/.DirIcon
