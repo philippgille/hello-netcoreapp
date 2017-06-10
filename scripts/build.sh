@@ -98,12 +98,9 @@ do
     build "SCD" $RID $ARTIFACTSDIR $SOURCEDIR
 done
 
-# Build AppImage if a ubuntu.16.04-x64 SCD was built and not running in a Docker container
-# TODO: Fix issues with Docker container ()
+# Build AppImage if a ubuntu.16.04-x64 SCD was built
 
-# Call function to store result in $RUNNING_IN_DOCKER
-running_in_docker
-if [[ -f $ARTIFACTSDIR/${APPNAME}_ubuntu.16.04-x64/$APPNAME && $RUNNING_IN_DOCKER -eq 0 ]]; then
+if [[ -f $ARTIFACTSDIR/${APPNAME}_ubuntu.16.04-x64/$APPNAME ]]; then
     # Clean and create directories
     rm -r -f $SCRIPTDIR/../appimage/AppDir/usr/bin/*
     mkdir -p $SCRIPTDIR/../appimage/AppDir/usr/bin/
@@ -112,10 +109,14 @@ if [[ -f $ARTIFACTSDIR/${APPNAME}_ubuntu.16.04-x64/$APPNAME && $RUNNING_IN_DOCKE
     # Make sure AppRun is executable
     chmod u+x $SCRIPTDIR/../appimage/AppDir/AppRun
     # Download AppImage creation tool, make it executable and extract it, so we don't need to have fuse installed
-    curl -Lo /tmp/appimagetool-x86_64.AppImage https://github.com/probonopd/AppImageKit/releases/download/8/appimagetool-x86_64.AppImage
+    curl -Lo /tmp/appimagetool-x86_64.AppImage https://github.com/probonopd/AppImageKit/releases/download/9/appimagetool-x86_64.AppImage
     chmod u+x /tmp/appimagetool-x86_64.AppImage
+    # Extract AppImage so it can be run in Docker containers and on  machines that don't have FUSE installed
+    /tmp/appimagetool-x86_64.AppImage --appimage-extract
     # Create AppImage
-    /tmp/appimagetool-x86_64.AppImage $SCRIPTDIR/../appimage/AppDir/ $ARTIFACTSDIR/${APPNAME}_ubuntu.16.04-x64.AppImage
+#    /tmp/appimagetool-x86_64.AppImage $SCRIPTDIR/../appimage/AppDir/ $ARTIFACTSDIR/${APPNAME}_ubuntu.16.04-x64.AppImage
+    ./squashfs-root/AppRun $SCRIPTDIR/../appimage/AppDir/ $ARTIFACTSDIR/${APPNAME}_ubuntu.16.04-x64.AppImage
     # Delete downloaded AppImage creation tool
     rm /tmp/appimagetool-x86_64.AppImage
+    rm -r ./squashfs-root
 fi
