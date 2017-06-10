@@ -232,19 +232,6 @@ Uninstall
 TODO
 ----
 
-### Docker
-
-- Create automated build on Docker Hub
-    - Probably only possible with .NET Core SDK image, because otherwise there's no published app for the FDD image?
-- Add scripts for building via Windows Docker containers
-    - Might not be possible because of the use of .NET framework classes, which might not be available in *nanoserver*
-- Add Dockerfile for image using SCD
-- Maybe move Dockerfiles (and change them accordingly)
-    - You can't `COPY ../something`, because it leads to the error "*Forbidden path outside the build context*".
-    - Maybe move to `src/`, and also change all publish scripts to output to `src/artifacts/` instead of `artifacts/` (because the Dockerfile requires the published app)
-    - Or probably better: When running `docker build`, the build context gets passed, which could be `artifacts/`, then from within the Dockerfile that's `.`
-        - Nope - "*unable to prepare context: The Dockerfile must be within the build context*"
-
 ### CI / CD
 
 - Add Travis CI build file
@@ -268,9 +255,3 @@ TODO
         - Code: [https://github.com/tomconte/dnxsnap](https://github.com/tomconte/dnxsnap)
 - Add creating Debian package
 - Add creating Vagrantfile or use [Packer](https://www.packer.io/) to create images for multiple Cloud hosters
-
-### Other
-
-- Make AppImage build independent from fuse
-    - [https://github.com/AppImage/AppImageKit/issues/405#issuecomment-306064016](https://github.com/AppImage/AppImageKit/issues/405#issuecomment-306064016)
-- Fix line break issues when running build script on Windows in Git Bash
