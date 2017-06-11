@@ -84,7 +84,7 @@ You can create the *FDD*, *SCD*, *Docker image*, *Chocolatey package* and *AppIm
 - For building an FDD and SCD you need to have *either* the .NET Core SDK *or* Docker installed
 - For building the Docker image you need to have Docker installed
 - For building the Chocolatey package you need to use Windows and have Chocolatey installed
-- For building the AppImage you need to use Linux and have `fuse` installed
+- For building the AppImage you need to *either* use Linux *or* have Docker installed
 
 #### FDD + SCD + Chocolatey package + AppImage
 
@@ -93,9 +93,9 @@ Depending on your OS and installed software, run the following scripts:
 System | Installed | Run | Artifacts
 -------|-----------|-----|----------
 Windows | .NET Core SDK | `build.ps1` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.zip`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.zip`</li><li>Chocolatey package (if installed): `hello-netcoreapp.portable.0.1.0.nupkg`</li></ul>
-Windows | Docker | `build-with-docker.ps1` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li></ul>
+Windows | Docker | `build-with-docker.ps1` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_ubuntu.16.04-x64.AppImage`</li></ul>
 Linux | .NET Core SDK | `build.sh` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_ubuntu.16.04-x64.AppImage`</li></ul>
-Linux | Docker | `build-with-docker.sh` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li></ul>
+Linux | Docker | `build-with-docker.sh` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_ubuntu.16.04-x64.AppImage`</li></ul>
 
 The SCDs that are built depend on the runtime identifiers in the `.csproj`. To add or remove SCDs, just edit that file accordingly.
 
@@ -172,7 +172,7 @@ Then run: `hello-netcoreapp`
 
 ### AppImage
 
-> Note: You can only use AppImages on Linux
+> Note: You can only use AppImages on Linux and you must *either* have fuse installed *or* mount or extract the AppImage, see [AppImage/AppImageKit/wiki/FUSE](https://github.com/AppImage/AppImageKit/wiki/FUSE)
 
 After downloading the AppImage, you have to make it executable: `chmod u+x hello-netcoreapp_ubuntu.16.04-x64.AppImage`
 
