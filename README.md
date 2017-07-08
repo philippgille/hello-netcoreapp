@@ -122,7 +122,7 @@ In the root directory of the repository, depending on which container host syste
     - You can do this on both Linux and Windows
 - For Windows containers, you must first build the app's FDD and then create the Docker image:
     1. Run any of the build scripts, so that there's `artifacts/hello-netcoreapp_netcoreapp1.1`
-    2. Run: `docker build -t local/hello-netcoreapp -f Dockerfile.nano .`
+    2. `docker build -t local/hello-netcoreapp -f Dockerfile.nano .`
 
 > Note 1: You don't need to create a Windows container image for using Docker in Windows. Linux containers work just fine on Windows with Hyper-V. Creating a Windows container image is specifically for actual *Windows containers*, see [https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/](https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/).
 
@@ -154,10 +154,10 @@ You can copy the archive (for example `hello-netcoreapp_ubuntu.16.04-x64.zip` or
 ### Docker container
 
 - The simplest way is to create the Docker container from the Docker image on Docker Hub:
-    - Run: `docker run philippgille/hello-netcoreapp`
+    - `docker run philippgille/hello-netcoreapp`
         > Note: This currently only works for Linux containers (on either Linux or Windows)
 - Alternatively you can build the image locally (see the *Build* section in this README) and then create a container from the image in the local image cache:
-    - Run: `docker run local/hello-netcoreapp`
+    - `docker run local/hello-netcoreapp`
         > Note: This works on Linux with the Linux container image, and on Windows with both the Linux and Windows container images (on Windows you can configure which kind of containers you want to run)
 
 ### Chocolatey package
