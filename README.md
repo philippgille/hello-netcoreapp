@@ -1,7 +1,7 @@
 Branch | Windows</br>(scripts/build.ps1) | Linux</br>(scripts/build.sh) | Docker</br>(Dockerfile)
 -------| :---------------: | :--------------: | :--------------:
-master | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/master?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/master) | TODO | TODO
-develop | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/develop?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/develop) | TODO | X
+master | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/master?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/master) | TODO | [![Docker Automated build](https://img.shields.io/docker/automated/philippgille/hello-netcoreapp.svg)](https://hub.docker.com/r/philippgille/hello-netcoreapp/)
+develop | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/develop?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/develop) | TODO | [![Docker Automated build](https://img.shields.io/docker/automated/philippgille/hello-netcoreapp.svg)](https://hub.docker.com/r/philippgille/hello-netcoreapp/)
 
 hello-netcoreapp
 ================
@@ -66,6 +66,8 @@ Build
 
 ### Via cloud service
 
+#### AppVeyor
+
 This repository contains `appveyor.yml`, which is a configuration file for the CI / CI cloud service [AppVeyor](https://www.appveyor.com/).
 
 It's configured to do the following:
@@ -73,9 +75,13 @@ It's configured to do the following:
 1. Run the build script `build.ps1`, which produces `*.zip` archives for FDD and SCD, as well as a Chocolatey package
 2. If a *Git tag* was pushed:
     - Deploy all artifacts to [this repository's GitHub Releases](https://github.com/philippgille/hello-netcoreapp/releases)
-        - > Note: For adhering to the [Semantic Versioning](http://semver.org/) rules a "v" must be prepended before the actual version number
+        > Note: For adhering to the [Semantic Versioning](http://semver.org/) rules a "v" must be prepended before the actual version number
     
     - Deploy the Chocolatey package to [this app's MyGet feed](https://www.myget.org/gallery/hello-netcoreapp)
+
+#### Docker Cloud
+
+The Docker image for Linux containers gets automatically build by Docker Cloud and pushed to the [Docker Hub repository](https://hub.docker.com/r/philippgille/hello-netcoreapp/). This is because Docker Hub itself doesn't support multi-stage builds as of now (2017-07-08).
 
 ### Locally
 
@@ -112,11 +118,11 @@ This is for a simple "Hello World" app. For a bigger app with third-party depend
 
 In the root directory of the repository, depending on which container host system you want to target:
 
-- For Linux containers, run: `docker build -t my/hello-netcoreapp .`
+- For Linux containers, run: `docker build -t local/hello-netcoreapp .`
     - You can do this on both Linux and Windows
 - For Windows containers, you must first build the app's FDD and then create the Docker image:
     1. Run any of the build scripts, so that there's `artifacts/hello-netcoreapp_netcoreapp1.1`
-    2. Run: `docker build -t my/hello-netcoreapp -f Dockerfile.nano .`
+    2. Run: `docker build -t local/hello-netcoreapp -f Dockerfile.nano .`
 
 > Note 1: You don't need to create a Windows container image for using Docker in Windows. Linux containers work just fine on Windows with Hyper-V. Creating a Windows container image is specifically for actual *Windows containers*, see [https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/](https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/).
 
@@ -147,11 +153,12 @@ You can copy the archive (for example `hello-netcoreapp_ubuntu.16.04-x64.zip` or
 
 ### Docker container
 
-Running the app as Docker container currently requires you to build the image locally (see the *Build* section in this README). After building the image, it's available in the local image cache.
-
-Run: `docker run --rm my/hello-netcoreapp`
-
-> Note: This works on Linux with the image for the Linux container, and on Windows with both the image for the Linux container as well as the image for the Windows container. On Windows you can configure which kind of containers you want to run.
+- The simplest way is to create the Docker container from the Docker image on Docker Hub:
+    - Run: `docker run philippgille/hello-netcoreapp`
+        > Note: This currently only works for Linux containers (on either Linux or Windows)
+- Alternatively you can build the image locally (see the *Build* section in this README) and then create a container from the image in the local image cache:
+    - Run: `docker run local/hello-netcoreapp`
+        > Note: This works on Linux with the Linux container image, and on Windows with both the Linux and Windows container images (on Windows you can configure which kind of containers you want to run)
 
 ### Chocolatey package
 
@@ -196,13 +203,13 @@ Now you should do the following, so you don't have to enter the full path of the
     1. Edit the file returned by `$PROFILE.CurrentUserAllHosts` and add:
         - For FDD: `function hello-netcoreapp { dotnet $env:USERPROFILE\MyPortableApps\hello-netcoreapp\hello-netcoreapp.dll $args }`
         - For SCD: `function hello-netcoreapp { $env:USERPROFILE\MyPortableApps\hello-netcoreapp\hello-netcoreapp.exe $args }`
-        - For Docker: `function hello-netcoreapp { docker run --rm my/hello-netcoreapp $args }`
+        - For Docker: `function hello-netcoreapp { docker run --rm local/hello-netcoreapp $args }`
     1. Source your Profile so that the alias becomes available immediately: `. $PROFILE.CurrentUserAllHosts`
 - On Linux: Create a function (like an alias, but supports passing arguments) for the app for Bash:
     1. Edit `~/.bashrc` and add:
         - For FDD: `function hello-netcoreapp() { dotnet $HOME/myPortableApps/hello-netcoreapp/hello-netcoreapp.dll $@; }`
         - For SCD: `function hello-netcoreapp() { $HOME/myPortableApps/hello-netcoreapp/hello-netcoreapp $@; }`
-        - For Docker: `function hello-netcoreapp() { docker run --rm my/hello-netcoreapp $@; }`
+        - For Docker: `function hello-netcoreapp() { docker run --rm philippgille/hello-netcoreapp $@; }`
     1. Source your bashrc so that the alias becomes available immediately: `source ~/.bashrc`
 - Linux alternative for SCD: Create a symbolic link in a directory that's already in the PATH:
     - `ln -s $HOME/myPortableApps/hello-netcoreapp/hello-netcoreapp /usr/local/bin/hello-netcoreapp`
@@ -224,7 +231,7 @@ Uninstall
     2. Remove the function from your PowerShell profile / `~/.bashrc` in case you set it
 - Docker image:
     1. Delete the container: `docker container rm <id>`
-    2. Delete the image: `docker image rm my/hello-netcoreapp`
+    2. Delete the image: `docker image rm philippgille/hello-netcoreapp`
 - Chocolatey package:
     - `choco uninstall hello-netcoreapp.portable`
 - AppImage:
