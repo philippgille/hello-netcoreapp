@@ -1,7 +1,7 @@
-Branch | Windows</br>(scripts/build.ps1) | Linux</br>(scripts/build.sh)
--------| :---------------: | :--------------:
-master | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/master?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/master) | TODO
-develop | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/develop?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/develop) | TODO
+Branch | Windows</br>(scripts/build.ps1) | Linux</br>(scripts/build.sh) | Docker</br>(Dockerfile)
+-------| :---------------: | :--------------: | :--------------:
+master | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/master?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/master) | TODO | TODO
+develop | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/develop?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/develop) | TODO | X
 
 hello-netcoreapp
 ================
@@ -110,14 +110,17 @@ This is for a simple "Hello World" app. For a bigger app with third-party depend
 
 #### Docker image
 
-1. First run any of the build scripts, so that there's `artifacts/hello-netcoreapp_netcoreapp1.1`
-2. In the root directory of the repository, depending on which container host system you want to target:
-    - For Linux containers, run: `docker build -t my/hello-netcoreapp .`
-        - You can do this on both Linux and Windows
-    - For Windows containers, run: `docker build -t my/hello-netcoreapp -f Dockerfile.nano .`
-        - > Note 1: This is not needed for running a Linux container on Windows, which works just fine with Hyper-V. This is specifically for *Windows containers*.
+In the root directory of the repository, depending on which container host system you want to target:
 
-        - > Note 2: You can't build Windows containers in Linux.
+- For Linux containers, run: `docker build -t my/hello-netcoreapp .`
+    - You can do this on both Linux and Windows
+- For Windows containers, you must first build the app's FDD and then create the Docker image:
+    1. Run any of the build scripts, so that there's `artifacts/hello-netcoreapp_netcoreapp1.1`
+    2. Run: `docker build -t my/hello-netcoreapp -f Dockerfile.nano .`
+
+> Note 1: You don't need to create a Windows container image for using Docker in Windows. Linux containers work just fine on Windows with Hyper-V. Creating a Windows container image is specifically for actual *Windows containers*, see [https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/](https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/).
+
+> Note 2: You can't build Windows containers in Linux.
 
 Run
 ---
@@ -154,7 +157,7 @@ Run: `docker run --rm my/hello-netcoreapp`
 
 > Note: You can only install and run Chocolatey packages on Windows!
 
-First you need to install the package:
+First you need to install the package with one of the following ways:
 
 - The simplest way to install it is via the MyGet feed, which also allows you to easily update the app later:
     - `choco install hello-netcoreapp.portable --source https://www.myget.org/F/hello-netcoreapp`
