@@ -1,7 +1,7 @@
-Branch | Windows</br>(scripts/build.ps1) | Linux</br>(scripts/build.sh) | Docker</br>(Dockerfile)
--------| :---------------: | :--------------: | :--------------:
-master | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/master?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/master) | TODO | [![Docker Automated build](https://img.shields.io/docker/automated/philippgille/hello-netcoreapp.svg)](https://hub.docker.com/r/philippgille/hello-netcoreapp/)
-develop | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/develop?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/develop) | TODO | [![Docker Automated build](https://img.shields.io/docker/automated/philippgille/hello-netcoreapp.svg)](https://hub.docker.com/r/philippgille/hello-netcoreapp/)
+Branch | Windows</br>(scripts/build.ps1) | Linux</br>(scripts/build.sh) | Docker</br>(Dockerfile) | Code quality
+------ | :-----------------------------: | :--------------------------: | :---------------------: | :----------:
+master | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/master?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/master) | TODO | [![Docker Automated build](https://img.shields.io/docker/automated/philippgille/hello-netcoreapp.svg)](https://hub.docker.com/r/philippgille/hello-netcoreapp/) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/27c2c07b54b24239b203382131d5d44b)](https://www.codacy.com/app/philippgille/hello-netcoreapp)
+develop | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/develop?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/develop) | TODO | [![Docker Automated build](https://img.shields.io/docker/automated/philippgille/hello-netcoreapp.svg)](https://hub.docker.com/r/philippgille/hello-netcoreapp/) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/27c2c07b54b24239b203382131d5d44b?branch=develop)](https://www.codacy.com/app/philippgille/hello-netcoreapp)
 
 hello-netcoreapp
 ================
