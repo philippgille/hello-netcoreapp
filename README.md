@@ -58,8 +58,7 @@ Directory structure
 - `scripts/`: Contains scripts for building the app and creating release artifacts
     - The `*.ps1` scripts are for use in Windows (PowerShell), the `*.sh` scripts are for use in Linux.
 - `appveyor.yml`: Configuration file for AppVeyor (Continuous Integration and Deployment cloud service)
-- `Dockerfile`: The Dockerfile for building a Docker image for Linux containers with the app
-- `Dockerfile.nano`: The Dockerfile for building a Docker image for Windows containers with the app
+- `docker/`: Dockerfiles for building Docker images for Linux and Windows containers with the app
 
 Build
 -----
@@ -116,13 +115,15 @@ This is for a simple "Hello World" app. For a bigger app with third-party depend
 
 #### Docker image
 
+> Note: A prerequisite when running Windows is to make sure that `scripts/build.sh` and `src/hello-netcoreapp.csproj` line endings are LF instead of CRLF. Even when saving all files with LF and commiting them to the Git repo that way, Git has an option `core.autocrlf` that converts line endings when checking out a repository or branch depending on the configuration value.
+
 In the root directory of the repository, depending on which container host system you want to target:
 
-- For Linux containers, run: `docker build -t local/hello-netcoreapp .`
+- For Linux containers, run: `docker build -f docker/Dockerfile -t local/hello-netcoreapp .`
     - You can do this on both Linux and Windows
 - For Windows containers, you must first build the app's FDD and then create the Docker image:
     1. Run any of the build scripts, so that there's `artifacts/hello-netcoreapp_netcoreapp1.1`
-    2. `docker build -t local/hello-netcoreapp -f Dockerfile.nano .`
+    2. `docker build -f docker/Dockerfile.nano -t local/hello-netcoreapp .`
 
 > Note 1: You don't need to create a Windows container image for using Docker in Windows. Linux containers work just fine on Windows with Hyper-V. Creating a Windows container image is specifically for actual *Windows containers*, see [https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/](https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/).
 
