@@ -1,7 +1,16 @@
+# sudo false for using new container-based infrastructure,
+# see https://docs.travis-ci.com/user/migrating-from-legacy/
+sudo: false
+git:
+  depth: 1
+
+# language, mono, dotnet, dist are all necessary for .NET Core,
+# see https://docs.travis-ci.com/user/languages/csharp/#.NET-Core
 language: csharp
 mono: none
 dotnet: 1.0.1
 dist: trusty
+
 script:
  - scripts/build.sh
  

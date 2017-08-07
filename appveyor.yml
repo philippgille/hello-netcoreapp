@@ -1,11 +1,15 @@
 version: 0.1.0.{build}
 clone_depth: 1
+
 build_script:
 - ps: scripts\build.ps1
+
 test: off
+
 artifacts:
 - path: artifacts\*.zip
 - path: artifacts\*.nupkg
+
 deploy:
 - provider: GitHub
   # As of 2017-05-17, if you don't set a tag, AppVeyor will create a tag for you,
