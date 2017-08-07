@@ -1,10 +1,5 @@
 version: 0.1.0.{build}
 clone_depth: 1
-install:
-# As of 2017-05-16, the Chocolatey version on AppVeyor is 0.10.3,
-# which contains a bug regarding "choco pack" with an "--out" argument.
-# So update to latest version. See https://github.com/appveyor/ci/issues/1557.
-- ps: choco upgrade chocolatey -y
 build_script:
 - ps: scripts\build.ps1
 test: off
