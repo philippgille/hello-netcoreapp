@@ -50,6 +50,7 @@ Directory structure
 - `appimage/`: Contains files related to the AppImage
 - `artifacts/`: Not contained in the git repository, but gets created when one of the build scripts is run
     - After a build script is run it contains the resulting release artifacts, such as `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
+- `docker/`: Dockerfiles for building Docker images for Linux and Windows containers with the app
 - `src/`: Contains the application source code, basically just a main class (`Program.cs`) and project file (`hello-netcoreapp.csproj`)
     - `.vscode/`: Contains files for debugging the app in Visual Studio Code
         - Used in case you open the src directory of the repository as workspace in Visual Studio Code
@@ -57,8 +58,8 @@ Directory structure
     - The `hello-netcoreapp.nuspec` describes the package, the `README.md` is shown on Chocolatey or MyGet after publishing
 - `scripts/`: Contains scripts for building the app and creating release artifacts
     - The `*.ps1` scripts are for use in Windows (PowerShell), the `*.sh` scripts are for use in Linux.
-- `appveyor.yml`: Configuration file for AppVeyor (Continuous Integration and Deployment cloud service)
-- `docker/`: Dockerfiles for building Docker images for Linux and Windows containers with the app
+- `.travis.yml`: Configuration file for Travis CI (Continuous Integration and Deployment cloud service, Linux)
+- `appveyor.yml`: Configuration file for AppVeyor (Continuous Integration and Deployment cloud service, Windows)
 
 Build
 -----
@@ -67,7 +68,7 @@ Build
 
 #### AppVeyor
 
-This repository contains `appveyor.yml`, which is a configuration file for the CI / CI cloud service [AppVeyor](https://www.appveyor.com/).
+This repository contains `appveyor.yml`, which is a configuration file for the CI / CD cloud service [AppVeyor](https://ci.appveyor.com/project/philippgille/hello-netcoreapp).
 
 It's configured to do the following:
 
@@ -77,6 +78,12 @@ It's configured to do the following:
         > Note: For adhering to the [Semantic Versioning](http://semver.org/) rules a "v" must be prepended before the actual version number
     
     - Deploy the Chocolatey package to [this app's MyGet feed](https://www.myget.org/gallery/hello-netcoreapp)
+
+#### Travis CI
+
+This repository contains `.travis.yml`, which is a configuration file for the CI / CD cloud service [Travis CI](https://travis-ci.org/philippgille/hello-netcoreapp).
+
+It's currently only configured to run the build script `build.sh` to make sure it works, and not to store build artifacts anywhere.
 
 #### Docker Cloud
 
