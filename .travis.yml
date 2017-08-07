@@ -1,6 +1,9 @@
 # sudo false for using new container-based infrastructure,
 # see https://docs.travis-ci.com/user/migrating-from-legacy/
-sudo: false
+# Note: Apparently doesn't work in combination with .NET Core yet.
+# Opened https://github.com/travis-ci/travis-ci/issues/8216
+# Uncommented for now to make sure nothing suddenly breaks when they enable it.
+#sudo: false
 git:
   depth: 1
 
