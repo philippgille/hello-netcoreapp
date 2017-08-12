@@ -72,7 +72,7 @@ This repository contains `appveyor.yml`, which is a configuration file for the C
 
 It's configured to do the following:
 
-1. Run the build scripts `build-with-docker.ps1` and `build.ps1` to produce `*.zip` archives for FDD and SCD, a Chocolatey package, as well as an AppImage
+1. Run the build script `build.ps1`, which produces `*.zip` archives for FDD and SCD, as well as a Chocolatey package
 2. If a *Git tag* was pushed:
     - Deploy all artifacts to [this repository's GitHub Releases](https://github.com/philippgille/hello-netcoreapp/releases)
         > Note: For adhering to the [Semantic Versioning](http://semver.org/) rules a "v" must be prepended before the actual version number
