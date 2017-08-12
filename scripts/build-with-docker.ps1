@@ -1,6 +1,8 @@
 # Builds the project and creates release artifacts for SCD (self-contained deployment) and FDD (framework-dependent deployment).
 # Uses the official .NET Core Docker container containing the SDK.
 
+$ErrorActionPreference = "Stop"
+
 docker run --rm `
     -v $PSScriptRoot\..\appimage:/root/appimage `
     -v $PSScriptRoot\..\artifacts:/root/artifacts `

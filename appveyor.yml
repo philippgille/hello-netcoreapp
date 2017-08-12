@@ -1,7 +1,17 @@
 version: 0.1.0.{build}
 clone_depth: 1
 
+# Needed so that underlying OS is Windows Server 2016 and we can use Docker
+image: Visual Studio 2017
+
+# Switch Docker daemon from Windows containers to Linux containers
+before_build: scripts\switch-docker-daemon.ps1
+
+# Both build scripts build FDDs and SCDs,
+# but only the Docker one builds an AppImage artifact and
+# only the PowerShell one builds a Chocolatey package
 build_script:
+- ps: scripts\build-with-docker.ps1
 - ps: scripts\build.ps1
 
 test: off
@@ -9,6 +19,7 @@ test: off
 artifacts:
 - path: artifacts\*.zip
 - path: artifacts\*.nupkg
+- path: artifacts\*.AppImage
 
 deploy:
 - provider: GitHub
