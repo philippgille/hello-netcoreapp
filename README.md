@@ -8,7 +8,7 @@ hello-netcoreapp
 
 hello-netcoreapp is a basic *.NET Core* console application that prints "Hello World!". This repository contains additional scripts and files for building the app and creating release artifacts for a *framework-dependent deployment* (FDD), *self-contained deployment* (SCD), *Docker image*, *Chocolatey package* and *AppImage*.
 
-This repository is meant to be a starting point for any new .NET Core console application. You can fork it and base your project upon it. If you improve anything in your fork, please create a PR ☺ .
+This repository is meant to be a starting point for any new .NET Core console application. You can fork it and base your project upon it. If you improve anything in your fork, please create a PR ☺ . [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) 
 
 The basic app was created using `dotnet new console` with the .NET Core SDK 1.1 (or rather SDK 1.0.1 and Shared Framework Host 1.1.1).
 
@@ -83,7 +83,7 @@ It's configured to do the following:
 
 This repository contains `.travis.yml`, which is a configuration file for the CI / CD cloud service [Travis CI](https://travis-ci.org/philippgille/hello-netcoreapp).
 
-It's currently only configured to run the build script `build.sh` to make sure it works, and not to store build artifacts anywhere.
+It's currently only configured to run the build script `build.sh` to make sure it works and everything compiles on Linux, but not to deploy build artifacts anywhere.
 
 #### Docker Cloud
 
@@ -109,7 +109,7 @@ Windows | Docker | `build-with-docker.ps1` | <ul><li>FDD: `hello-netcoreapp_netc
 Linux | .NET Core SDK | `build.sh` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_ubuntu.16.04-x64.AppImage`</li></ul>
 Linux | Docker | `build-with-docker.sh` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_ubuntu.16.04-x64.AppImage`</li></ul>
 
-The SCDs that are built depend on the runtime identifiers in the `.csproj`. To add or remove SCDs, just edit that file accordingly.
+The SCDs that are built depend on the runtime identifiers in the `.csproj`. To add or remove SCDs, just edit that file accordingly (see [available runtime identifiers](https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog)).
 
 ##### Small footprint SCD
 
@@ -155,7 +155,9 @@ You can copy the archive (`hello-netcoreapp_netcoreapp1.1.zip` or `hello-netcore
 
 ### SCD
 
-You can copy the archive (for example `hello-netcoreapp_ubuntu.16.04-x64.zip` or `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`) to wherever you want to run the app (only the OS has to match), extract the archive and run:
+Depending on your system you might need to install the dependencies listed in the [.NET Core native prerequisites](https://github.com/dotnet/core/blob/master/Documentation/prereqs.md).
+
+Then you can copy the archive (for example `hello-netcoreapp_ubuntu.16.04-x64.zip` or `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`) to wherever you want to run the app (only the OS has to match), extract the archive and run:
 
 - `path/to/hello-netcoreapp`
 
