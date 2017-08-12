@@ -83,7 +83,13 @@ It's configured to do the following:
 
 This repository contains `.travis.yml`, which is a configuration file for the CI / CD cloud service [Travis CI](https://travis-ci.org/philippgille/hello-netcoreapp).
 
-It's currently only configured to run the build script `build.sh` to make sure it works and everything compiles on Linux, but not to deploy build artifacts anywhere.
+It's configured to do the following:
+
+1. Run the build script `build.sh`, which produces `*.zip` archives for FDD and SCD, as well as an AppImage
+2. Wait 2 minutes (to make sure the AppVeyor build finishes first and creates a GitHub Release)
+2. If a *Git tag* was pushed:
+    - Deploy the AppImage to [this repository's GitHub Releases](https://github.com/philippgille/hello-netcoreapp/releases)
+        > Note: For adhering to the [Semantic Versioning](http://semver.org/) rules a "v" must be prepended before the actual version number
 
 #### Docker Cloud
 

@@ -15,5 +15,17 @@ dotnet: 1.0.1
 dist: trusty
 
 script:
- - scripts/build.sh
- 
+  - scripts/build.sh
+
+# Wait for AppVeyor build to be finished, which already creates a GitHub Release,
+# so that the following deploy just leads uploading the file to the existing GitHub Release.
+before_deploy: sleep 120
+
+deploy:
+  provider: releases
+  api_key:
+    secure: soEwvdwJ8elx8HpXY6NNl3zPz16Y9ciui1dsKprpfj55q/4rRECOF6IV1XLWkMTzecz6NyjdsOKVLtV7LTYPO/XDSttqPT4++0+JR1vcUyjxUyWsokZwWJ8lDmlHxkWhhwIHVlxN8V0TK8g0fbZ3PIYmwGgdjfH+jyI0nfYp/PltH74rP/+WtpzKqCR5J/k3HMEqr787omb1/OG6qV1qc7wyy688r+LyXX7h8J2Zwe2BxWYZm6z83xZADXGKxAAHHndqjoChB5ZBgibBCETrIRad8IcSJxqMUS5JLzlK0Ys17rjl061Iqc4XFNDSD3pB9RC2Vy7DeDZix1D/giHSAdtNgSbMblqm8gQ0QmowyXuwN1ZTYwRbM9NodxEoBU+2Jn8AtEX0nm41yoAFjXcpkMmUZ46GxIR/UhNLRp39Pz9Z+0UtTtMvsVM3GiAukuz+vwyPAJl9QsSZz3LeZVRLqvMYpyUXrhZS8RwC5KD5/qFSW8+3pvJzYqr/z0ePbS+RGRB0Cz9EO1W5SmPpSNKCkGhly7Tt8+P6ZoQ74xn6pkEjNn3Wc3hCfM/aGnlKp/48JJHhIV6Foj63NOnQx0Rtk7ZPa2ZynnKgA4L1Wh7JdP/5bM+85RHhBuh/QP3YaeKyuXNVMYf4dM7VQ7OMeAbteUeQBKSOrsJdDZg7TOdIt24=
+  file: artifacts/hello-netcoreapp_ubuntu.16.04-x64.AppImage
+  skip_cleanup: true
+  on:
+    tags: true
