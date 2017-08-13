@@ -75,7 +75,7 @@ It's configured to do the following:
 1. Run the build script `build.ps1`, which produces `*.zip` archives for FDD and SCD, as well as a Chocolatey package
 2. If a *Git tag* was pushed:
     - Deploy all artifacts to [this repository's GitHub Releases](https://github.com/philippgille/hello-netcoreapp/releases)
-        > Note: For adhering to the [Semantic Versioning](http://semver.org/) rules a "v" must be prepended before the actual version number
+        > Note: If the release already exists, existing files get overwritten (not all, only those where a new file was built, keeping files from the Travis CI build in case it finished first)
     
     - Deploy the Chocolatey package to [this app's MyGet feed](https://www.myget.org/gallery/hello-netcoreapp)
 
@@ -85,11 +85,10 @@ This repository contains `.travis.yml`, which is a configuration file for the CI
 
 It's configured to do the following:
 
-1. Run the build script `build.sh`, which produces `*.zip` archives for FDD and SCD, as well as an AppImage
-2. Wait 2 minutes (to make sure the AppVeyor build finishes first and creates a GitHub Release)
+1. Run the build script `build.sh`, which produces `*.tar.gz` archives for FDD and SCD, as well as an AppImage
 2. If a *Git tag* was pushed:
-    - Deploy the AppImage to [this repository's GitHub Releases](https://github.com/philippgille/hello-netcoreapp/releases)
-        > Note: For adhering to the [Semantic Versioning](http://semver.org/) rules a "v" must be prepended before the actual version number
+    - Deploy all artifacts to [this repository's GitHub Releases](https://github.com/philippgille/hello-netcoreapp/releases)
+        > Note: If the release already exists, existing files get overwritten (not all, only those where a new file was built, keeping files from the AppVeyor build in case it finished first)
 
 #### Docker Cloud
 
