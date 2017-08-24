@@ -9,7 +9,9 @@ FROM microsoft/dotnet:1.1-sdk as builder
 
 # The following line is needed as long as the AppImage gets created in build.sh.
 # Make use of Docker layering: cached layer
-RUN apt update && apt install -y libglib2.0-0
+RUN apt update \
+    && apt install -y -no-install-recommends \
+        libglib2.0-0
 
 WORKDIR /dotnetapp
 # Make use of Docker layering: cached layer
