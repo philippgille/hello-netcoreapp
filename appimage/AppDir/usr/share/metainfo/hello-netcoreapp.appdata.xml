@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- For the AppStream metadata specification, see:
      - https://www.freedesktop.org/software/appstream/docs/chap-Metadata.html#spec-component-filespec
      - https://www.freedesktop.org/software/appstream/docs/sect-Metadata-ConsoleApplication.html
@@ -16,15 +16,15 @@
     </p>
   </description>
   <categories>
-​    <category>Development</category>
+    <category>Development</category>
   </categories>
   <url type="homepage">https://github.com/philippgille/hello-netcoreapp</url>
   <!-- Not sure if this works for console applications
   <launchable type="desktop-id">com.philippgille.hello-netcoreapp.desktop</launchable>
   -->
   <releases>
-​    <release version="0.1.0"/>
-  ​</releases>
+    <release version="0.1.0"/>
+  </releases>
   <provides>
     <binary>hello-netcoreapp</binary>
   </provides>

@@ -1,4 +1,4 @@
-version: 0.1.0.{build}
+﻿version: 0.1.0.{build}
 clone_depth: 1
 
 build_script:
