@@ -19,10 +19,10 @@ function Set-String
 $version = Get-Content ${PSScriptRoot}\..\VERSION
 
 # Replace in hello-netcoreapp.appdata.xml
-Set-String '<release version="\d+\.\d+\.\d+"/>' "<release version=`"${version}`"/>" ${PSScriptRoot}\..\appimage\AppDir\usr\share\metainfo\hello-netcoreapp.appdata.xml
+Set-String '<release version="\d+\.\d+\.\d+"/>' "<release version=`"${version}`"/>" "${PSScriptRoot}\..\appimage\AppDir\usr\share\metainfo\hello-netcoreapp.appdata.xml"
 
 # Replace in hello-netcoreapp.nuspec
-Set-String '<version>\d+\.\d+\.\d+</version>' "<version>${version}</version>" ${PSScriptRoot}\..\chocolatey\hello-netcoreapp.nuspec
+Set-String '<version>\d+\.\d+\.\d+</version>' "<version>${version}</version>" "${PSScriptRoot}\..\chocolatey\hello-netcoreapp.nuspec"
 
 # Replace in appveyor.yml
-Set-String 'version: \d+\.\d+\.\d+\.\{build\}' "version: ${version}.{build}" ${PSScriptRoot}\..\appveyor.yml
+Set-String 'version: \d+\.\d+\.\d+\.\{build\}' "version: ${version}.{build}" "${PSScriptRoot}\..\appveyor.yml"
