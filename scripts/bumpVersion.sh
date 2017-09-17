@@ -4,8 +4,8 @@
 
 set -eux
 
-# Replaces a string found by a RegEx pattern by the version in a specified file.
-# The path to the file must be specified from the root of the repository.
+# Replaces a string found by a RegEx pattern by a replacement in a specified file.
+# The path to the file must be absolute.
 #
 # Params: REGEX, REPLACEMENT, FILE
 #
@@ -16,7 +16,7 @@ function replace() {
     FILE=$3
     
     # Don't use '/' as delimiter in sed in case the variable might contain the same character
-    sed -r -i "s@${REGEX}@${REPLACEMENT}@" $SCRIPTDIR/../$FILE
+    sed -r -i "s@${REGEX}@${REPLACEMENT}@" $FILE
 }
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -25,10 +25,10 @@ SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 VERSION=$(<$SCRIPTDIR/../VERSION)
 
 # Replace in hello-netcoreapp.appdata.xml
-replace '<release version="[0-9]+\.[0-9]+\.[0-9]+"/>' "<release version=\"${VERSION}\"/>" appimage/AppDir/usr/share/metainfo/hello-netcoreapp.appdata.xml
+replace '<release version="[0-9]+\.[0-9]+\.[0-9]+"/>' "<release version=\"${VERSION}\"/>" $SCRIPTDIR/../appimage/AppDir/usr/share/metainfo/hello-netcoreapp.appdata.xml
 
 # Replace in hello-netcoreapp.nuspec
-replace '<version>[0-9]+\.[0-9]+\.[0-9]+</version>' "<version>${VERSION}</version>" chocolatey/hello-netcoreapp.nuspec
+replace '<version>[0-9]+\.[0-9]+\.[0-9]+</version>' "<version>${VERSION}</version>" $SCRIPTDIR/../chocolatey/hello-netcoreapp.nuspec
 
 # Replace in appveyor.yml
-replace 'version: [0-9]+\.[0-9]+\.[0-9]+\.\{build\}' "version: ${VERSION}.{build}" appveyor.yml
+replace 'version: [0-9]+\.[0-9]+\.[0-9]+\.\{build\}' "version: ${VERSION}.{build}" $SCRIPTDIR/../appveyor.yml
