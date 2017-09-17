@@ -60,6 +60,7 @@ Directory structure
     - The `*.ps1` scripts are for use in Windows (PowerShell), the `*.sh` scripts are for use in Linux.
 - `.travis.yml`: Configuration file for Travis CI (Continuous Integration and Deployment cloud service, Linux)
 - `appveyor.yml`: Configuration file for AppVeyor (Continuous Integration and Deployment cloud service, Windows)
+- `VERSION`: A file containing the version of the app. Gets injected into some other files before building.
 
 Build
 -----

@@ -15,8 +15,8 @@ set -eux
 #
 # Params: PUBLISHTYPE, FRAMEWORKORRUNTIME
 #
-# Example 1: build "FDD", "netcoreapp1.1" $ARTIFACTSDIR $SOURCEDIR
-# Example 2: build "SCD", "win10-64" $ARTIFACTSDIR $SOURCEDIR
+# Example 1: build "FDD" "netcoreapp1.1" $ARTIFACTSDIR $SOURCEDIR
+# Example 2: build "SCD" "win10-64" $ARTIFACTSDIR $SOURCEDIR
 function build() {
     PUBLISHTYPE=$1
     FRAMEWORKORRUNTIME=$2
