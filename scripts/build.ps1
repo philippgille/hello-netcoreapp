@@ -29,7 +29,7 @@ function New-Build
         Exit 1
     }
 
-    $publishName = "${appName}_$frameworkOrRuntime"
+    $publishName = "${appName}_v${version}_$frameworkOrRuntime"
     $publishDir = "$artifactsDir\$publishName"
 
     # Clean and create directories
@@ -68,6 +68,9 @@ function Read-RuntimeIdentifiersFromCsproj
 
 $artifactsDir = "$PSScriptRoot\..\artifacts"
 $sourceDir = "$PSScriptRoot\..\src"
+$version = Get-Content ${PSScriptRoot}\..\VERSION
+
+&${PSScriptRoot}\bumpVersion.ps1
 
 # Build FDD
 
@@ -83,10 +86,10 @@ foreach ($rId in $rIds) {
 
 # Build Chocolatey package if Chocolatey is installed and a win10-x64 SCD was built
 
-If ((Get-Command "choco" -ErrorAction SilentlyContinue) -and (Test-Path "$artifactsDir\${appName}_win10-x64\${appName}.exe")) {
+If ((Get-Command "choco" -ErrorAction SilentlyContinue) -and (Test-Path "$artifactsDir\${appName}_v${version}_win10-x64\${appName}.exe")) {
     mkdir "$PSScriptRoot\..\chocolatey\tools" -Force
     Remove-Item -Force "$artifactsDir\${appName}.*.nupkg"
     Remove-Item -Force -Recurse "$PSScriptRoot\..\chocolatey\tools\*"
-    Copy-Item "$artifactsDir\${appName}_win10-x64" "$PSScriptRoot\..\chocolatey\tools" -Recurse
+    Copy-Item "$artifactsDir\${appName}_v${version}_win10-x64" "$PSScriptRoot\..\chocolatey\tools" -Recurse
     choco pack "$PSScriptRoot\..\chocolatey\$appName.nuspec" --out $artifactsDir
 }

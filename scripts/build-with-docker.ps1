@@ -2,9 +2,7 @@
 # Uses the official .NET Core Docker container containing the SDK.
 
 docker run --rm `
-    -v $PSScriptRoot\..\appimage:/root/appimage `
-    -v $PSScriptRoot\..\artifacts:/root/artifacts `
-    -v ${PSScriptRoot}:/root/scripts `
-    -v $PSScriptRoot\..\src:/root/src `
+    -v $PSScriptRoot\..\:/dotnetapp `
+    -w /dotnetapp `
     microsoft/dotnet:1.1-sdk `
-    bash -c "apt update && apt install -y libglib2.0-0 && root/scripts/build.sh"
+    bash -c "apt update && apt install -y --no-install-recommends libglib2.0-0 && ./scripts/build.sh"

@@ -37,7 +37,7 @@ function build() {
         exit 1
     fi
 
-    PUBLISHNAME="${APPNAME}_$FRAMEWORKORRUNTIME"
+    PUBLISHNAME="${APPNAME}_v${VERSION}_$FRAMEWORKORRUNTIME"
     PUBLISHDIR="$ARTIFACTSDIR/$PUBLISHNAME"
 
     # Clean and create directories
@@ -83,6 +83,9 @@ function running_in_docker() {
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ARTIFACTSDIR="$SCRIPTDIR/../artifacts"
 SOURCEDIR="$SCRIPTDIR/../src"
+VERSION=$(<$SCRIPTDIR/../VERSION)
+
+$SCRIPTDIR/bumpVersion.sh
 
 # Build FDD
 
@@ -100,12 +103,12 @@ done
 
 # Build AppImage if a ubuntu.16.04-x64 SCD was built
 
-if [[ -f $ARTIFACTSDIR/${APPNAME}_ubuntu.16.04-x64/$APPNAME ]]; then
+if [[ -f $ARTIFACTSDIR/${APPNAME}_v${VERSION}_ubuntu.16.04-x64/$APPNAME ]]; then
     # Clean and create directories
     rm -r -f $SCRIPTDIR/../appimage/AppDir/usr/bin/*
     mkdir -p $SCRIPTDIR/../appimage/AppDir/usr/bin/
     # Copy SCD files
-    cp -r $ARTIFACTSDIR/${APPNAME}_ubuntu.16.04-x64 $SCRIPTDIR/../appimage/AppDir/usr/bin/
+    cp -r $ARTIFACTSDIR/${APPNAME}_v${VERSION}_ubuntu.16.04-x64 $SCRIPTDIR/../appimage/AppDir/usr/bin/
     # Make sure AppRun is executable
     chmod u+x $SCRIPTDIR/../appimage/AppDir/AppRun
     # Download AppImage creation tool, make it executable and extract it, so we don't need to have fuse installed
@@ -114,8 +117,8 @@ if [[ -f $ARTIFACTSDIR/${APPNAME}_ubuntu.16.04-x64/$APPNAME ]]; then
     # Extract AppImage so it can be run in Docker containers and on  machines that don't have FUSE installed
     /tmp/appimagetool-x86_64.AppImage --appimage-extract
     # Create AppImage
-#    /tmp/appimagetool-x86_64.AppImage $SCRIPTDIR/../appimage/AppDir/ $ARTIFACTSDIR/${APPNAME}_ubuntu.16.04-x64.AppImage
-    ./squashfs-root/AppRun $SCRIPTDIR/../appimage/AppDir/ $ARTIFACTSDIR/${APPNAME}_ubuntu.16.04-x64.AppImage
+#    /tmp/appimagetool-x86_64.AppImage $SCRIPTDIR/../appimage/AppDir/ $ARTIFACTSDIR/${APPNAME}_v${VERSION}_ubuntu.16.04-x64.AppImage
+    ./squashfs-root/AppRun $SCRIPTDIR/../appimage/AppDir/ $ARTIFACTSDIR/${APPNAME}_v${VERSION}_ubuntu.16.04-x64.AppImage
     # Delete downloaded AppImage creation tool
     rm /tmp/appimagetool-x86_64.AppImage
     rm -r ./squashfs-root

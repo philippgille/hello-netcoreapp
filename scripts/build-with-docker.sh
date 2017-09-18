@@ -8,9 +8,7 @@ set -euxo pipefail
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 docker run --rm \
-    -v $SCRIPTDIR/../appimage:/root/appimage \
-    -v $SCRIPTDIR/../artifacts:/root/artifacts \
-    -v $SCRIPTDIR:/root/scripts \
-    -v $SCRIPTDIR/../src:/root/src \
+    -v $SCRIPTDIR/../:/dotnetapp \
+    -w /dotnetapp
     microsoft/dotnet:1.1-sdk \
-    bash -c "apt update && apt install -y libglib2.0-0 && root/scripts/build.sh"
+    bash -c "apt update && apt install -y --no-install-recommends libglib2.0-0 && ./scripts/build.sh"
