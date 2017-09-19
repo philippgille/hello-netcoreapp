@@ -108,7 +108,8 @@ if [[ -f $ARTIFACTSDIR/${APPNAME}_v${VERSION}_ubuntu.16.04-x64/$APPNAME ]]; then
     rm -r -f $SCRIPTDIR/../appimage/AppDir/usr/bin/*
     mkdir -p $SCRIPTDIR/../appimage/AppDir/usr/bin/
     # Copy SCD files
-    cp -r $ARTIFACTSDIR/${APPNAME}_v${VERSION}_ubuntu.16.04-x64 $SCRIPTDIR/../appimage/AppDir/usr/bin/
+    # Copy directory without the version in its name so that the AppRun file can stay unchanged across versions
+    cp -r $ARTIFACTSDIR/${APPNAME}_v${VERSION}_ubuntu.16.04-x64 $SCRIPTDIR/../appimage/AppDir/usr/bin/${APPNAME}_ubuntu.16.04-x64
     # Make sure AppRun is executable
     chmod u+x $SCRIPTDIR/../appimage/AppDir/AppRun
     # Download AppImage creation tool, make it executable and extract it, so we don't need to have fuse installed
