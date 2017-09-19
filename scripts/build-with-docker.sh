@@ -9,6 +9,6 @@ SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 docker run --rm \
     -v $SCRIPTDIR/../:/dotnetapp \
-    -w /dotnetapp
+    -w /dotnetapp \
     microsoft/dotnet:1.1-sdk \
     bash -c "apt update && apt install -y --no-install-recommends libglib2.0-0 && ./scripts/build.sh"
