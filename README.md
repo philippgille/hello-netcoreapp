@@ -161,9 +161,11 @@ You can copy the archive (`hello-netcoreapp_netcoreapp1.1.zip` or `hello-netcore
 
 ### SCD
 
-Depending on your system you might need to install the dependencies listed in the [.NET Core native prerequisites](https://github.com/dotnet/core/blob/master/Documentation/prereqs.md).
+> Note: Depending on your system you might need to install the dependencies listed in the [.NET Core native prerequisites](https://github.com/dotnet/core/blob/master/Documentation/prereqs.md). For example for Ubuntu that's:
+> 
+> - `apt-get install -y --no-install-recommends libunwind8 libunwind8-dev gettext libicu-dev liblttng-ust-dev libcurl4-openssl-dev libssl-dev uuid-dev unzip`
 
-Then you can copy the archive (for example `hello-netcoreapp_ubuntu.16.04-x64.zip` or `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`) to wherever you want to run the app (only the OS has to match), extract the archive and run:
+Copy the archive (for example `hello-netcoreapp_ubuntu.16.04-x64.zip` or `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`) to wherever you want to run the app (only the OS has to match), extract the archive and run:
 
 - `path/to/hello-netcoreapp`
 
@@ -198,7 +200,11 @@ Then run: `hello-netcoreapp`
 
 ### AppImage
 
-> Note: You can only use AppImages on Linux and you must *either* have fuse installed *or* mount or extract the AppImage, see [AppImage/AppImageKit/wiki/FUSE](https://github.com/AppImage/AppImageKit/wiki/FUSE)
+> Note 1: You can only use AppImages on Linux and you must *either* have fuse installed *or* mount or extract the AppImage, see [AppImage/AppImageKit/wiki/FUSE](https://github.com/AppImage/AppImageKit/wiki/FUSE)
+
+> Note 2: Depending on your system you might need to install the dependencies listed in the [.NET Core native prerequisites](https://github.com/dotnet/core/blob/master/Documentation/prereqs.md). For example for Ubuntu that's:
+> 
+> - `apt-get install -y --no-install-recommends libunwind8 libunwind8-dev gettext libicu-dev liblttng-ust-dev libcurl4-openssl-dev libssl-dev uuid-dev unzip`
 
 After downloading the AppImage, you have to make it executable: `chmod u+x hello-netcoreapp_ubuntu.16.04-x64.AppImage`
 
