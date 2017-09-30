@@ -10,7 +10,7 @@ hello-netcoreapp is a basic *.NET Core* console application that prints "Hello W
 
 This repository is meant to be a starting point for any new .NET Core console application. You can fork it and base your project upon it. If you improve anything in your fork, please create a PR ☺ . [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) 
 
-The basic app was created using `dotnet new console` with the .NET Core SDK 1.1 (or rather SDK 1.0.1 and Shared Framework Host 1.1.1).
+The basic app was created using `dotnet new console` with the .NET Core SDK 2.0.
 
 Contents
 --------
@@ -49,7 +49,7 @@ Directory structure
     - Used in case you open the root directory of the repository as workspace in Visual Studio Code
 - `appimage/`: Contains files related to the AppImage
 - `artifacts/`: Not contained in the git repository, but gets created when one of the build scripts is run
-    - After a build script is run it contains the resulting release artifacts, such as `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`
+    - After a build script is run it contains the resulting release artifacts, such as `hello-netcoreapp_linux-x64.tar.gz`
 - `docker/`: Dockerfiles for building Docker images for Linux and Windows containers with the app
 - `src/`: Contains the application source code, basically just a main class (`Program.cs`) and project file (`hello-netcoreapp.csproj`)
     - `.vscode/`: Contains files for debugging the app in Visual Studio Code
@@ -110,21 +110,12 @@ Depending on your OS and installed software, run the following scripts:
 
 System | Installed | Run | Artifacts
 -------|-----------|-----|----------
-Windows | .NET Core SDK | `build.ps1` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.zip`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.zip`</li><li>Chocolatey package (if installed): `hello-netcoreapp.portable.0.1.0.nupkg`</li></ul>
-Windows | Docker | `build-with-docker.ps1` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_ubuntu.16.04-x64.AppImage`</li></ul>
-Linux | .NET Core SDK | `build.sh` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_ubuntu.16.04-x64.AppImage`</li></ul>
-Linux | Docker | `build-with-docker.sh` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_ubuntu.16.04-x64.AppImage`</li></ul>
+Windows | .NET Core SDK | `build.ps1` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.zip`</li><li>SCDs, e.g. `hello-netcoreapp_linux-x64.zip`</li><li>Chocolatey package (if installed): `hello-netcoreapp.portable.0.1.0.nupkg`</li></ul>
+Windows | Docker | `build-with-docker.ps1` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_linux-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_linux-x64.AppImage`</li></ul>
+Linux | .NET Core SDK | `build.sh` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_linux-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_linux-x64.AppImage`</li></ul>
+Linux | Docker | `build-with-docker.sh` | <ul><li>FDD: `hello-netcoreapp_netcoreapp1.1.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_linux-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_linux-x64.AppImage`</li></ul>
 
 The SCDs that are built depend on the runtime identifiers in the `.csproj`. To add or remove SCDs, just edit that file accordingly (see [available runtime identifiers](https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog)).
-
-##### Small footprint SCD
-
-Additionally to the default SCD, you can also create a "small footprint SCD", which targets `netstandard1.6` instead of `netcoreapp1.1`, making the published files smaller. This requires a change in the csproj file though and makes it incompatible with FDD. Also, the size gain is not very big:
-
-- With `netcoreapp1.1`: 45-55 MB published directory, 20 MB archive
-- With `netstandard1.6`: 30-40 MB published directory, 13-15 MB archive
-
-This is for a simple "Hello World" app. For a bigger app with third-party dependencies the size difference is even smaller.
 
 #### Docker image
 
@@ -135,7 +126,7 @@ In the root directory of the repository, depending on which container host syste
 - For Linux containers, run: `docker build -f docker/Dockerfile -t local/hello-netcoreapp .`
     - You can do this on both Linux and Windows
 - For Windows containers, you must first build the app's FDD and then create the Docker image:
-    1. Run any of the build scripts, so that there's `artifacts/hello-netcoreapp_netcoreapp1.1`
+    1. Run any of the build scripts, so that there's `artifacts/hello-netcoreapp_netcoreapp2.0`
     2. `docker build -f docker/Dockerfile.nano -t local/hello-netcoreapp .`
 
 > Note 1: You don't need to create a Windows container image for using Docker in Windows. Linux containers work just fine on Windows with Hyper-V. Creating a Windows container image is specifically for actual *Windows containers*, see [https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/](https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/).
@@ -155,7 +146,7 @@ Alternatively you can build the artifacts on your own (see the *Build* section i
 
 As mentioned before, you need to have the .NET Core runtime installed for running the FDD.
 
-You can copy the archive (`hello-netcoreapp_netcoreapp1.1.zip` or `hello-netcoreapp_netcoreapp1.1.tar.gz`) to wherever you want to run the app, extract the archive and run:
+You can copy the archive (`hello-netcoreapp_netcoreapp2.0.zip` or `hello-netcoreapp_netcoreapp2.0.tar.gz`) to wherever you want to run the app, extract the archive and run:
 
 - `dotnet path/to/hello-netcoreapp.dll`
 
@@ -165,7 +156,7 @@ You can copy the archive (`hello-netcoreapp_netcoreapp1.1.zip` or `hello-netcore
 > 
 > - `apt-get install -y --no-install-recommends libunwind8 libunwind8-dev gettext libicu-dev liblttng-ust-dev libcurl4-openssl-dev libssl-dev uuid-dev unzip`
 
-Copy the archive (for example `hello-netcoreapp_ubuntu.16.04-x64.zip` or `hello-netcoreapp_ubuntu.16.04-x64.tar.gz`) to wherever you want to run the app (only the OS has to match), extract the archive and run:
+Copy the archive (for example `hello-netcoreapp_linux-x64.zip` or `hello-netcoreapp_linux-x64.tar.gz`) to wherever you want to run the app (only the OS has to match), extract the archive and run:
 
 - `path/to/hello-netcoreapp`
 
@@ -191,7 +182,7 @@ First you need to install the package with one of the following ways:
 - Alternatively install the downloaded or locally built package:
     - `choco install path\to\hello-netcoreapp.portable.0.1.0.nupkg`
 - Alternatively you can also install via the package specification file in this repository:
-    1. Either run `build.ps1` or manually place `artifacts\hello-netcoreapp_win10-x64` in `chocolatey\tools`
+    1. Either run `build.ps1` or manually place `artifacts\hello-netcoreapp_win-x64` in `chocolatey\tools`
     2. `choco install chocolatey\hello-netcoreapp.nuspec`
 
 Then run: `hello-netcoreapp`
@@ -206,9 +197,9 @@ Then run: `hello-netcoreapp`
 > 
 > - `apt-get install -y --no-install-recommends libunwind8 libunwind8-dev gettext libicu-dev liblttng-ust-dev libcurl4-openssl-dev libssl-dev uuid-dev unzip`
 
-After downloading the AppImage, you have to make it executable: `chmod u+x hello-netcoreapp_ubuntu.16.04-x64.AppImage`
+After downloading the AppImage, you have to make it executable: `chmod u+x hello-netcoreapp_linux-x64.AppImage`
 
-Then run: `hello-netcoreapp_ubuntu.16.04-x64.AppImage`
+Then run: `hello-netcoreapp_linux-x64.AppImage`
 
 For integrating the AppImage into your OS (MIME type registration, start menu), you can run the optional AppImage daemon. Read more about it here: [https://github.com/AppImage/AppImageKit/blob/appimagetool/master/README.md#appimaged-usage](https://github.com/AppImage/AppImageKit/blob/appimagetool/master/README.md#appimaged-usage)
 

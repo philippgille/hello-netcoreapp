@@ -5,30 +5,26 @@
 # Builder image
 # Don't bother to clean up the image - it's only used for building
 
-FROM microsoft/dotnet:1.1-sdk as builder
+# Use philippgille/dotnet-libglib as long as the AppImage gets created in build.sh.
+# In the final Docker image the AppImage isn't needed, so "FROM microsoft/dotnet:2.0-sdk" would suffice.
+FROM philippgille/dotnet-libglib:2.0-sdk as builder
 
-# The following line is needed as long as the AppImage gets created in build.sh.
+WORKDIR /app
 # Make use of Docker layering: cached layer
-RUN apt update \
-    && apt install -y --no-install-recommends \
-        libglib2.0-0
-
-WORKDIR /dotnetapp
-# Make use of Docker layering: cached layer
-COPY src/ src/
+COPY src/*.csproj src/
 RUN dotnet restore src/hello-netcoreapp.csproj
 # Make use of Docker layering: new layer
 COPY . .
 # RUN without "bash" leads to sh being used, which leads to an error ("scripts/build.sh not found")
-RUN bash scripts/build.sh
+RUN bash -c "scripts/build.sh"
 
 # Runtime image
 
-FROM microsoft/dotnet:1.1-runtime
+FROM microsoft/dotnet:2.0-runtime
 
 LABEL maintainer "Philipp Gille"
 
-WORKDIR /dotnetapp
-COPY --from=builder /dotnetapp/artifacts/hello-netcoreapp_v*_netcoreapp1.1 ./
+WORKDIR /app
+COPY --from=builder /app/artifacts/hello-netcoreapp_v*_netcoreapp2.0 ./
 
 ENTRYPOINT ["dotnet", "hello-netcoreapp.dll"]

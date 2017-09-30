@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Builds the project and creates release artifacts for SCD (self-contained deployment) and FDD (framework-dependent deployment).
-# Uses an installed version of the .NET Core SDK, which should be version 1.1.
+# Uses an installed version of the .NET Core SDK, which should be version 2.0.
 
 APPNAME="hello-netcoreapp"
 
@@ -15,8 +15,8 @@ set -eux
 #
 # Params: PUBLISHTYPE, FRAMEWORKORRUNTIME
 #
-# Example 1: build "FDD" "netcoreapp1.1" $ARTIFACTSDIR $SOURCEDIR
-# Example 2: build "SCD" "win10-64" $ARTIFACTSDIR $SOURCEDIR
+# Example 1: build "FDD" "netcoreapp2.0" $ARTIFACTSDIR $SOURCEDIR
+# Example 2: build "SCD" "win-64" $ARTIFACTSDIR $SOURCEDIR
 function build() {
     PUBLISHTYPE=$1
     FRAMEWORKORRUNTIME=$2
@@ -25,12 +25,8 @@ function build() {
 
     # Set variables depending on publish type
     if [[ "$PUBLISHTYPE" == "FDD" ]]; then
-        RESTORESWITCH=""
-        RESTORERID=""
         PUBLISHSWITCH="-f"
     elif [[ "$PUBLISHTYPE" == "SCD" ]]; then
-        RESTORESWITCH="-r"
-        RESTORERID=$FRAMEWORKORRUNTIME
         PUBLISHSWITCH="-r"
     else
         echo "An unknown publish type was passed to the function"
@@ -44,11 +40,9 @@ function build() {
     rm -r -f "$PUBLISHDIR"
     mkdir -p "$PUBLISHDIR"
 
-    # Restore NuGet packages
-    dotnet restore $SOURCEDIR $RESTORESWITCH $RESTORERID
-
     # "dotnet publish" without "-o" option publishes to different directories on Windows vs. .NET Core SDK Docker container.
     dotnet publish $SOURCEDIR $PUBLISHSWITCH $FRAMEWORKORRUNTIME -c release -o "$PUBLISHDIR"
+    sleep 1s
 
     # Create an archive with all FDD / SCD files for publishing.
     # tar includes the full path when doing `tar -czf $DESTINATION $SOURCE`
@@ -65,7 +59,7 @@ function build() {
 function read_runtime_identifiers_from_csproj() {
     PATHTOCSPROJ=$1
 
-    # Example line: <RuntimeIdentifiers>win10-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
+    # Example line: <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
     RIDLINE=$(cat $PATHTOCSPROJ | grep "<RuntimeIdentifiers>.*</RuntimeIdentifiers>")
     RIDLINE=$(echo $RIDLINE | sed 's/\ *//' | sed 's/<RuntimeIdentifiers>//' | sed 's/<\/RuntimeIdentifiers>//')
     RIDLINE=${RIDLINE//;/ }
@@ -89,7 +83,7 @@ $SCRIPTDIR/bumpVersion.sh
 
 # Build FDD
 
-build "FDD" "netcoreapp1.1" $ARTIFACTSDIR $SOURCEDIR
+build "FDD" "netcoreapp2.0" $ARTIFACTSDIR $SOURCEDIR
 
 # Build SCD
 
@@ -101,15 +95,15 @@ do
     build "SCD" $RID $ARTIFACTSDIR $SOURCEDIR
 done
 
-# Build AppImage if a ubuntu.16.04-x64 SCD was built
+# Build AppImage if a linux-x64 SCD was built
 
-if [[ -f $ARTIFACTSDIR/${APPNAME}_v${VERSION}_ubuntu.16.04-x64/$APPNAME ]]; then
+if [[ -f $ARTIFACTSDIR/${APPNAME}_v${VERSION}_linux-x64/$APPNAME ]]; then
     # Clean and create directories
     rm -r -f $SCRIPTDIR/../appimage/AppDir/usr/bin/*
     mkdir -p $SCRIPTDIR/../appimage/AppDir/usr/bin/
     # Copy SCD files
     # Copy directory without the version in its name so that the AppRun file can stay unchanged across versions
-    cp -r $ARTIFACTSDIR/${APPNAME}_v${VERSION}_ubuntu.16.04-x64 $SCRIPTDIR/../appimage/AppDir/usr/bin/${APPNAME}_ubuntu.16.04-x64
+    cp -r $ARTIFACTSDIR/${APPNAME}_v${VERSION}_linux-x64 $SCRIPTDIR/../appimage/AppDir/usr/bin/${APPNAME}_linux-x64
     # Make sure AppRun is executable
     chmod u+x $SCRIPTDIR/../appimage/AppDir/AppRun
     # Download AppImage creation tool, make it executable and extract it, so we don't need to have fuse installed
@@ -118,8 +112,8 @@ if [[ -f $ARTIFACTSDIR/${APPNAME}_v${VERSION}_ubuntu.16.04-x64/$APPNAME ]]; then
     # Extract AppImage so it can be run in Docker containers and on  machines that don't have FUSE installed
     /tmp/appimagetool-x86_64.AppImage --appimage-extract
     # Create AppImage
-#    /tmp/appimagetool-x86_64.AppImage $SCRIPTDIR/../appimage/AppDir/ $ARTIFACTSDIR/${APPNAME}_v${VERSION}_ubuntu.16.04-x64.AppImage
-    ./squashfs-root/AppRun $SCRIPTDIR/../appimage/AppDir/ $ARTIFACTSDIR/${APPNAME}_v${VERSION}_ubuntu.16.04-x64.AppImage
+#    /tmp/appimagetool-x86_64.AppImage $SCRIPTDIR/../appimage/AppDir/ $ARTIFACTSDIR/${APPNAME}_v${VERSION}_linux-x64.AppImage
+    ./squashfs-root/AppRun $SCRIPTDIR/../appimage/AppDir/ $ARTIFACTSDIR/${APPNAME}_v${VERSION}_linux-x64.AppImage
     # Delete downloaded AppImage creation tool
     rm /tmp/appimagetool-x86_64.AppImage
     rm -r ./squashfs-root
