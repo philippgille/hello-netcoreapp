@@ -7,12 +7,11 @@
 git:
   depth: 1
 
-# language, mono, dotnet, dist are all necessary for .NET Core,
-# see https://docs.travis-ci.com/user/languages/csharp/#.NET-Core
+# language, mono, dotnet, dist are all necessary for .NET Core SDK 1.1 according to https://docs.travis-ci.com/user/languages/csharp/#.NET-Core
+# But for 2.0 the following suffices
 language: csharp
 mono: none
-dotnet: 1.0.1
-dist: trusty
+dotnet: 2.0.0
 
 script:
   - scripts/build.sh
