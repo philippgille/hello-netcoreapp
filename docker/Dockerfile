@@ -15,8 +15,7 @@ COPY src/*.csproj src/
 RUN dotnet restore src/hello-netcoreapp.csproj
 # Make use of Docker layering: new layer
 COPY . .
-# RUN without "bash" leads to sh being used, which leads to an error ("scripts/build.sh not found")
-RUN bash -c "scripts/build.sh"
+RUN scripts/build.sh
 
 # Runtime image
 
