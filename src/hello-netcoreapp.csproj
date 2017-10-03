@@ -10,7 +10,7 @@
          Also see this more complete list: https://github.com/dotnet/corefx/blob/release/2.0.0/pkg/Microsoft.NETCore.Platforms/runtime.json -->
     <RuntimeIdentifiers>win-x64;linux-x64;linux-arm;osx-x64</RuntimeIdentifiers>
   </PropertyGroup>
-  <!-- Example dependency
+  <!-- Example for adding a library via NuGet package
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
