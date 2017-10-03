@@ -16,16 +16,27 @@ function New-Build
     Param ($publishType, $frameworkOrRuntime, $artifactsDir, $sourceDir)
 
     # Set variables depending on publish type
+    # PowerShell doesn't allow having multiple parameter switches and parameters in one variable and passing that to the command,
+    # so we need to make it a bit more complicated than in build.sh.
+    $publishNameSuffix = $frameworkOrRuntime
     if ($publishType -eq "FDD") {
-        $script:publishSwitch = "-f"
+        $framework = $frameworkOrRuntime
+        $script:runtimeParamSwitch = ""
+        $frameworkOrRuntime = ""
     } elseif ($publishType -eq "SCD") {
-        $script:publishSwitch = "-r"
+        if (($frameworkOrRuntime -like "win*") -and ($frameworkOrRuntime -notlike "*arm*")) {
+            $framework = "net461"
+            $script:runtimeParamSwitch = "-r"
+        } else {
+            $framework = "netcoreapp2.0"
+            $script:runtimeParamSwitch = "-r"
+        }
     } else {
         Write-Output "An unknown publish type was passed to the function"
         Exit 1
     }
 
-    $publishName = "${appName}_v${version}_$frameworkOrRuntime"
+    $publishName = "${appName}_v${version}_$publishNameSuffix"
     $publishDir = "$artifactsDir\$publishName"
 
     # Clean and create directories
@@ -35,7 +46,7 @@ function New-Build
     # "dotnet publish" without "-o" option publishes to different directories on Windows vs. .NET Core SDK Docker container.
     # That doesn't matter in this PowerShell script per say, because the build.sh bash script gets used for that,
     # but if that script needs to adapt to that, let's keep the behavior similar and publish to the same directories.
-    dotnet publish $sourceDir $script:publishSwitch $frameworkOrRuntime -c release -o "$publishDir"
+    dotnet publish $sourceDir -f $framework $script:runtimeParamSwitch $frameworkOrRuntime -c release -o "$publishDir"
     Start-Sleep -s 1
 
     # Create an archive with all FDD / SCD files for publishing.
@@ -46,16 +57,16 @@ function New-Build
     [io.compression.zipfile]::CreateFromDirectory("$publishDir", $destination)
 }
 
-# Reads the runtime identifiers from the csproj file and returns them
+# Reads comma seperated values from a given XML value in a given file and returns them
 # 
-# Note: This doesn't consider if the line is commented out. The first matching line gets used. Beware of that when modifying the csproj file.
-function Read-RuntimeIdentifiersFromCsproj
+# Note: This doesn't consider if the line is commented out. The first matching line gets used. Beware of that when modifying the file.
+function Read-CsvFromXmlVal
 {
-    Param ($pathToCsProj)
+    Param ($pathToXml, $xmlValueName)
 
     # Example line: <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
-    $rIdLine = Get-Content $pathToCsProj | Select-String -Pattern "<RuntimeIdentifiers>.*</RuntimeIdentifiers>"
-    $rIdLine = (($rIdLine -Replace " ", "") -Replace "<RuntimeIdentifiers>", "") -Replace "</RuntimeIdentifiers>", ""
+    $rIdLine = Get-Content $pathToXml | Select-String -Pattern "<${xmlValueName}>.*</${xmlValueName}>"
+    $rIdLine = (($rIdLine -Replace " ", "") -Replace "<${xmlValueName}>", "") -Replace "</${xmlValueName}>", ""
     $rIds = $rIdLine -Split ";"
     return $rIds
 }
@@ -68,12 +79,16 @@ $version = Get-Content ${PSScriptRoot}\..\VERSION
 
 # Build FDD
 
-New-Build "FDD" "netcoreapp2.0" $artifactsDir $sourceDir
+# Publish the FDD for each target framework
+$targetFrameworks = Read-CsvFromXmlVal "$sourceDir\$appName.csproj" "TargetFrameworks"
+foreach ($targetFramework in $targetFrameworks) {
+    New-Build "FDD" $targetFramework $artifactsDir $sourceDir
+}
 
 # Build SCD
 
 # Publish the SCD for each runtime identifier
-$rIds = Read-RuntimeIdentifiersFromCsproj "$sourceDir\$appName.csproj"
+$rIds = Read-CsvFromXmlVal "$sourceDir\$appName.csproj" "RuntimeIdentifiers"
 foreach ($rId in $rIds) {
     New-Build "SCD" $rId $artifactsDir $sourceDir
 }

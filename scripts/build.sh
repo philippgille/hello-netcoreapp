@@ -8,12 +8,12 @@ APPNAME="hello-netcoreapp"
 # Don't change anything below this line ########################################
 
 # No "-o pipefail" option for the bash script,
-# because when used in the .NET Core SDK Docker container this leads to "invalid option nameet: pipefail".
+# because when used in the .NET Core SDK Docker container this leads to "invalid option name: pipefail".
 set -eux
 
 # Builds the project and creates release artifacts
 #
-# Params: PUBLISHTYPE, FRAMEWORKORRUNTIME
+# Params: PUBLISHTYPE, FRAMEWORKORRUNTIME, ARTIFACTSDIR, SOURCEDIR
 #
 # Example 1: build "FDD" "netcoreapp2.0" $ARTIFACTSDIR $SOURCEDIR
 # Example 2: build "SCD" "win-64" $ARTIFACTSDIR $SOURCEDIR
@@ -25,9 +25,10 @@ function build() {
 
     # Set variables depending on publish type
     if [[ "$PUBLISHTYPE" == "FDD" ]]; then
-        PUBLISHSWITCH="-f"
+        PUBLISHPARAMS="-f"
     elif [[ "$PUBLISHTYPE" == "SCD" ]]; then
-        PUBLISHSWITCH="-r"
+        # Non-Windows machines can only build with netcoreapp as target framework
+        PUBLISHPARAMS="-f \"netcoreapp2.0\" -r"
     else
         echo "An unknown publish type was passed to the function"
         exit 1
@@ -41,7 +42,7 @@ function build() {
     mkdir -p "$PUBLISHDIR"
 
     # "dotnet publish" without "-o" option publishes to different directories on Windows vs. .NET Core SDK Docker container.
-    dotnet publish $SOURCEDIR $PUBLISHSWITCH $FRAMEWORKORRUNTIME -c release -o "$PUBLISHDIR"
+    dotnet publish $SOURCEDIR $PUBLISHPARAMS $FRAMEWORKORRUNTIME -c release -o "$PUBLISHDIR"
     sleep 1s
 
     # Create an archive with all FDD / SCD files for publishing.
@@ -53,25 +54,19 @@ function build() {
     tar -czf $DESTINATION -C $ARTIFACTSDIR $PUBLISHNAME
 }
 
-# Reads the runtime identifiers from the csproj file and stores them as array in the global variable $RIDS
+# Reads comma seperated values from a given XML value in a given file and stores them as array in the global variable $XML_VALUES
 # 
-# Note: This doesn't consider if the line is commented out. The first matching line gets used. Beware of that when modifying the csproj file.
-function read_runtime_identifiers_from_csproj() {
+# Note: This doesn't consider if the line is commented out. The first matching line gets used. Beware of that when modifying the XML file.
+function read_csv_from_xml_val() {
     PATHTOCSPROJ=$1
+    XML_VALUE_NAME=$2
 
     # Example line: <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
-    RIDLINE=$(cat $PATHTOCSPROJ | grep "<RuntimeIdentifiers>.*</RuntimeIdentifiers>")
-    RIDLINE=$(echo $RIDLINE | sed 's/\ *//' | sed 's/<RuntimeIdentifiers>//' | sed 's/<\/RuntimeIdentifiers>//')
-    RIDLINE=${RIDLINE//;/ }
-    RIDS=($RIDLINE)
-    # Bash functions can't return arbitrary values - only exit codes. Use the global variable $RIDS instead.
-}
-
-# Determines if the script is being executed in a Docker container, result accessible via $RUNNING_IN_DOCKER (1=yes, 0=no)
-# https://stackoverflow.com/a/23575107
-function running_in_docker() {
-    RUNNING_IN_DOCKER=1
-    (awk -F/ '$2 == "docker"' /proc/self/cgroup | read non_empty_input) || RUNNING_IN_DOCKER=0
+    XML_VALUE_LINE=$(cat $PATHTOCSPROJ | grep "<${XML_VALUE_NAME}>.*</${XML_VALUE_NAME}>")
+    XML_VALUE_LINE=$(echo $XML_VALUE_LINE | sed "s/\ *//" | sed "s/<${XML_VALUE_NAME}>//" | sed "s/<\/${XML_VALUE_NAME}>//")
+    XML_VALUE_LINE=${XML_VALUE_LINE//;/ }
+    XML_VALUES=($XML_VALUE_LINE)
+    # Bash functions can't return arbitrary values - only exit codes. Use the global variable $XML_VALUES instead.
 }
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -82,15 +77,16 @@ VERSION=$(<$SCRIPTDIR/../VERSION)
 $SCRIPTDIR/bumpVersion.sh
 
 # Build FDD
+# Don't iterate through all target frameworks in the *.csproj file, because only netcoreapp can be built on non-Windows machines.
 
 build "FDD" "netcoreapp2.0" $ARTIFACTSDIR $SOURCEDIR
 
 # Build SCD
 
 # Publish the SCD for each runtime identifier
-# The function stores the RID array in the global variable $RIDS
-read_runtime_identifiers_from_csproj "$SOURCEDIR/$APPNAME.csproj"
-for RID in "${RIDS[@]}"
+# The function stores the RID array in the global variable $XML_VALUES
+read_csv_from_xml_val "$SOURCEDIR/$APPNAME.csproj" "RuntimeIdentifiers"
+for RID in "${XML_VALUES[@]}"
 do
     build "SCD" $RID $ARTIFACTSDIR $SOURCEDIR
 done

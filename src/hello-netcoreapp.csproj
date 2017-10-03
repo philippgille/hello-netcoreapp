@@ -1,7 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <!-- Multi-target frameworks. Use net461 instead of net462 because net461 already implements .NET Standard 2.0, just as .NET Core 2.0 does.
+         net451 for Windows 8.1 and Windows Server 2008 R2. Some NuGet packages don't target these anymore, so you might need to remove this target when using those NuGet packages.
+         Note: The app can't be built for net451 and net461 on non-Windows machines, so take that into account in the build scripts. -->
+    <TargetFrameworks>netcoreapp2.0;net461;net451</TargetFrameworks>
     <!-- Some SCD Runtime identifiers from https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog
          Also see this more complete list: https://github.com/dotnet/corefx/blob/release/2.0.0/pkg/Microsoft.NETCore.Platforms/runtime.json -->
     <RuntimeIdentifiers>win-x64;linux-x64;linux-arm;osx-x64</RuntimeIdentifiers>
@@ -11,4 +15,5 @@
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
   -->
+
 </Project>
