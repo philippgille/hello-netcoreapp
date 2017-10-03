@@ -1,5 +1,3 @@
-#!/bin/sh
-HERE="$(dirname "$(readlink -f "${0}")")"
-export PATH="${HERE}"/usr/bin/hello-netcoreapp_linux-x64/:"${PATH}"
-EXEC=$(grep -e '^Exec=.*' "${HERE}"/*.desktop | head -n 1 | cut -d "=" -f 2 | cut -d " " -f 1)
-exec "${EXEC}" $@
+#!/bin/bash
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+exec $SCRIPTDIR/usr/bin/hello-netcoreapp_linux-x64/hello-netcoreapp $@
