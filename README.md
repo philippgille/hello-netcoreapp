@@ -15,11 +15,24 @@ The basic app was created using `dotnet new console` with the .NET Core SDK 2.0.
 Contents
 --------
 
-- Terminology
-- Directory structure
-- Build
-- Run
-- Uninstall
+- [Terminology](#terminology)
+- [Directory structure](#directory-structure)
+- [Build](#build)
+    - [Via cloud service](#via-cloud-service)
+        - [AppVeyor](#appveyor)
+        - [Travis CI](#travis-ci)
+        - [Docker Cloud](#docker-cloud)
+    - [Locally](#locally)
+        - [FDD + SCD + Chocolatey package + AppImage](#fdd--scd--chocolatey-package--appimage)
+        - [Docker image](#docker-image)
+- [Run](#run)
+    - [FDD](#fdd)
+    - [SCD](#scd)
+    - [Docker container](#docker-container)
+    - [Chocolatey package](#chocolatey-package)
+    - [AppImage](#appimage)
+- [Simplify running the app](#simplify-running-the-app)
+- [Uninstall](#uninstall)
 
 Terminology
 -----------
