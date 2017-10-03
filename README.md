@@ -99,7 +99,8 @@ The Docker image for Linux containers gets automatically build by Docker Cloud a
 
 You can create the *FDD*, *SCD*, *Docker image*, *Chocolatey package* and *AppImage* locally as well.
 
-- For building an FDD and SCD you need to have *either* the .NET Core SDK *or* Docker installed
+- For building the FDDs and SCDs you need to have *either* the .NET Core SDK *or* Docker installed
+    - Building the FDDs for .NET Framework 4.5.1 and 4.6.1 requires Windows
 - For building the Docker image you need to have Docker installed
 - For building the Chocolatey package you need to use Windows and have Chocolatey installed
 - For building the AppImage you need to *either* use Linux *or* have Docker installed
@@ -110,16 +111,20 @@ Depending on your OS and installed software, run the following scripts:
 
 System | Installed | Run | Artifacts
 -------|-----------|-----|----------
-Windows | .NET Core SDK | `build.ps1` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_netcoreapp2.0.zip`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.zip`</li><li>Chocolatey package (if installed): `hello-netcoreapp.portable.0.1.0.nupkg`</li></ul>
+Windows | .NET Core SDK | `build.ps1` | <ul><li>FDDs, e.g. `hello-netcoreapp_v0.1.0_netcoreapp2.0.zip`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.zip`</li><li>Chocolatey package (if installed): `hello-netcoreapp.portable.0.1.0.nupkg`</li></ul>
 Windows | Docker | `build-with-docker.ps1` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_netcoreapp2.0.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_v0.1.0_linux-x64.AppImage`</li></ul>
 Linux | .NET Core SDK | `build.sh` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_netcoreapp2.0.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_v0.1.0_linux-x64.AppImage`</li></ul>
 Linux | Docker | `build-with-docker.sh` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_netcoreapp2.0.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_v0.1.0_linux-x64.AppImage`</li></ul>
 
-The SCDs that are built depend on the runtime identifiers in the `.csproj`. To add or remove SCDs, just edit that file accordingly (see [available runtime identifiers](https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog)).
+The SCDs that are built depend on the runtime identifiers in the `*.csproj`. To add or remove SCDs, just edit that file accordingly (see [available runtime identifiers](https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog)).
+
+> Note 1: The `*.csproj` contains multiple target frameworks as well. When building an SCD, not only a runtime identifier, but also a target framework must be chosen. When using `netcoreapp2.0` the .NET Core runtime gets included in the build artifacts. This makes sense for non-Windows systems. But Windows already includes the full .NET Framework. So as target framework we can use `net461` for example, which leads to no runtime being included, which leads to much fewer build artifacts and thus a much smaller archive to be published. However, using target frameworks other than `netcoreapp2.0` only works when building on Windows. This is reflected in the build scripts `build.ps1` and `build.sh`.
+
+> Note 2: When running the `build-with-docker.ps1` script, the `build.sh` script will be executed inside of a Docker container. This script requires some files to have LF as line ending instead of CRLF. Commiting files with CRLF endings won't help - check your Git configuration `core.autocrlf` instead.
 
 #### Docker image
 
-> Note: A prerequisite when running Windows is to make sure that `scripts/build.sh` and `src/hello-netcoreapp.csproj` line endings are LF instead of CRLF. Even when saving all files with LF and commiting them to the Git repo that way, Git has an option `core.autocrlf` that converts line endings when checking out a repository or branch depending on the configuration value.
+> Note: When building the Docker image in Windows, the `build.sh` script will be executed inside of the Docker builder container. This script requires some files to have LF as line ending instead of CRLF. Commiting files with CRLF endings won't help - check your Git configuration `core.autocrlf` instead.
 
 In the root directory of the repository, depending on which container host system you want to target:
 
@@ -144,7 +149,12 @@ Alternatively you can build the artifacts on your own (see the *Build* section i
 
 ### FDD
 
-As mentioned before, you need to have the .NET Core runtime installed for running the FDD.
+Depending on the operating system you use when building, there are multiple FDDs:
+- hello-netcoreapp_v0.1.0_netcoreapp2.0 (when built on Windows and Linux)
+- hello-netcoreapp_v0.1.0_net451 (when built on Windows)
+- hello-netcoreapp_v0.1.0_net461 (when built on Windows)
+
+> Note: For running `hello-netcoreapp_v0.1.0_netcoreapp2.0` you need to have the .NET Core runtime installed. The other FDDs are for Windows only and do *not* require any runtime being installed. Windows already comes with the full .NET Framework, so those FDDs work out of the box. Use the `net461` version for up-to-date Windows systems and the `net451` one for Windows 8.1 and Windows Server 2008 R2.
 
 You can copy the archive (`hello-netcoreapp_v0.1.0_netcoreapp2.0.zip` or `hello-netcoreapp_v0.1.0_netcoreapp2.0.tar.gz`) to wherever you want to run the app, extract the archive and run:
 
@@ -158,7 +168,10 @@ You can copy the archive (`hello-netcoreapp_v0.1.0_netcoreapp2.0.zip` or `hello-
 
 Copy the archive (for example `hello-netcoreapp_v0.1.0_linux-x64.zip` or `hello-netcoreapp_v0.1.0_linux-x64.tar.gz`) to wherever you want to run the app (only the OS has to match), extract the archive and run:
 
-- `path/to/hello-netcoreapp`
+- Linux: `path/to/hello-netcoreapp`
+- Windows: `path/to/hello-netcoreapp.exe`
+
+> Note: The `win-x64` SCD in the `*.zip` archive does *not* include the .NET Core runtime. Windows already has the full .NET Framework installed, so no additional runtime is needed. If you want to run the .NET Core version that includes the .NET Core runtime, use the `*.tar.gz` archive.
 
 ### Docker container
 
@@ -245,6 +258,7 @@ Uninstall
 - Docker image:
     1. Delete the container: `docker container rm <id>`
     2. Delete the image: `docker image rm philippgille/hello-netcoreapp`
+    3. Remove the function from your PowerShell profile / `~/.bashrc` in case you set it
 - Chocolatey package:
     - `choco uninstall hello-netcoreapp.portable`
 - AppImage:
