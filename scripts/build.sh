@@ -3,10 +3,6 @@
 # Builds the project and creates release artifacts for SCD (self-contained deployment) and FDD (framework-dependent deployment).
 # Uses an installed version of the .NET Core SDK, which should be version 2.0.
 
-APPNAME="hello-netcoreapp"
-
-# Don't change anything below this line ########################################
-
 # No "-o pipefail" option for the bash script,
 # because when used in the .NET Core SDK Docker container this leads to "invalid option name: pipefail".
 set -eux
@@ -70,9 +66,10 @@ function read_csv_from_xml_val() {
 }
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+APPNAME=$(<$SCRIPTDIR/APP_NAME)
+VERSION=$(<$SCRIPTDIR/../VERSION)
 ARTIFACTSDIR="$SCRIPTDIR/../artifacts"
 SOURCEDIR="$SCRIPTDIR/../src"
-VERSION=$(<$SCRIPTDIR/../VERSION)
 
 $SCRIPTDIR/bumpVersion.sh
 
@@ -93,24 +90,4 @@ done
 
 # Build AppImage if a linux-x64 SCD was built
 
-if [[ -f $ARTIFACTSDIR/${APPNAME}_v${VERSION}_linux-x64/$APPNAME ]]; then
-    # Clean and create directories
-    rm -r -f $SCRIPTDIR/../appimage/AppDir/usr/bin/*
-    mkdir -p $SCRIPTDIR/../appimage/AppDir/usr/bin/
-    # Copy SCD files
-    # Copy directory without the version in its name so that the AppRun file can stay unchanged across versions
-    cp -r $ARTIFACTSDIR/${APPNAME}_v${VERSION}_linux-x64 $SCRIPTDIR/../appimage/AppDir/usr/bin/${APPNAME}_linux-x64
-    # Make sure AppRun is executable
-    chmod u+x $SCRIPTDIR/../appimage/AppDir/AppRun
-    # Download AppImage creation tool, make it executable and extract it, so we don't need to have fuse installed
-    curl -Lo /tmp/appimagetool-x86_64.AppImage https://github.com/probonopd/AppImageKit/releases/download/9/appimagetool-x86_64.AppImage
-    chmod u+x /tmp/appimagetool-x86_64.AppImage
-    # Extract AppImage so it can be run in Docker containers and on  machines that don't have FUSE installed
-    /tmp/appimagetool-x86_64.AppImage --appimage-extract
-    # Create AppImage
-#    /tmp/appimagetool-x86_64.AppImage $SCRIPTDIR/../appimage/AppDir/ $ARTIFACTSDIR/${APPNAME}_v${VERSION}_linux-x64.AppImage
-    ./squashfs-root/AppRun $SCRIPTDIR/../appimage/AppDir/ $ARTIFACTSDIR/${APPNAME}_v${VERSION}_linux-x64.AppImage
-    # Delete downloaded AppImage creation tool
-    rm /tmp/appimagetool-x86_64.AppImage
-    rm -r ./squashfs-root
-fi
+$SCRIPTDIR/build-appimage.sh

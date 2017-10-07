@@ -1,10 +1,6 @@
 # Builds the project and creates release artifacts for SCD (self-contained deployment) and FDD (framework-dependent deployment).
 # Uses an installed version of the .NET Core SDK, which should be version 2.0.
 
-$appName = "hello-netcoreapp"
-
-# Don't change anything below this line ########################################
-
 $ErrorActionPreference = "Stop"
 
 # Builds the project and creates release artifacts
@@ -71,9 +67,10 @@ function Read-CsvFromXmlVal
     return $rIds
 }
 
+$appName = Get-Content ${PSScriptRoot}\APP_NAME
+$version = Get-Content ${PSScriptRoot}\..\VERSION
 $artifactsDir = "$PSScriptRoot\..\artifacts"
 $sourceDir = "$PSScriptRoot\..\src"
-$version = Get-Content ${PSScriptRoot}\..\VERSION
 
 &${PSScriptRoot}\bumpVersion.ps1
 
@@ -95,10 +92,4 @@ foreach ($rId in $rIds) {
 
 # Build Chocolatey package if Chocolatey is installed and a win-x64 SCD was built
 
-If ((Get-Command "choco" -ErrorAction SilentlyContinue) -and (Test-Path "$artifactsDir\${appName}_v${version}_win-x64\${appName}.exe")) {
-    mkdir "$PSScriptRoot\..\chocolatey\tools" -Force
-    Remove-Item -Force "$artifactsDir\${appName}.*.nupkg"
-    Remove-Item -Force -Recurse "$PSScriptRoot\..\chocolatey\tools\*"
-    Copy-Item "$artifactsDir\${appName}_v${version}_win-x64" "$PSScriptRoot\..\chocolatey\tools" -Recurse
-    choco pack "$PSScriptRoot\..\chocolatey\$appName.nuspec" --out $artifactsDir
-}
+&${PSScriptRoot}\build-chocolatey.ps1
