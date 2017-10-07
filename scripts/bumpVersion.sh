@@ -16,7 +16,7 @@ function replace() {
     FILE=$3
     
     # Don't use '/' as delimiter in sed in case the variable might contain the same character
-    sed -r -i "s@${REGEX}@${REPLACEMENT}@" $FILE
+    sed -r -i "s@${REGEX}@${REPLACEMENT}@g" $FILE
 }
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"

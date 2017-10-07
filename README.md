@@ -115,7 +115,7 @@ You can create the *FDD*, *SCD*, *Docker image*, *Chocolatey package* and *AppIm
 - For building the FDDs and SCDs you need to have *either* the .NET Core SDK *or* Docker installed
     - Building the FDDs for .NET Framework 4.5.1 and 4.6.1 requires Windows
 - For building the Docker image you need to have Docker installed
-- For building the Chocolatey package you need to use Windows and have Chocolatey installed
+- For building the Chocolatey package you need to *either* use Windows and have Chocolatey installed *or* have Docker installed
 - For building the AppImage you need to *either* use Linux *or* have Docker installed
 
 #### FDD + SCD + Chocolatey package + AppImage
@@ -125,9 +125,9 @@ Depending on your OS and installed software, run the following scripts:
 System | Installed | Run | Artifacts
 -------|-----------|-----|----------
 Windows | .NET Core SDK | `build.ps1` | <ul><li>FDDs, e.g. `hello-netcoreapp_v0.1.0_netcoreapp2.0.zip`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.zip`</li><li>Chocolatey package (if installed): `hello-netcoreapp.portable.0.1.0.nupkg`</li></ul>
-Windows | Docker | `build-with-docker.ps1` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_netcoreapp2.0.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_v0.1.0_linux-x64.AppImage`</li></ul>
+Windows | Docker | `build-with-docker.ps1` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_netcoreapp2.0.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.tar.gz`</li><li>Chocolatey package: `hello-netcoreapp.portable.0.1.0.nupkg`</li><li>AppImage: `hello-netcoreapp_v0.1.0_linux-x64.AppImage`</li></ul>
 Linux | .NET Core SDK | `build.sh` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_netcoreapp2.0.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_v0.1.0_linux-x64.AppImage`</li></ul>
-Linux | Docker | `build-with-docker.sh` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_netcoreapp2.0.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_v0.1.0_linux-x64.AppImage`</li></ul>
+Linux | Docker | `build-with-docker.sh` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_netcoreapp2.0.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.tar.gz`</li><li>Chocolatey package: `hello-netcoreapp.portable.0.1.0.nupkg`</li><li>AppImage: `hello-netcoreapp_v0.1.0_linux-x64.AppImage`</li></ul>
 
 The SCDs that are built depend on the runtime identifiers in the `*.csproj`. To add or remove SCDs, just edit that file accordingly (see [available runtime identifiers](https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog)).
 

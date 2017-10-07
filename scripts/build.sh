@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Builds the project and creates release artifacts for SCD (self-contained deployment) and FDD (framework-dependent deployment).
+# Builds the project and creates release artifacts for FDD (framework-dependent deployment) and SCD (self-contained deployment).
 # Uses an installed version of the .NET Core SDK, which should be version 2.0.
 
 # No "-o pipefail" option for the bash script,
