@@ -61,10 +61,10 @@ function Read-CsvFromXmlVal
     Param ($pathToXml, $xmlValueName)
 
     # Example line: <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
-    $rIdLine = Get-Content $pathToXml | Select-String -Pattern "<${xmlValueName}>.*</${xmlValueName}>"
-    $rIdLine = (($rIdLine -Replace " ", "") -Replace "<${xmlValueName}>", "") -Replace "</${xmlValueName}>", ""
-    $rIds = $rIdLine -Split ";"
-    return $rIds
+    $xmlValueLine = Get-Content $pathToXml | Select-String -Pattern "<${xmlValueName}>.*</${xmlValueName}>"
+    $xmlValueLine = (($xmlValueLine -Replace " ", "") -Replace "<${xmlValueName}>", "") -Replace "</${xmlValueName}>", ""
+    $xmlValues = $xmlValueLine -Split ";"
+    return $xmlValues
 }
 
 $appName = Get-Content ${PSScriptRoot}\APP_NAME
