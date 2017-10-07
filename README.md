@@ -39,10 +39,10 @@ Terminology
 
 - > *FDD* - Framework-dependent deployment:
 
-    The app relies on an installed version of the *.NET Core* runtime. But it's completely portable to all operating systems where the runtime is installed.
+    The app relies on an installed version of either the cross-platform *.NET Core* runtime or the Windows-only full .NET Framework. But it's completely portable to all operating systems where the runtime is installed.
 - > *SCD* - Self-contained deployment:
 
-    The app is completely *self-contained*. .NET Core runtime files are delivered with the executable, making this package slightly bigger than an FDD. It's independent of an installed .NET Core runtime, but not portable, so multiple SCDs must be created and each one only runs on a single operating system. For a list of supported OSs, see [https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog](https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog).
+    The app is completely *self-contained*. .NET Core runtime files are delivered with the executable, making this package slightly bigger than an FDD. It's independent of an installed .NET Core runtime, but not portable, so multiple SCDs must be created and each one only runs on a family of operating systems.
 - > *Docker image*:
 
     The app can be run as Docker container (Linux and Windows), which is based on the official [Microsoft/dotnet Docker image](https://hub.docker.com/r/microsoft/dotnet/), using the image for FDDs that Microsoft recommends for use in production.
@@ -131,9 +131,7 @@ Linux | Docker | `build-with-docker.sh` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_
 
 The SCDs that are built depend on the runtime identifiers in the `*.csproj`. To add or remove SCDs, just edit that file accordingly (see [available runtime identifiers](https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog)).
 
-> Note 1: The `*.csproj` contains multiple target frameworks as well. When building an SCD, not only a runtime identifier, but also a target framework must be chosen. When using `netcoreapp2.0` the .NET Core runtime gets included in the build artifacts. This makes sense for non-Windows systems. But Windows already includes the full .NET Framework. So as target framework we can use `net461` for example, which leads to no runtime being included, which leads to much fewer build artifacts and thus a much smaller archive to be published. However, using target frameworks other than `netcoreapp2.0` only works when building on Windows. This is reflected in the build scripts `build.ps1` and `build.sh`.
-
-> Note 2: When running the `build-with-docker.ps1` script, the `build.sh` script will be executed inside of a Docker container. This script requires some files to have LF as line ending instead of CRLF. Commiting files with CRLF endings won't help - check your Git configuration `core.autocrlf` instead.
+> Note: When running the `build-with-docker.ps1` script, the `build.sh` script will be executed inside of a Docker container. This script requires some files to have LF as line ending instead of CRLF. Commiting files with CRLF endings won't help - check your Git configuration `core.autocrlf` instead.
 
 #### Docker image
 
@@ -175,16 +173,15 @@ You can copy the archive (`hello-netcoreapp_v0.1.0_netcoreapp2.0.zip` or `hello-
 
 ### SCD
 
-> Note: Depending on your system you might need to install the dependencies listed in the [.NET Core native prerequisites](https://github.com/dotnet/core/blob/master/Documentation/prereqs.md). For example for Ubuntu that's:
-> 
-> - `apt-get install -y --no-install-recommends libunwind8 libunwind8-dev gettext libicu-dev liblttng-ust-dev libcurl4-openssl-dev libssl-dev uuid-dev unzip`
+> Note: Depending on your system you might need to install the dependencies listed here:
+> - [Windows](https://docs.microsoft.com/en-us/dotnet/core/windows-prerequisites?tabs=netcore2x#net-core-dependencies)
+> - [Linux](https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites?tabs=netcore2x#linux-distribution-dependencies) (For example for Ubuntu that's: `apt-get install -y --no-install-recommends libunwind8 libunwind8-dev gettext libicu-dev liblttng-ust-dev libcurl4-openssl-dev libssl-dev uuid-dev unzip`)
+> - [macOS](https://docs.microsoft.com/en-us/dotnet/core/macos-prerequisites?tabs=netcore2x)
 
 Copy the archive (for example `hello-netcoreapp_v0.1.0_linux-x64.zip` or `hello-netcoreapp_v0.1.0_linux-x64.tar.gz`) to wherever you want to run the app (only the OS has to match), extract the archive and run:
 
 - Linux: `path/to/hello-netcoreapp`
 - Windows: `path/to/hello-netcoreapp.exe`
-
-> Note: The `win-x64` SCD in the `*.zip` archive does *not* include the .NET Core runtime. Windows already has the full .NET Framework installed, so no additional runtime is needed. If you want to run the .NET Core version that includes the .NET Core runtime, use the `*.tar.gz` archive.
 
 ### Docker container
 
@@ -219,7 +216,7 @@ Then run: `hello-netcoreapp`
 
 > Note 1: You can only use AppImages on Linux and you must *either* have fuse installed *or* mount or extract the AppImage, see [AppImage/AppImageKit/wiki/FUSE](https://github.com/AppImage/AppImageKit/wiki/FUSE)
 
-> Note 2: Depending on your system you might need to install the dependencies listed in the [.NET Core native prerequisites](https://github.com/dotnet/core/blob/master/Documentation/prereqs.md). For example for Ubuntu that's:
+> Note 2: Depending on your system you might need to install the dependencies listed in the [.NET Core native prerequisites](https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites?tabs=netcore2x#linux-distribution-dependencies). For example for Ubuntu that's:
 > 
 > - `apt-get install -y --no-install-recommends libunwind8 libunwind8-dev gettext libicu-dev liblttng-ust-dev libcurl4-openssl-dev libssl-dev uuid-dev unzip`
 

@@ -20,13 +20,8 @@ function New-Build
         $script:runtimeParamSwitch = ""
         $frameworkOrRuntime = ""
     } elseif ($publishType -eq "SCD") {
-        if (($frameworkOrRuntime -like "win*") -and ($frameworkOrRuntime -notlike "*arm*")) {
-            $framework = "net461"
-            $script:runtimeParamSwitch = "-r"
-        } else {
-            $framework = "netcoreapp2.0"
-            $script:runtimeParamSwitch = "-r"
-        }
+        $framework = "netcoreapp2.0"
+        $script:runtimeParamSwitch = "-r"
     } else {
         Write-Output "An unknown publish type was passed to the function"
         Exit 1
