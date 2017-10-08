@@ -50,21 +50,6 @@ function build() {
     tar -czf $DESTINATION -C $ARTIFACTSDIR $PUBLISHNAME
 }
 
-# Reads comma seperated values from a given XML value in a given file and stores them as array in the global variable $XML_VALUES
-# 
-# Note: This doesn't consider if the line is commented out. The first matching line gets used. Beware of that when modifying the XML file.
-function read_csv_from_xml_val() {
-    PATHTOCSPROJ=$1
-    XML_VALUE_NAME=$2
-
-    # Example line: <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
-    XML_VALUE_LINE=$(cat $PATHTOCSPROJ | grep "<${XML_VALUE_NAME}>.*</${XML_VALUE_NAME}>")
-    XML_VALUE_LINE=$(echo $XML_VALUE_LINE | sed "s/\ *//" | sed "s/<${XML_VALUE_NAME}>//" | sed "s/<\/${XML_VALUE_NAME}>//")
-    XML_VALUE_LINE=${XML_VALUE_LINE//;/ }
-    XML_VALUES=($XML_VALUE_LINE)
-    # Bash functions can't return arbitrary values - only exit codes. Use the global variable $XML_VALUES instead.
-}
-
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APPNAME=$(<$SCRIPTDIR/APP_NAME)
 VERSION=$(<$SCRIPTDIR/../VERSION)
@@ -82,6 +67,7 @@ build "FDD" "netcoreapp2.0" $ARTIFACTSDIR $SOURCEDIR
 
 # Publish the SCD for each runtime identifier
 # The function stores the RID array in the global variable $XML_VALUES
+source "${SCRIPTDIR}/utils.sh"
 read_csv_from_xml_val "$SOURCEDIR/$APPNAME.csproj" "RuntimeIdentifiers"
 for RID in "${XML_VALUES[@]}"
 do

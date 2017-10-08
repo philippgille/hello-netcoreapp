@@ -48,20 +48,6 @@ function New-Build
     [io.compression.zipfile]::CreateFromDirectory("$publishDir", $destination)
 }
 
-# Reads comma seperated values from a given XML value in a given file and returns them
-# 
-# Note: This doesn't consider if the line is commented out. The first matching line gets used. Beware of that when modifying the file.
-function Read-CsvFromXmlVal
-{
-    Param ($pathToXml, $xmlValueName)
-
-    # Example line: <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
-    $xmlValueLine = Get-Content $pathToXml | Select-String -Pattern "<${xmlValueName}>.*</${xmlValueName}>"
-    $xmlValueLine = (($xmlValueLine -Replace " ", "") -Replace "<${xmlValueName}>", "") -Replace "</${xmlValueName}>", ""
-    $xmlValues = $xmlValueLine -Split ";"
-    return $xmlValues
-}
-
 $appName = Get-Content ${PSScriptRoot}\APP_NAME
 $version = Get-Content ${PSScriptRoot}\..\VERSION
 $artifactsDir = "$PSScriptRoot\..\artifacts"
@@ -72,6 +58,7 @@ $sourceDir = "$PSScriptRoot\..\src"
 # Build FDD
 
 # Publish the FDD for each target framework
+. ${PSScriptRoot}\utils.ps1
 $targetFrameworks = Read-CsvFromXmlVal "$sourceDir\$appName.csproj" "TargetFrameworks"
 foreach ($targetFramework in $targetFrameworks) {
     New-Build "FDD" $targetFramework $artifactsDir $sourceDir

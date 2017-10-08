@@ -3,7 +3,7 @@
 
 namespace hello_netcoreapp
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {

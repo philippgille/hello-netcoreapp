@@ -10,7 +10,7 @@ hello-netcoreapp is a basic *.NET Core* console application that prints "Hello W
 
 This repository is meant to be a starting point for any new .NET Core console application. You can fork it and base your project upon it. If you improve anything in your fork, please create a PR ☺ . [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) 
 
-The basic app was created using `dotnet new console` with the .NET Core SDK 2.0.
+The basic app was created using `dotnet new console` with the .NET Core SDK 2.0 and then extended for our purposes.
 
 Contents
 --------
