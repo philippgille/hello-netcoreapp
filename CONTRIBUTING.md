@@ -37,7 +37,7 @@ Know how to fix something? We love pull requests! Here's a quick guide:
 
 ### Issue labels
 
-There are several label groups. An issue can have *one* label of each label group.
+There are several label groups. An issue can usually have *one* label of each label group.
 
 <ul>
 <li style="background-color:#0e8a16;color:black">feature</li>
@@ -57,4 +57,7 @@ There are several label groups. An issue can have *one* label of each label grou
 <li style="background-color:#eeeeee;color:black">topic: docker</li>
 </br>
 <li style="background-color:#eeeeee;color:black">priority: high</li>
+</br>
+<li style="background-color:#eeeeee;color:black">blocker</li>
+<li style="background-color:#eeeeee;color:black">blocked</li>
 </ul>
