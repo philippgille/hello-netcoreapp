@@ -31,6 +31,7 @@ source "${SCRIPTDIR}/utils.sh"
 running_in_docker
 if [[ $RUNNING_IN_DOCKER -eq 1 ]]; then
     echo "Running in Docker. Extracting AppImage first..."
+    # Note: Extraction requires libglib2.0-0 to be installed
     ${SCRIPTDIR}/../artifacts/hello-netcoreapp_v0.1.0_linux-x64.AppImage --appimage-extract
     # Then run
     ./squashfs-root/AppRun
