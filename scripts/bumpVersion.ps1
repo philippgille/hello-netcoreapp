@@ -24,5 +24,5 @@ Set-String '<release version="\d+\.\d+\.\d+"/>' "<release version=`"${version}`"
 # Replace in hello-netcoreapp.nuspec
 Set-String '<version>\d+\.\d+\.\d+</version>' "<version>${version}</version>" "${PSScriptRoot}\..\chocolatey\hello-netcoreapp.nuspec"
 
-# Replace in appveyor.yml
-Set-String 'version: \d+\.\d+\.\d+\.\{build\}' "version: ${version}.{build}" "${PSScriptRoot}\..\appveyor.yml"
+# Replace in .appveyor.yml
+Set-String 'version: \d+\.\d+\.\d+\.\{build\}' "version: ${version}.{build}" "${PSScriptRoot}\..\.appveyor.yml"

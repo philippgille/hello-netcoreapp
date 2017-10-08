@@ -30,5 +30,5 @@ replace '<release version="[0-9]+\.[0-9]+\.[0-9]+"/>' "<release version=\"${VERS
 # Replace in hello-netcoreapp.nuspec
 replace '<version>[0-9]+\.[0-9]+\.[0-9]+</version>' "<version>${VERSION}</version>" $SCRIPTDIR/../chocolatey/hello-netcoreapp.nuspec
 
-# Replace in appveyor.yml
-replace 'version: [0-9]+\.[0-9]+\.[0-9]+\.\{build\}' "version: ${VERSION}.{build}" $SCRIPTDIR/../appveyor.yml
+# Replace in .appveyor.yml
+replace 'version: [0-9]+\.[0-9]+\.[0-9]+\.\{build\}' "version: ${VERSION}.{build}" $SCRIPTDIR/../.appveyor.yml

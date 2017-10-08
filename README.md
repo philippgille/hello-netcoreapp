@@ -72,7 +72,7 @@ Directory structure
 - `scripts/`: Contains scripts for building the app and creating release artifacts
     - The `*.ps1` scripts are for use in Windows (PowerShell), the `*.sh` scripts are for use in Linux.
 - `.travis.yml`: Configuration file for Travis CI (Continuous Integration and Deployment cloud service, Linux)
-- `appveyor.yml`: Configuration file for AppVeyor (Continuous Integration and Deployment cloud service, Windows)
+- `.appveyor.yml`: Configuration file for AppVeyor (Continuous Integration and Deployment cloud service, Windows)
 - `VERSION`: A file containing the version of the app. Gets injected into some other files before building.
 
 Build
@@ -82,7 +82,7 @@ Build
 
 #### AppVeyor
 
-This repository contains `appveyor.yml`, which is a configuration file for the CI / CD cloud service [AppVeyor](https://ci.appveyor.com/project/philippgille/hello-netcoreapp).
+This repository contains `.appveyor.yml`, which is a configuration file for the CI / CD cloud service [AppVeyor](https://ci.appveyor.com/project/philippgille/hello-netcoreapp).
 
 It's configured to do the following:
 
