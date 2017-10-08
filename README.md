@@ -68,7 +68,8 @@ Directory structure
     - `.vscode/`: Contains files for debugging the app in Visual Studio Code
         - Used in case you open the src directory of the repository as workspace in Visual Studio Code
 - `chocolatey/`: Contains files related to the Chocolatey package
-    - The `hello-netcoreapp.nuspec` describes the package, the `README.md` is shown on Chocolatey or MyGet after publishing
+    - The `hello-netcoreapp.portable.nuspec` describes the package, the `README.md` is shown on Chocolatey or MyGet after publishing
+    - `hello-netcoreapp.nuspec` is for building a [meta package](https://chocolatey.org/docs/chocolatey-faqs#what-is-the-difference-between-packages-no-suffix-as-compared-to-install-portable) that just "points" to the portable version
 - `scripts/`: Contains scripts for building the app and creating release artifacts
     - The `*.ps1` scripts are for use in Windows (PowerShell), the `*.sh` scripts are for use in Linux.
 - `.travis.yml`: Configuration file for Travis CI (Continuous Integration and Deployment cloud service, Linux)
@@ -124,10 +125,10 @@ Depending on your OS and installed software, run the following scripts:
 
 System | Installed | Run | Artifacts
 -------|-----------|-----|----------
-Windows | .NET Core SDK | `build.ps1` | <ul><li>FDDs, e.g. `hello-netcoreapp_v0.1.0_netcoreapp2.0.zip`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.zip`</li><li>Chocolatey package (if installed): `hello-netcoreapp.portable.0.1.0.nupkg`</li></ul>
-Windows | Docker | `build-with-docker.ps1` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_netcoreapp2.0.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.tar.gz`</li><li>Chocolatey package: `hello-netcoreapp.portable.0.1.0.nupkg`</li><li>AppImage: `hello-netcoreapp_v0.1.0_linux-x64.AppImage`</li></ul>
+Windows | .NET Core SDK | `build.ps1` | <ul><li>FDDs, e.g. `hello-netcoreapp_v0.1.0_netcoreapp2.0.zip`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.zip`</li><li>Chocolatey packages (if installed), e.g.: `hello-netcoreapp.0.1.0.nupkg`</li></ul>
+Windows | Docker | `build-with-docker.ps1` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_netcoreapp2.0.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.tar.gz`</li><li>Chocolatey packages, e.g.: `hello-netcoreapp.0.1.0.nupkg`</li><li>AppImage: `hello-netcoreapp_v0.1.0_linux-x64.AppImage`</li></ul>
 Linux | .NET Core SDK | `build.sh` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_netcoreapp2.0.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.tar.gz`</li><li>AppImage: `hello-netcoreapp_v0.1.0_linux-x64.AppImage`</li></ul>
-Linux | Docker | `build-with-docker.sh` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_netcoreapp2.0.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.tar.gz`</li><li>Chocolatey package: `hello-netcoreapp.portable.0.1.0.nupkg`</li><li>AppImage: `hello-netcoreapp_v0.1.0_linux-x64.AppImage`</li></ul>
+Linux | Docker | `build-with-docker.sh` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_netcoreapp2.0.tar.gz`</li><li>SCDs, e.g. `hello-netcoreapp_v0.1.0_linux-x64.tar.gz`</li><li>Chocolatey packages, e.g.: `hello-netcoreapp.0.1.0.nupkg`</li><li>AppImage: `hello-netcoreapp_v0.1.0_linux-x64.AppImage`</li></ul>
 
 The SCDs that are built depend on the runtime identifiers in the `*.csproj`. To add or remove SCDs, just edit that file accordingly (see [available runtime identifiers](https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog)).
 
@@ -201,18 +202,19 @@ Copy the archive (for example `hello-netcoreapp_v0.1.0_linux-x64.zip` or `hello-
 First you need to install the package with one of the following ways:
 
 - The simplest way to install it is via the MyGet feed, which also allows you to easily update the app later:
-    - `choco install hello-netcoreapp.portable --source https://www.myget.org/F/hello-netcoreapp`
+    - `choco install hello-netcoreapp --source https://www.myget.org/F/hello-netcoreapp`
 - AppVeyor also automatically publishes all `*.nupkg` artifacts to a project's NuGet feed, so this works as well:
-    - `choco install hello-netcoreapp.portable --source https://ci.appveyor.com/nuget/hello-netcoreapp`
+    - `choco install hello-netcoreapp --source https://ci.appveyor.com/nuget/hello-netcoreapp`
 - Alternatively install the downloaded or locally built package:
     - `choco install path\to\hello-netcoreapp.portable.0.1.0.nupkg`
+    - (Simply installing the [meta package](https://chocolatey.org/docs/chocolatey-faqs#what-is-the-difference-between-packages-no-suffix-as-compared-to-install-portable) `hello-netcoreapp.0.1.0.nupkg` works if the `portable` package exists in the same directory)
 - Alternatively you can also install via the package specification file in this repository:
     1. Either run `build.ps1` or manually place `artifacts\hello-netcoreapp_v0.1.0_win-x64` in `chocolatey\tools`
     2. `choco install chocolatey\hello-netcoreapp.nuspec`
 
 Then run: `hello-netcoreapp`
 
-> Note: The package is installed in `%ChocolateyInstall%/lib` (e.g. `C:\ProgramData\Chocolatey\lib`)
+> Note 1: The package is installed in `%ChocolateyInstall%/lib` (e.g. `C:\ProgramData\Chocolatey\lib`)
 
 ### AppImage
 
@@ -272,6 +274,7 @@ Uninstall
     2. Delete the image: `docker image rm philippgille/hello-netcoreapp`
     3. Remove the function from your PowerShell profile / `~/.bashrc` in case you set it
 - Chocolatey package:
-    - `choco uninstall hello-netcoreapp.portable`
+    - If you installed the [meta package](https://chocolatey.org/docs/chocolatey-faqs#what-is-the-difference-between-packages-no-suffix-as-compared-to-install-portable): `choco uninstall hello-netcoreapp`
+    - Otherwise: `choco uninstall hello-netcoreapp.portable`
 - AppImage:
     - Just delete the `*.AppImage` file

@@ -5,7 +5,7 @@
 
     <!-- id is lowercase and if you want a good separator for words, use '-', not '.'. Dots are only acceptable as suffixes for certain types of packages, e.g. .install, .portable, .extension, .template -->
     <!-- If the software is cross-platform, attempt to use the same id as the debian/rpm package(s) if possible. -->
-    <id>hello-netcoreapp</id>
+    <id>hello-netcoreapp.portable</id>
     <!-- version should MATCH as closely as possible with the underlying software -->
     <!-- Is the version a prerelease of a version? https://docs.nuget.org/create/versioning#creating-prerelease-packages -->
     <!-- Note that unstable versions like 0.0.1 can be considered a released version, but it's possible that one can release a 0.0.1-beta before you release a 0.0.1 version. If the version number is final, that is considered a released version and not a prerelease. -->
@@ -16,7 +16,7 @@
 
     <!-- Optional metadata elements (according to https://docs.microsoft.com/en-us/nuget/schema/nuspec) -->
 
-    <title>hello-netcoreapp</title>
+    <title>hello-netcoreapp (Portable)</title>
     <!-- owners is a poor name for maintainers of the package. It sticks around by this name for compatibility reasons. It basically means you. -->
     <owners>Philipp Gillé</owners>
     <!-- projectUrl is required for the community feed -->
@@ -42,15 +42,10 @@
     <bugTrackerUrl>https://github.com/philippgille/hello-netcoreapp/issues</bugTrackerUrl>
     <!-- Where is this Chocolatey package located (think GitHub)? packageSourceUrl is highly recommended for the community feed -->
     <packageSourceUrl>https://github.com/philippgille/hello-netcoreapp</packageSourceUrl>
-
-    <!-- Dependency element for meta package -->
-    <dependencies>
-      <dependency id="hello-netcoreapp.portable" version="[0.1.0]" />
-    </dependencies>
   </metadata>
   <!-- this section controls what actually gets packaged into the Chocolatey package -->
   <files>
     <!-- Building from Linux? You may need this instead: <file src="tools/**" target="tools" />-->
-    <!-- No files, because this is just a meta package "pointing" to hello-netcoreapp.portable -->
+    <file src="tools\**" target="tools" />
   </files>
 </package>

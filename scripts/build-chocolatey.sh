@@ -27,9 +27,10 @@ if [[ -f $ARTIFACTSDIR/${APPNAME}_v${VERSION}_win-x64/$APPNAME.exe ]]; then
     # Workaround for a bug where choco uses the wrong working directory when using choco via Mono
     REGEX="<file src=\\\"tools\\\\\**\\\" target=\"tools\" />"
     REPLACEMENT="<file src=\"${SCRIPTDIR}/../chocolatey/tools\\**\" target=\"tools\" />"
-    sed -r "s@${REGEX}@${REPLACEMENT}@g" $SCRIPTDIR/../chocolatey/$APPNAME.nuspec > $SCRIPTDIR/../chocolatey/$APPNAME.temp-linux.nuspec
+    sed -r "s@${REGEX}@${REPLACEMENT}@g" $SCRIPTDIR/../chocolatey/$APPNAME.portable.nuspec > $SCRIPTDIR/../chocolatey/$APPNAME.temp-linux.nuspec
     # Build Chocolatey package
     choco pack "$SCRIPTDIR/../chocolatey/$APPNAME.temp-linux.nuspec" --out $ARTIFACTSDIR
+    choco pack "$SCRIPTDIR/../chocolatey/$APPNAME.nuspec" --out $ARTIFACTSDIR
     # Clean up workaround
     rm -f $SCRIPTDIR/../chocolatey/$APPNAME.temp-linux.nuspec
 fi

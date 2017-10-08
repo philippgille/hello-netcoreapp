@@ -22,6 +22,7 @@ $version = Get-Content ${PSScriptRoot}\..\VERSION
 Set-String '<release version="\d+\.\d+\.\d+"/>' "<release version=`"${version}`"/>" "${PSScriptRoot}\..\appimage\AppDir\usr\share\metainfo\hello-netcoreapp.appdata.xml"
 
 # Replace in hello-netcoreapp.nuspec
+Set-String '<version>\d+\.\d+\.\d+</version>' "<version>${version}</version>" "${PSScriptRoot}\..\chocolatey\hello-netcoreapp.portable.nuspec"
 Set-String '<version>\d+\.\d+\.\d+</version>' "<version>${version}</version>" "${PSScriptRoot}\..\chocolatey\hello-netcoreapp.nuspec"
 
 # Replace in .appveyor.yml

@@ -28,6 +28,7 @@ VERSION=$(<$SCRIPTDIR/../VERSION)
 replace '<release version="[0-9]+\.[0-9]+\.[0-9]+"/>' "<release version=\"${VERSION}\"/>" $SCRIPTDIR/../appimage/AppDir/usr/share/metainfo/hello-netcoreapp.appdata.xml
 
 # Replace in hello-netcoreapp.nuspec
+replace '<version>[0-9]+\.[0-9]+\.[0-9]+</version>' "<version>${VERSION}</version>" $SCRIPTDIR/../chocolatey/hello-netcoreapp.portable.nuspec
 replace '<version>[0-9]+\.[0-9]+\.[0-9]+</version>' "<version>${VERSION}</version>" $SCRIPTDIR/../chocolatey/hello-netcoreapp.nuspec
 
 # Replace in .appveyor.yml

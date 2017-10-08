@@ -19,5 +19,6 @@ If ((Get-Command "choco" -ErrorAction SilentlyContinue) -and (Test-Path "$artifa
     # Copy SCD files
     Copy-Item "$artifactsDir\${appName}_v${version}_win-x64" "$PSScriptRoot\..\chocolatey\tools" -Recurse
     # Build Chocolatey package
+    choco pack "$PSScriptRoot\..\chocolatey\$appName.portable.nuspec" --out $artifactsDir
     choco pack "$PSScriptRoot\..\chocolatey\$appName.nuspec" --out $artifactsDir
 }
