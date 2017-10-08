@@ -194,7 +194,9 @@ Copy the archive (for example `hello-netcoreapp_v0.1.0_linux-x64.zip` or `hello-
 
 ### Chocolatey package
 
-> Note: You can only install and run Chocolatey packages on Windows!
+> Note 1: You can only install and run Chocolatey packages on Windows!
+
+> Note 2: Depending on your system you might need to install `Microsoft Visual C++ 2015 Redistributable Update 3`, as mentioned in the documentation about the [.NET Core prerequisites for Windows](https://docs.microsoft.com/en-us/dotnet/core/windows-prerequisites?tabs=netcore2x#net-core-dependencies)
 
 First you need to install the package with one of the following ways:
 
@@ -216,7 +218,7 @@ Then run: `hello-netcoreapp`
 
 > Note 1: You can only use AppImages on Linux and you must *either* have fuse installed *or* mount or extract the AppImage, see [AppImage/AppImageKit/wiki/FUSE](https://github.com/AppImage/AppImageKit/wiki/FUSE)
 
-> Note 2: Depending on your system you might need to install the dependencies listed in the [.NET Core native prerequisites](https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites?tabs=netcore2x#linux-distribution-dependencies). For example for Ubuntu that's:
+> Note 2: Depending on your system you might need to install the dependencies listed in the documentation about the [.NET Core prerequisites for Linux](https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites?tabs=netcore2x#linux-distribution-dependencies). For example for Ubuntu that's:
 > 
 > - `apt-get install -y --no-install-recommends libunwind8 libunwind8-dev gettext libicu-dev liblttng-ust-dev libcurl4-openssl-dev libssl-dev uuid-dev unzip`
 
