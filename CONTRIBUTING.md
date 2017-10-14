@@ -50,7 +50,7 @@ There are several label groups. An issue can usually have *one* label of each la
 <li style="background-color:#f9d0c4;color:black">invalid</li>
 <li style="background-color:#f9d0c4;color:black">won't fix</li>
 </br>
-<li style="background-color:#c2e0c6;color:black">up-for-grabs</li>
+<li style="background-color:#c2e0c6;color:black">help wanted</li>
 <li style="background-color:#fef2c0;color:black">help needed</li>
 </br>
 <li style="background-color:#eeeeee;color:black">topic: ci</li>
