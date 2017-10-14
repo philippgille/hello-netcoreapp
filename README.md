@@ -1,7 +1,10 @@
-Branch | Windows</br>(scripts/build.ps1) | Linux</br>(scripts/build.sh) | Docker</br>(docker/Dockerfile) | Code quality
------- | :-----------------------------: | :--------------------------: | :---------------------: | :----------:
-master | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/master?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/master) | [![Build Status](https://travis-ci.org/philippgille/hello-netcoreapp.svg?branch=master)](https://travis-ci.org/philippgille/hello-netcoreapp) | [![Docker Automated build](https://img.shields.io/docker/automated/philippgille/hello-netcoreapp.svg)](https://hub.docker.com/r/philippgille/hello-netcoreapp/) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/27c2c07b54b24239b203382131d5d44b)](https://www.codacy.com/app/philippgille/hello-netcoreapp)
-develop | [![Build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/develop?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/develop) | [![Build Status](https://travis-ci.org/philippgille/hello-netcoreapp.svg?branch=develop)](https://travis-ci.org/philippgille/hello-netcoreapp) | [![Docker Automated build](https://img.shields.io/docker/automated/philippgille/hello-netcoreapp.svg)](https://hub.docker.com/r/philippgille/hello-netcoreapp/) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/27c2c07b54b24239b203382131d5d44b?branch=develop)](https://www.codacy.com/app/philippgille/hello-netcoreapp)
+Windows build | Linux build | Docker | Code quality | Test coverage
+:------------ | :---------- | :----- | :----------- | :------------
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/qpjoubjrj9hk4996/branch/master?svg=true)](https://ci.appveyor.com/project/philippgille/hello-netcoreapp/branch/master) | [![Travis CI build Status](https://travis-ci.org/philippgille/hello-netcoreapp.svg?branch=master)](https://travis-ci.org/philippgille/hello-netcoreapp) | [![Docker Hub automated build](https://img.shields.io/badge/Docker-automated-008bb8.svg)](https://hub.docker.com/r/philippgille/hello-netcoreapp/) | [![Codacy code quality](https://api.codacy.com/project/badge/Grade/27c2c07b54b24239b203382131d5d44b)](https://www.codacy.com/app/philippgille/hello-netcoreapp)<br/>[![Better Code Hub code quality](https://bettercodehub.com/edge/badge/philippgille/hello-netcoreapp?branch=master)](https://bettercodehub.com/) | Boilerplate<br/>Nothing to test
+
+Binaries | Chocolatey package
+:------- | :-----------------
+[![GitHub Releases](https://img.shields.io/github/release/philippgille/hello-netcoreapp.svg)](https://github.com/philippgille/hello-netcoreapp/releases) | [![MyGet](https://img.shields.io/myget/hello-netcoreapp/v/hello-netcoreapp.svg)](https://www.myget.org/feed/hello-netcoreapp/package/nuget/hello-netcoreapp)
 
 hello-netcoreapp
 ================
