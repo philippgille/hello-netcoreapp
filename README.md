@@ -67,6 +67,7 @@ Directory structure
 - `artifacts/`: Not contained in the git repository, but gets created when one of the build scripts is run
     - After a build script is run it contains the resulting release artifacts, such as `hello-netcoreapp_v0.1.0_linux-x64.tar.gz`
 - `docker/`: Dockerfiles for building Docker images for Linux and Windows containers with the app
+- `docs/`: Documentation about this project in [Markdown](http://commonmark.org/help/) files
 - `src/`: Contains the application source code, basically just a main class (`Program.cs`) and project file (`hello-netcoreapp.csproj`)
     - `.vscode/`: Contains files for debugging the app in Visual Studio Code
         - Used in case you open the src directory of the repository as workspace in Visual Studio Code
