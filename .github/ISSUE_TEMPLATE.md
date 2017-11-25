@@ -1,3 +1,5 @@
+Before filing a bug or feature request, please check if a related issue already exists [here](https://github.com/philippgille/hello-netcoreapp/issues).
+
 If this is a feature request, describe the feature and add some info and links about how it could be implemented.
 
 If this is a bug report, describe the expected behavior, the actual behavior and maybe your idea how to fix it.
