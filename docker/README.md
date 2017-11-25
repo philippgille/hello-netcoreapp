@@ -5,11 +5,16 @@
 
 This Docker image is one of those artifacts and allows you to execute the .NET Core application without having to install .NET Core.
 
-Supported tags and respective `Dockerfile` links
+Supported Linux amd64 tags and respective `Dockerfile` links
 ------------------------------------------------
 
 - [`latest` (docker/Dockerfile)](https://github.com/philippgille/hello-netcoreapp/blob/master/docker/Dockerfile)
 - [`develop` (docker/Dockerfile)](https://github.com/philippgille/hello-netcoreapp/blob/develop/docker/Dockerfile)
+
+Supported Linux arm32 tags and respective `Dockerfile` links
+------------------------------------------------
+
+- [`develop-arm32` (docker/Dockerfile.arm32)](https://github.com/philippgille/hello-netcoreapp/blob/develop/docker/Dockerfile.arm32)
 
 Usage
 -----
