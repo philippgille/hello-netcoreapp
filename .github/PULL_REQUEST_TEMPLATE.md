@@ -1,15 +1,15 @@
 Short description
 -----------------
 
-bla
+Bla
 
 List of changes
 ---------------
 
-- foo
-- bar
+- Foo
+- Bar
 
 Related issues
 --------------
 
-Fixes #
+Closes #
