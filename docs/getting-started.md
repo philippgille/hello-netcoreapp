@@ -10,6 +10,10 @@ Steps
 
 1. Either fork the repository or download its files
 1. Go through the following directories and change the following files:
+    - `.github/`:
+        - `CONTRIBUTING.md`: Change the e-mail address to yours. Also, this file contains the labels that are set up in the GitHub repository. You might want to change that section if you want to use other labels. Otherwise you should change your GitHub repository's issue labels to match the ones in this document.
+        - `ISSUE_TEMPLATE.md`: Change the GitHub repository's link to yours
+        - `SUPPORT.md`: Change the GitHub repository's issues links to yours
     - `.vscode/`: Change `hello-netcoreapp` in both files to your app's name
     - `appimage/`:
         - `AppRun`: Change the content from `hello-netcoreapp` to your app's name
@@ -28,7 +32,6 @@ Steps
         - `hello-netcoreapp.csproj`: Rename the file to your app's name. You can optionally change the `TargetFrameworks` and `RuntimeIdentifiers` in the `*.csproj`.
     - `.appveyor.yml`: Change `hello-netcoreapp` to your app's name. We advise you to change `force_update` to `false`.
     - `.travis.yml`: Change `hello-netcoreapp` to your app's name. We advise you to change `overwrite` to `false`.
-    - `CONTRIBUTING.md`: This file contains the labels that are set up in the GitHub repository. You might want to change that section.
     - `README.md`: You should only need to change the links of the badges, the introductory text that describes your app, as well as replace all occurences of `hello-netcoreapp` by your app's name. This requires you to have set up some accounts (build services, code quality check, MyGet feed etc.) (more on that later).
 1. Set up accounts. The following accounts are required to leverage all prepared functionality:
     - [GitHub](https://github.com/): GitHub is meant to host the source code repository of your app. And both AppVeyor and Travis CI deploy downloadable artifacts to "[GitHub Releases](https://help.github.com/articles/about-releases/)"
