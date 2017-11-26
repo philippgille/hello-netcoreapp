@@ -15,7 +15,7 @@ COPY src/*.csproj src/
 RUN dotnet restore src/hello-netcoreapp.csproj
 # Make use of Docker layering: new layer
 COPY . .
-RUN scripts/build.sh
+RUN scripts/build.sh "fdd" "netcoreapp2.0"
 
 # Runtime image
 

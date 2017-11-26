@@ -1,5 +1,15 @@
 # Builds the project and creates release artifacts for FDD (framework-dependent deployment) and SCD (self-contained deployment).
 # Uses an installed version of the .NET Core SDK, which should be version 2.0.
+#
+# You can execute this script with either 0 or 2 parameters.
+#
+# Example 1: .\build.ps1 -publishType "fdd" -frameworkOrRuntime "netcoreapp2.0"
+# Example 2: .\build.ps1 -publishType "scd" -frameworkOrRuntime "linux-x64"
+
+param (
+    [string]$publishType = "",
+    [string]$frameworkOrRuntime = ""
+ )
 
 $ErrorActionPreference = "Stop"
 
@@ -9,7 +19,12 @@ $ErrorActionPreference = "Stop"
 # Example 2: New-Build "SCD" "win-x64" $artifactsDir $sourceDir
 function New-Build
 {
-    Param ($publishType, $frameworkOrRuntime, $artifactsDir, $sourceDir)
+    param (
+        [string]$publishType,
+        [string]$frameworkOrRuntime,
+        [string]$artifactsDir,
+        [string]$sourceDir
+    )
 
     # Set variables depending on publish type
     # PowerShell doesn't allow having multiple parameter switches and parameters in one variable and passing that to the command,
@@ -55,21 +70,30 @@ $sourceDir = "$PSScriptRoot\..\src"
 
 &${PSScriptRoot}\bumpVersion.ps1
 
-# Build FDD
+# Depending on the parameters passed to this script, either build all artifacts or just the given one
+if (($publishType -eq "") -and ($frameworkOrRuntime -eq "")) {
+    # Build FDD
 
-# Publish the FDD for each target framework
-. ${PSScriptRoot}\utils.ps1
-$targetFrameworks = Read-CsvFromXmlVal "$sourceDir\$appName.csproj" "TargetFrameworks"
-foreach ($targetFramework in $targetFrameworks) {
-    New-Build "FDD" $targetFramework $artifactsDir $sourceDir
-}
+    # Publish the FDD for each target framework
+    . ${PSScriptRoot}\utils.ps1
+    $targetFrameworks = Read-CsvFromXmlVal "$sourceDir\$appName.csproj" "TargetFrameworks"
+    foreach ($targetFramework in $targetFrameworks) {
+        New-Build "FDD" $targetFramework $artifactsDir $sourceDir
+    }
 
-# Build SCD
+    # Build SCD
 
-# Publish the SCD for each runtime identifier
-$rIds = Read-CsvFromXmlVal "$sourceDir\$appName.csproj" "RuntimeIdentifiers"
-foreach ($rId in $rIds) {
-    New-Build "SCD" $rId $artifactsDir $sourceDir
+    # Publish the SCD for each runtime identifier
+    $rIds = Read-CsvFromXmlVal "$sourceDir\$appName.csproj" "RuntimeIdentifiers"
+    foreach ($rId in $rIds) {
+        New-Build "SCD" $rId $artifactsDir $sourceDir
+    }
+} elseif ($args.Count -eq 0) {
+    # $args are the UNBOUND parameters, so a count of 0 is good.
+    New-Build $publishType $frameworkOrRuntime $artifactsDir $sourceDir
+} else {
+    Write-Output "An invalid number of arguments was passed to this script."
+    Exit 1
 }
 
 # Build Chocolatey package if Chocolatey is installed and a win-x64 SCD was built

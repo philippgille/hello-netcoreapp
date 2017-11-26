@@ -27,6 +27,8 @@ Contents
         - [Docker Cloud](#docker-cloud)
     - [Locally](#locally)
         - [FDD + SCD + Chocolatey package + AppImage](#fdd--scd--chocolatey-package--appimage)
+            - [Build all artifacts](#build-all-artifacts)
+            - [Build one artifact](#build-one-artifact)
         - [Docker image](#docker-image)
 - [Run](#run)
     - [FDD](#fdd)
@@ -61,6 +63,7 @@ For more info about FDD and SCD see: [https://docs.microsoft.com/en-us/dotnet/ar
 Directory structure
 -------------------
 
+- `.github/`: Contains GitHub specific files, like a code of conduct, contributing guidelines, as well as issue and pull request templates
 - `.vscode/`: Contains files for debugging the app and the PowerShell scripts in Visual Studio Code
     - Used in case you open the root directory of the repository as workspace in Visual Studio Code
 - `appimage/`: Contains files related to the AppImage
@@ -125,6 +128,8 @@ You can create the *FDD*, *SCD*, *Docker image*, *Chocolatey package* and *AppIm
 
 #### FDD + SCD + Chocolatey package + AppImage
 
+##### Build all artifacts
+
 Depending on your OS and installed software, run the following scripts:
 
 System | Installed | Run | Artifacts
@@ -137,6 +142,16 @@ Linux | Docker | `build-with-docker.sh` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_
 The SCDs that are built depend on the runtime identifiers in the `*.csproj`. To add or remove SCDs, just edit that file accordingly (see [available runtime identifiers](https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog)).
 
 > Note: When running the `build-with-docker.ps1` script, the `build.sh` script will be executed inside of a Docker container. This script requires some files to have LF as line ending instead of CRLF. Commiting files with CRLF endings won't help - check your Git configuration `core.autocrlf` instead.
+
+##### Build one artifact
+
+To build just one artifact, you can pass the necessary arguments to the script, like so:
+- `.\scripts\build.ps1 -publishType "fdd" -frameworkOrRuntime "netcoreapp2.0"`
+- `.\scripts\build-with-docker.ps1 -publishType "scd" -frameworkOrRuntime "linux-x64"`
+- `./scripts/build.sh "fdd" "netcoreapp2.0"`
+- `./scripts/build-with-docker.sh "scd" "linux-x64"`
+
+The same restrictions apply as when building all artifacts with calling the build script without arguments, so the AppImage and Chocolatey packages aren't built in all cases.
 
 #### Docker image
 
