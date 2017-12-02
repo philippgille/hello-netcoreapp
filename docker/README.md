@@ -14,6 +14,7 @@ Supported Linux amd64 tags and respective `Dockerfile` links
 Supported Linux arm32 tags and respective `Dockerfile` links
 ------------------------------------------------
 
+- [`arm32` (docker/Dockerfile.arm32)](https://github.com/philippgille/hello-netcoreapp/blob/master/docker/Dockerfile.arm32)
 - [`develop-arm32` (docker/Dockerfile.arm32)](https://github.com/philippgille/hello-netcoreapp/blob/develop/docker/Dockerfile.arm32)
 
 Usage
