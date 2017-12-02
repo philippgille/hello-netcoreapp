@@ -31,6 +31,14 @@
             "script": "${file}",
             "args": [],
             "cwd": "${file}"
+        },
+        {
+            "type": "PowerShell",
+            "request": "launch",
+            "name": "PowerShell Build FDD",
+            "script": "${workspaceRoot}\\scripts\\build.ps1",
+            "args": ["-publishType", "fdd", "-frameworkOrRuntime", "netcoreapp2.0"],
+            "cwd": "${workspaceRoot}"
         }
     ]
 }

@@ -5,7 +5,7 @@
     "args": [],
     "tasks": [
         {
-            "taskName": "build",
+            "taskName": "minimal build",
             "args": [
                 "${workspaceRoot}/src/hello-netcoreapp.csproj"
             ],
