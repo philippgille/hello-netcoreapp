@@ -46,6 +46,9 @@ function New-Build
     $publishDir = "$artifactsDir\$publishName"
 
     # Clean and create directories
+    # For some reason the obj directory needs to be cleaned, because otherwise there can be an error during dotnet publish under certain circumstances
+    If (Test-Path "$sourceDir\bin") {Remove-Item -Recurse -Force "$sourceDir\bin"}
+    If (Test-Path "$sourceDir\obj") {Remove-Item -Recurse -Force "$sourceDir\obj"}
     If (Test-Path "$publishDir") {Remove-Item -Recurse -Force "$publishDir"}
     mkdir "$publishDir"
 
@@ -56,11 +59,18 @@ function New-Build
     Start-Sleep -s 1
 
     # Create an archive with all FDD / SCD files for publishing.
-    # Requires the full .NET framework to be installed, so that the required assembly can be loaded, which is not part of PowerShell.
     $destination = "$publishDir.zip"
     If (Test-Path $destination) {Remove-Item -Force $destination}
-    Add-Type -Assembly "System.IO.Compression.FileSystem"
-    [io.compression.zipfile]::CreateFromDirectory("$publishDir", $destination)
+    # Note: On some systems with the full .NET Framework the assembly must first be added.
+    # But the command doesn't work in nanoserver for example, where it also isn't necessary at all.
+    # So only execute it if the assembly isn't already loaded.
+    try {
+        [io.compression.zipfile]::CreateFromDirectory("$publishDir", $destination)
+    }
+    catch {
+        Add-Type -Assembly "System.IO.Compression.FileSystem"
+        [io.compression.zipfile]::CreateFromDirectory("$publishDir", $destination)
+    }
 }
 
 $appName = Get-Content ${PSScriptRoot}\APP_NAME
@@ -69,6 +79,9 @@ $artifactsDir = "$PSScriptRoot\..\artifacts"
 $sourceDir = "$PSScriptRoot\..\src"
 
 &${PSScriptRoot}\bumpVersion.ps1
+
+# Clean old artifacts
+If (Test-Path "$artifactsDir\*") {Remove-Item -Recurse -Force "$artifactsDir\*"}
 
 # Depending on the parameters passed to this script, either build all artifacts or just the given one
 if (($publishType -eq "") -and ($frameworkOrRuntime -eq "")) {

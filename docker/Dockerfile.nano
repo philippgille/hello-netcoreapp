@@ -1,11 +1,29 @@
-# Dockerfile for creating a Docker image that contains the .NET Core app's FDD
-# It requires the FDD to be already built.
+﻿# Dockerfile for creating a Docker image that contains the .NET Core app's FDD
+# It makes use of multi-stage builds and requires Docker 17.05 or later:
+# https://docs.docker.com/engine/userguide/eng-image/multistage-build/
+
+# Builder image
+# Don't bother to clean up the image - it's only used for building
+
+FROM microsoft/dotnet:2.0-sdk as builder
+
+WORKDIR /app
+# Make use of Docker layering: cached layer
+COPY src/*.csproj src/
+RUN dotnet restore src/hello-netcoreapp.csproj
+# Make use of Docker layering: new layer
+COPY . .
+RUN powershell scripts/build.ps1 -publishType "fdd" -frameworkOrRuntime "netcoreapp2.0"
+
+# Runtime image
 
 FROM microsoft/dotnet:2.0-runtime
 
 LABEL maintainer "Philipp Gille"
 
-WORKDIR /dotnetapp
-COPY artifacts/hello-netcoreapp_v*_netcoreapp2.0 ./
+WORKDIR /app
+# Copying with "--from" and wildcards doesn't work when building a Windows container image
+# See https://github.com/moby/moby/issues/35604
+COPY --from=builder /app/artifacts/hello-netcoreapp_v0.1.0_netcoreapp2.0 ./
 
 ENTRYPOINT ["dotnet", "hello-netcoreapp.dll"]

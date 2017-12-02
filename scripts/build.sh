@@ -42,6 +42,9 @@ function build() {
     PUBLISHDIR="$ARTIFACTSDIR/$PUBLISHNAME"
 
     # Clean and create directories
+    # Also clean bin and obj to match the behavior of the PowerShell script
+    rm -r -f "$SOURCEDIR/bin"
+    rm -r -f "$SOURCEDIR/obj"
     rm -r -f "$PUBLISHDIR"
     mkdir -p "$PUBLISHDIR"
 
@@ -65,6 +68,9 @@ ARTIFACTSDIR="$SCRIPTDIR/../artifacts"
 SOURCEDIR="$SCRIPTDIR/../src"
 
 $SCRIPTDIR/bumpVersion.sh
+
+# Clean old artifacts
+rm -rf $ARTIFACTSDIR/*
 
 # Depending on the parameters passed to this script, either build all artifacts or just the given one
 if [[ $# -eq 0 ]]; then

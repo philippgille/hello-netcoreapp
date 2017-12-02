@@ -25,5 +25,8 @@ Set-String '<release version="\d+\.\d+\.\d+"/>' "<release version=`"${version}`"
 Set-String '<version>\d+\.\d+\.\d+</version>' "<version>${version}</version>" "${PSScriptRoot}\..\chocolatey\hello-netcoreapp.portable.nuspec"
 Set-String '<version>\d+\.\d+\.\d+</version>' "<version>${version}</version>" "${PSScriptRoot}\..\chocolatey\hello-netcoreapp.nuspec"
 
+# Replace in Dockerfile.nano
+Set-String 'hello-netcoreapp_v\d+\.\d+\.\d+' "hello-netcoreapp_v${version}" "${PSScriptRoot}\..\docker\Dockerfile.nano"
+
 # Replace in .appveyor.yml
 Set-String 'version: \d+\.\d+\.\d+\.\{build\}' "version: ${version}.{build}" "${PSScriptRoot}\..\.appveyor.yml"

@@ -155,19 +155,16 @@ The same restrictions apply as when building all artifacts with calling the buil
 
 #### Docker image
 
-> Note: When building the Docker image in Windows, the `build.sh` script will be executed inside of the Docker builder container. This script requires some files to have LF as line ending instead of CRLF. Commiting files with CRLF endings won't help - check your Git configuration `core.autocrlf` instead.
+> Note: When building the Linux container image in Windows, the `build.sh` script will be executed inside of the Docker builder container. This script requires some files to have LF as line ending instead of CRLF. Commiting files with CRLF endings won't help - check your Git configuration `core.autocrlf` instead.
 
 In the root directory of the repository, depending on which container host system you want to target:
 
 - For Linux containers, run: `docker build -f docker/Dockerfile -t local/hello-netcoreapp .`
-    - You can do this on both Linux and Windows
-- For Windows containers, you must first build the app's FDD and then create the Docker image:
-    1. Run any of the build scripts, so that there's `artifacts/hello-netcoreapp_v0.1.0_netcoreapp2.0`
-    2. `docker build -f docker/Dockerfile.nano -t local/hello-netcoreapp .`
+    - Works on both Linux and Windows
+- For Windows containers, run: `docker build -f docker/Dockerfile.nano -t local/hello-netcoreapp:nanoserver .`
+    - Only works on Windows
 
-> Note 1: You don't need to create a Windows container image for using Docker in Windows. Linux containers work just fine on Windows with Hyper-V. Creating a Windows container image is specifically for actual *Windows containers*, see [https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/](https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/).
-
-> Note 2: You can't build Windows containers in Linux.
+> Note: You don't need to create a Windows container image for using Docker in Windows. Linux containers work just fine on Windows. Creating a Windows container image is specifically for actual *Windows containers*, see [https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/](https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/).
 
 Run
 ---
@@ -209,8 +206,10 @@ Copy the archive (for example `hello-netcoreapp_v0.1.0_linux-x64.zip` or `hello-
     - `docker run philippgille/hello-netcoreapp`
         > Note: This currently only works for Linux containers (on either Linux or Windows)
 - Alternatively you can build the image locally (see the *Build* section in this README) and then create a container from the image in the local image cache:
-    - `docker run local/hello-netcoreapp`
-        > Note: This works on Linux with the Linux container image, and on Windows with both the Linux and Windows container images (on Windows you can configure which kind of containers you want to run)
+    - For the Linux container: `docker run local/hello-netcoreapp`
+        - Works on both Linux and Windows
+    - For the Windows container: `docker run local/hello-netcoreapp:nanoserver`
+        - Only works on Windows
 
 ### Chocolatey package
 
@@ -233,7 +232,7 @@ First you need to install the package with one of the following ways:
 
 Then run: `hello-netcoreapp`
 
-> Note 1: The package is installed in `%ChocolateyInstall%/lib` (e.g. `C:\ProgramData\Chocolatey\lib`)
+> Note: The package is installed in `%ChocolateyInstall%/lib` (e.g. `C:\ProgramData\Chocolatey\lib`)
 
 ### AppImage
 

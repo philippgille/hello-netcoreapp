@@ -31,5 +31,8 @@ replace '<release version="[0-9]+\.[0-9]+\.[0-9]+"/>' "<release version=\"${VERS
 replace '<version>[0-9]+\.[0-9]+\.[0-9]+</version>' "<version>${VERSION}</version>" $SCRIPTDIR/../chocolatey/hello-netcoreapp.portable.nuspec
 replace '<version>[0-9]+\.[0-9]+\.[0-9]+</version>' "<version>${VERSION}</version>" $SCRIPTDIR/../chocolatey/hello-netcoreapp.nuspec
 
+# Replace in Dockerfile.nano
+replace 'hello-netcoreapp_v[0-9]+\.[0-9]+\.[0-9]+' "hello-netcoreapp_v${VERSION}" $SCRIPTDIR/../docker/Dockerfile.nano
+
 # Replace in .appveyor.yml
 replace 'version: [0-9]+\.[0-9]+\.[0-9]+\.\{build\}' "version: ${VERSION}.{build}" $SCRIPTDIR/../.appveyor.yml
