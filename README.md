@@ -146,10 +146,12 @@ The SCDs that are built depend on the runtime identifiers in the `*.csproj`. To 
 ##### Build one artifact
 
 To build just one artifact, you can pass the necessary arguments to the script, like so:
-- `.\scripts\build.ps1 -publishType "fdd" -frameworkOrRuntime "netcoreapp2.0"`
-- `.\scripts\build-with-docker.ps1 -publishType "scd" -frameworkOrRuntime "linux-x64"`
-- `./scripts/build.sh "fdd" "netcoreapp2.0"`
-- `./scripts/build-with-docker.sh "scd" "linux-x64"`
+- Windows:
+    - `.\scripts\build.ps1 -publishType "fdd" -frameworkOrRuntime "netcoreapp2.0"`
+    - `.\scripts\build-with-docker.ps1 -publishType "scd" -frameworkOrRuntime "linux-x64"`
+- Linux:
+    - `./scripts/build.sh "fdd" "netcoreapp2.0"`
+    - `./scripts/build-with-docker.sh "scd" "linux-x64"`
 
 The same restrictions apply as when building all artifacts with calling the build script without arguments, so the AppImage and Chocolatey packages aren't built in all cases.
 
