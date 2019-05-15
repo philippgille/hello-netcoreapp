@@ -141,11 +141,21 @@ Linux | Docker | `build-with-docker.sh` | <ul><li>FDD: `hello-netcoreapp_v0.1.0_
 
 The SCDs that are built depend on the runtime identifiers in the `*.csproj`. To add or remove SCDs, just edit that file accordingly (see [available runtime identifiers](https://docs.microsoft.com/en-us/dotnet/articles/core/rid-catalog)).
 
+To interactively build the artifacts in a Linux Docker container, run:
+
+1. `docker run -it --rm -v ${PWD}:/hello-netcoreapp -w /hello-netcoreapp philippgille/dotnet-libglib:2.0-sdk bash`
+    - This requires your current working directory to be the root of the repository, otherwise use `/path/to/repo:/app` for the `-v` option
+    - When running this on a Windows host, some files need to have LF as line ending. See below *Note* for details.
+2. Then, inside the Docker container: `scripts/build.sh`
+    - All files that are created or changed during this process will be created or changed in the mapped directory of your host file system due to the `-v` option.
+3. When you're done, run `exit`
+
 > Note: When running the `build-with-docker.ps1` script, the `build.sh` script will be executed inside of a Docker container. This script requires some files to have LF as line ending instead of CRLF. Commiting files with CRLF endings won't help - check your Git configuration `core.autocrlf` instead.
 
 ##### Build one artifact
 
 To build just one artifact, you can pass the necessary arguments to the script, like so:
+
 - Windows:
     - `.\scripts\build.ps1 -publishType "fdd" -frameworkOrRuntime "netcoreapp2.0"`
     - `.\scripts\build-with-docker.ps1 -publishType "scd" -frameworkOrRuntime "linux-x64"`
@@ -180,9 +190,28 @@ Alternatively you can build the artifacts on your own (see the *Build* section i
 ### FDD
 
 Depending on the operating system you use when building, there are multiple FDDs:
-- hello-netcoreapp_v0.1.0_netcoreapp2.0 (when built on Windows and Linux)
-- hello-netcoreapp_v0.1.0_net451 (when built on Windows)
-- hello-netcoreapp_v0.1.0_net461 (when built on Windows)
+- [hello-netcoreapp](#hello-netcoreapp)
+    - [Contents](#contents)
+    - [Terminology](#terminology)
+    - [Directory structure](#directory-structure)
+    - [Build](#build)
+        - [Via cloud service](#via-cloud-service)
+            - [AppVeyor](#appveyor)
+            - [Travis CI](#travis-ci)
+            - [Docker Cloud](#docker-cloud)
+        - [Locally](#locally)
+            - [FDD + SCD + Chocolatey package + AppImage](#fdd-scd-chocolatey-package-appimage)
+                - [Build all artifacts](#build-all-artifacts)
+                - [Build one artifact](#build-one-artifact)
+            - [Docker image](#docker-image)
+    - [Run](#run)
+        - [FDD](#fdd)
+        - [SCD](#scd)
+        - [Docker container](#docker-container)
+        - [Chocolatey package](#chocolatey-package)
+        - [AppImage](#appimage)
+    - [Simplify running the app](#simplify-running-the-app)
+    - [Uninstall](#uninstall)
 
 > Note: For running `hello-netcoreapp_v0.1.0_netcoreapp2.0` you need to have the .NET Core runtime installed. The other FDDs are for Windows only and do *not* require any runtime being installed. Windows already comes with the full .NET Framework, so those FDDs work out of the box. Use the `net461` version for up-to-date Windows systems and the `net451` one for Windows 8.1 and Windows Server 2008 R2.
 
